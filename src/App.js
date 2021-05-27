@@ -3,9 +3,7 @@ import Sample from "./Sample";
 function App() {
   return (
     <div>
-      <p className>
-        Edit <code>src/App.js</code> and save to reload.
-      </p>
+      <p className="text-gray-300">reload.</p>
       <Sample />
     </div>
   );
