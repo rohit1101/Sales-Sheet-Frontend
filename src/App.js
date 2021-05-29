@@ -1,25 +1,35 @@
 import React, { useState } from "react";
 
 function App() {
-  const [salesEntries, setSalesEntries] = useState();
+  const [salesEntries, setSalesEntries] = useState([]);
   const [btnState, setBtnState] = useState(false);
+  const [cardID, setCardId] = useState();
+  const [date, setDate] = useState();
 
   function getSalesEntries() {
-    if (localStorage.getItem("sales")) {
-      setSalesEntries(JSON.parse(localStorage.getItem("sales")));
-      setBtnState(true);
-    } else {
-      fetch(`http://127.0.0.1:3000/sales`)
-        .then((data) => data.json())
-        .then((res) => {
-          setSalesEntries(res);
-          localStorage.setItem("sales", JSON.stringify(res));
-          setBtnState(true);
-        })
-        .catch((e) => console.log("Error:", e));
+    let url = ``;
+    console.log("cardId", cardID, "date", date);
+    if (cardID) {
+      url = `http://127.0.0.1:3000/sales?cardId=${cardID}`;
     }
+    if (date) {
+      url = `http://127.0.0.1:3000/sales?date=${date}`;
+    }
+    fetch(
+      cardID && date
+        ? `http://127.0.0.1:3000/sales?cardId=${cardID}&date=${date}`
+        : url
+    )
+      .then((data) => data.json())
+      .then((res) => {
+        console.log(res);
+        setSalesEntries(res);
+        setBtnState(true);
+      })
+      .catch((e) => console.log("Error:", e));
+    setCardId("");
+    setDate("");
   }
-  console.log(btnState);
 
   return (
     <div className="h-screen bg-blue-100">
@@ -27,6 +37,21 @@ function App() {
         <h1 className="font-sans text-2xl font-medium text-gray-500 text-center">
           Sales Summary
         </h1>
+
+        <label className="block">Card Id</label>
+        <input
+          type="text"
+          value={cardID}
+          onChange={(e) => setCardId(e.target.value)}
+        />
+        <label className="block">Date</label>
+        <input
+          className="block mb-2"
+          value={date}
+          type="text"
+          onChange={(e) => setDate(e.target.value)}
+        />
+
         <button
           onClick={getSalesEntries}
           className="min-w-max-content bg-purple-300 text-purple-600 font-normal hover:bg-purple-200 duration-100 hover:text-purple-800 rounded-md px-2 py-1 shadow-2xl"
@@ -34,7 +59,7 @@ function App() {
           Get Sales Summary
         </button>
 
-        {btnState && (
+        {salesEntries.length ? (
           <>
             <table className="w-full my-2 table-auto bg-green-200 border-collapse border-2 border-green-800">
               <thead>
@@ -66,11 +91,13 @@ function App() {
             <button
               disabled={!btnState}
               onClick={() => setBtnState()}
-              className='"min-w-max-content bg-red-300 text-red-600 font-normal hover:bg-red-100 duration-100 hover:text-red-500 rounded-md px-2 py-1 shadow-2xl"'
+              className="min-w-max-content bg-red-300 text-red-600 font-normal hover:bg-red-100 duration-100 hover:text-red-500 rounded-md px-2 py-1 shadow-2xl"
             >
               Hide
             </button>
           </>
+        ) : (
+          "No data found"
         )}
       </div>
     </div>
