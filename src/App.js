@@ -25,7 +25,7 @@ function App() {
       .catch((error) => console.log("From App.js METHOD = POST", error));
     setCardId("");
     setDate("");
-    setAmount(0);
+    setAmount();
   }
 
   return (

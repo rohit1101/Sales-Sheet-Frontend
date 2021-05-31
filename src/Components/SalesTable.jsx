@@ -17,15 +17,18 @@ const SalesTable = ({ sales }) => {
             {sales.length ? (
               sales.map((sale) => (
                 <tr className="bg-yellow-200">
-                  <td className="border border-green-600">{sale.cardid}</td>
-                  <td className="border border-green-600">{sale.salesrepid}</td>
+                  <td className="border border-green-600">{sale.card_id}</td>
+                  <td className="border border-green-600">
+                    {sale.sales_rep_id}
+                  </td>
                   <td className="border border-green-600">
                     {sale.date
                       ? new Date(sale.date).toLocaleString()
                       : new Date().toLocaleString()}
-                    {/* {sale.date} */}
                   </td>
-                  <td className="border border-green-600">{sale.amountpaid}</td>
+                  <td className="border border-green-600">
+                    {sale.amount_paid}
+                  </td>
                 </tr>
               ))
             ) : (

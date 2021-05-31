@@ -19,7 +19,7 @@ export function getSalesEntries(cardId, date) {
     .catch((e) => console.log("Error:", e));
 }
 
-export function addSalesEntry(cardId, salesRepId, amount, date = "") {
+export function addSalesEntry(card_id, sales_rep_id, amount_paid, date = "") {
   let url = new URL(`http://127.0.0.1:3000/sale`);
 
   return fetch(url, {
@@ -29,8 +29,8 @@ export function addSalesEntry(cardId, salesRepId, amount, date = "") {
     },
     method: "POST",
     body: Boolean(date)
-      ? JSON.stringify({ cardId, salesRepId, date, amount })
-      : JSON.stringify({ cardId, salesRepId, amount }),
+      ? JSON.stringify({ card_id, sales_rep_id, date, amount_paid })
+      : JSON.stringify({ card_id, sales_rep_id, amount_paid }),
   })
     .then((data) => data.json())
     .then((res) => {
