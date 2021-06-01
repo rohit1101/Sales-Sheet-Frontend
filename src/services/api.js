@@ -40,6 +40,22 @@ export function addSalesEntry(card_id, sales_rep_id, amount_paid, date = "") {
     .catch((e) => console.log("Error:", e));
 }
 
+export function updateSalesEntry(id, card_id) {
+  let url = new URL(`http://127.0.0.1:3000/sales/${id}`);
+
+  return fetch(url, {
+    headers: {
+      Accept: "application/json",
+      "Content-Type": "application/json",
+    },
+    method: "PUT",
+    body: JSON.stringify({ card_id }),
+  })
+    .then((data) => data.text())
+    .then((res) => res)
+    .catch((e) => console.log("Error:", e));
+}
+
 export function deleteSalesEntry(id) {
   let url = new URL(`http://127.0.0.1:3000/sales/${id}`);
 
