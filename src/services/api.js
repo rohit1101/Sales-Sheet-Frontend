@@ -51,9 +51,6 @@ export function deleteSalesEntry(id) {
     method: "DELETE",
   })
     .then((data) => data.text())
-    .then((res) => {
-      console.log(res);
-      return res;
-    })
+    .then((res) => res)
     .catch((e) => console.log("Error:", e));
 }
