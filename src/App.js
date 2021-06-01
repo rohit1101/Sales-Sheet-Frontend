@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import SalesTable from "./Components/SalesTable";
+import SalesTable from "./Components/DisplaySales/SalesTable";
 import { getSalesEntries, addSalesEntry } from "./services/api";
 
 function App() {
@@ -8,6 +8,7 @@ function App() {
   const [date, setDate] = useState();
   const [amount, setAmount] = useState();
   const salesRepId = 1;
+
   function getSalesEntriesHandler() {
     getSalesEntries(cardId, date)
       .then((res) => setSalesEntries(res))
@@ -73,6 +74,7 @@ function App() {
         ) : (
           <button
             disabled={true}
+            style={{ cursor: "not-allowed" }}
             className="opacity-40 block my-2 min-w-full bg-purple-300 text-purple-600 font-normal rounded-md px-2 py-1 shadow-2xl"
           >
             Add Sales Entry

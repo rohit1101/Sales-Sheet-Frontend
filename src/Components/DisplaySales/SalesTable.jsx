@@ -1,5 +1,7 @@
 // import React, { useState } from 'react'
 
+import Sale from "./Sale";
+
 const SalesTable = ({ sales }) => {
   return (
     <>
@@ -11,26 +13,13 @@ const SalesTable = ({ sales }) => {
               <th className="border border-green-600">Sales Rep ID</th>
               <th className="border border-green-600">Date</th>
               <th className="border border-green-600">Amount</th>
+              <th className="border border-green-600">Delete</th>
+              <th className="border border-green-600">Edit</th>
             </tr>
           </thead>
           <tbody>
             {sales.length ? (
-              sales.map((sale) => (
-                <tr className="bg-yellow-200">
-                  <td className="border border-green-600">{sale.card_id}</td>
-                  <td className="border border-green-600">
-                    {sale.sales_rep_id}
-                  </td>
-                  <td className="border border-green-600">
-                    {sale.date
-                      ? new Date(sale.date).toLocaleString()
-                      : new Date().toLocaleString()}
-                  </td>
-                  <td className="border border-green-600">
-                    {sale.amount_paid}
-                  </td>
-                </tr>
-              ))
+              sales.map((sale) => <Sale sale={sale} />)
             ) : (
               <tr>
                 <td className="text-center">No sales</td>
