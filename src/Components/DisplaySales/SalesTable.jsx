@@ -2,7 +2,7 @@
 
 import Sale from "./Sale";
 
-const SalesTable = ({ sales }) => {
+const SalesTable = ({ sales, setSalesEntries, salesEntries }) => {
   return (
     <>
       {sales && (
@@ -19,7 +19,14 @@ const SalesTable = ({ sales }) => {
           </thead>
           <tbody>
             {sales.length ? (
-              sales.map((sale) => <Sale sale={sale} />)
+              sales.map((sale) => (
+                <Sale
+                  sale={sale}
+                  key={sale.id}
+                  setSalesEntries={setSalesEntries}
+                  salesEntries={salesEntries}
+                />
+              ))
             ) : (
               <tr>
                 <td className="text-center">No sales</td>

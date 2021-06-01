@@ -26,7 +26,7 @@ function App() {
       .catch((error) => console.log("From App.js METHOD = POST", error));
     setCardId("");
     setDate("");
-    setAmount();
+    setAmount("");
   }
 
   return (
@@ -80,7 +80,11 @@ function App() {
             Add Sales Entry
           </button>
         )}
-        <SalesTable sales={salesEntries} />
+        <SalesTable
+          sales={salesEntries}
+          salesEntries={salesEntries}
+          setSalesEntries={setSalesEntries}
+        />
       </div>
     </div>
   );
