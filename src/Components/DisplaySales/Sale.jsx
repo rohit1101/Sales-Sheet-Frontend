@@ -2,9 +2,6 @@ import { useState } from "react";
 import { deleteSalesEntry, updateSalesEntry } from "../../services/api";
 
 const Sale = ({ sale, setSalesEntries, salesEntries }) => {
-  // const [editDate, setEditDate] = useState(
-  //   new Date(sale.date).toLocaleDateString().split("/").reverse().join("-")
-  // );
   const [editState, setEditState] = useState(false);
   const [editDataState, setEditDataState] = useState({
     date: false,
@@ -18,7 +15,7 @@ const Sale = ({ sale, setSalesEntries, salesEntries }) => {
       .join("-"),
     amount_paid: sale.amount_paid,
   });
-  // const [saveBtn, setSaveBtn] = useState(true);
+  const [saveBtn, setSaveBtn] = useState(true);
 
   function updateSalesEntryHandler(id) {
     const newState = [...salesEntries].map((item) => {
@@ -52,6 +49,7 @@ const Sale = ({ sale, setSalesEntries, salesEntries }) => {
     });
     setSalesEntries(newState);
     setEditState(false);
+    setSaveBtn(true);
   }
 
   function removeSalesEntryHandler(id) {
@@ -65,14 +63,11 @@ const Sale = ({ sale, setSalesEntries, salesEntries }) => {
     <>
       {editState ? (
         <>
-          <label className="block">Card Id</label>
-          <input type="text" value={sale.card_id} />
           <label className="block">date</label>
           <input
             type="date"
             value={editData.date}
             onChange={(e) => {
-              // setSaveBtn(false);
               setEditDataState({
                 ...editDataState,
                 date: true,
@@ -82,6 +77,7 @@ const Sale = ({ sale, setSalesEntries, salesEntries }) => {
                 ...editData,
                 date: newDate,
               });
+              setSaveBtn(false);
             }}
           />
           <label className="block">Amount</label>
@@ -89,7 +85,6 @@ const Sale = ({ sale, setSalesEntries, salesEntries }) => {
             type="text"
             value={editData.amount_paid}
             onChange={(e) => {
-              // setSaveBtn(false);
               setEditDataState({
                 ...editDataState,
                 amount_paid: true,
@@ -99,6 +94,7 @@ const Sale = ({ sale, setSalesEntries, salesEntries }) => {
                 ...editData,
                 amount_paid: newAmount,
               });
+              setSaveBtn(false);
             }}
           />
           <button
@@ -108,19 +104,21 @@ const Sale = ({ sale, setSalesEntries, salesEntries }) => {
                 amount_paid: false,
                 date: false,
               });
-              // setEditAmount(sale.amount_paid);
-              // setEditDate(sale.date);
             }}
             className="block my-2 min-w-full bg-purple-300 text-purple-600 font-normal hover:bg-purple-200 duration-100 hover:text-purple-800 rounded-md px-2 py-1 shadow-2xl"
           >
             Cancel
           </button>
+          {/* {editDataState.date || editDataState.amount_paid ? ( */}
           <button
-            // disabled={saveBtn}
             onClick={() => {
               updateSalesEntryHandler(sale.id);
             }}
-            className="block my-2 min-w-full bg-purple-300 text-purple-600 font-normal hover:bg-purple-200 duration-100 hover:text-purple-800 rounded-md px-2 py-1 shadow-2xl"
+            className={
+              editDataState.date || editDataState.amount_paid
+                ? "block my-2 min-w-full bg-purple-300 text-purple-600 font-normal hover:bg-purple-200 duration-100 hover:text-purple-800 rounded-md px-2 py-1 shadow-2xl"
+                : "opacity-40 block my-2 min-w-full bg-purple-300 text-purple-600 font-normal rounded-md px-2 py-1 shadow-2xl"
+            }
           >
             Save Changes
           </button>
