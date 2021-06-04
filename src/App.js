@@ -21,6 +21,7 @@ function App() {
   function addSalesEntryHandler() {
     addSalesEntry(cardId, salesRepId, amount, date)
       .then((res) => {
+        console.log(res);
         setSalesEntries([...salesEntries, res]);
       })
       .catch((error) => console.log("From App.js METHOD = POST", error));

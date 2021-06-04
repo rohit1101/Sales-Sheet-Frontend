@@ -1,6 +1,6 @@
 export function getSalesEntries(cardId, date) {
-  // let url = new URL(`http://127.0.0.1:3000/sales`);
-  let url = new URL(`http://54.175.205.131/sales`);
+  let url = new URL(`http://127.0.0.1:3000/sales`);
+  // let url = new URL(`http://54.175.205.131/sales`);
 
   let params = {
     cardId,
@@ -22,8 +22,8 @@ export function getSalesEntries(cardId, date) {
 }
 
 export function addSalesEntry(card_id, sales_rep_id, amount_paid, date = "") {
-  // let url = new URL(`http://127.0.0.1:3000/sale`);
-  let url = new URL(`http://54.175.205.131/sale`);
+  let url = new URL(`http://127.0.0.1:3000/sale`);
+  // let url = new URL(`http://54.175.205.131/sale`);
 
   return fetch(url, {
     headers: {
@@ -43,9 +43,9 @@ export function addSalesEntry(card_id, sales_rep_id, amount_paid, date = "") {
     .catch((e) => console.log("Error:", e));
 }
 
-export function updateSalesEntry(id, card_id) {
-  // let url = new URL(`http://127.0.0.1:3000/sales/${id}`);
-  let url = new URL(`http://54.175.205.131/sales/${id}`);
+export function updateSalesEntry(id, body) {
+  let url = new URL(`http://127.0.0.1:3000/sales/${id}`);
+  // let url = new URL(`http://54.175.205.131/sales/${id}`);
 
   return fetch(url, {
     headers: {
@@ -53,7 +53,7 @@ export function updateSalesEntry(id, card_id) {
       "Content-Type": "application/json",
     },
     method: "PUT",
-    body: JSON.stringify({ card_id }),
+    body: JSON.stringify(body),
   })
     .then((data) => data.text())
     .then((res) => res)
@@ -61,8 +61,8 @@ export function updateSalesEntry(id, card_id) {
 }
 
 export function deleteSalesEntry(id) {
-  // let url = new URL(`http://127.0.0.1:3000/sales/${id}`);
-  let url = new URL(`http://54.175.205.131/sales/${id}`);
+  let url = new URL(`http://127.0.0.1:3000/sales/${id}`);
+  // let url = new URL(`http://54.175.205.131/sales/${id}`);
 
   return fetch(url, {
     headers: {
