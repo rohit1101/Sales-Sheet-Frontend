@@ -1,43 +1,82 @@
-# Getting Started with Create React App
+# Sales Sheet - Daily Sales Tracker
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+> Sales Sheet is a PWA solution to monitor the cash flow of any small to medium scale business.
 
-## Available Scripts
+## Why building this project ? 
+Sales Sheet's goal is to reduce time spent manually on counting and cross checking money(cash).
 
-In the project directory, you can run:
+## Tech Stack
 
-### `yarn start`
+**Client:** React, TailwindCSS & Service workers.
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+**Server:** Node, Express & node-postgres.
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+**Deployment:** AWS EC2
 
-### `yarn test`
+## Features
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+    What will the user be able to do after the solution is shipped? 
 
-### `yarn build`
+#### Users :
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+- Users should login to make a sales entry.
+- Users will have a profile section where their personal details can be viewed and will have the option to edit the profile.
+- By default, once a user is authenticated they can view a list of sales made on current day.
+- User can add a new sales entry.
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+#### Admin User :
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+- Admin user can view/monitor the sales for every minute based on the business.
+- Admin user can analyse the sales by filtering the sales done based on date.
+- Admin user can filter the maximum sales made by a customer.
 
-### `yarn eject`
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+## Structure
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+**/src**
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
+* Contains the root container for App and folders for sub components.
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
+    - **/Components:**
+        * Contains all React component code. Subfolder for each major component.
+    
+    - **/services:**
+        * api.js: Abstracts all API calls into function calls.
+
+## Run Locally
+
+Clone the project
+
+```bash
+  git clone https://github.com/rohit1101/Sales-Sheet-Frontend.git
+```
+
+Go to the project directory
+
+```bash
+  cd Sales-Sheet-Frontend
+```
+
+Install dependencies
+
+```bash
+  yarn 
+```
+
+Run the application locally http://localhost:3000
+
+```bash
+  yarn start
+```
+
+Build (Will generate the build folder)
+
+```bash
+  yarn build
+```
+## Feedback
+
+If you have any feedback, please reach out to me at srohit1101@gmail.com
 
 ## Learn More
 
