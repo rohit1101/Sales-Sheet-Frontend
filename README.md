@@ -1,9 +1,9 @@
 # Sales Sheet - Daily Sales Tracker
 
-> Sales Sheet is a PWA solution to monitor the cash flow of any small to medium scale business.
+  > Sales Sheet is a PWA solution to monitor the cash flow of any small to medium scale business.
 
 ## Why building this project ? 
-Sales Sheet's goal is to reduce time spent manually on counting and cross checking money(cash).
+  > Sales Sheet's goal is to reduce time spent manually on counting and cross checking money(cash).
 
 ## Tech Stack
 
