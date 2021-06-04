@@ -15,7 +15,6 @@ const Sale = ({ sale, setSalesEntries, salesEntries }) => {
       .join("-"),
     amount_paid: sale.amount_paid,
   });
-  const [saveBtn, setSaveBtn] = useState(true);
 
   function updateSalesEntryHandler(id) {
     const newState = [...salesEntries].map((item) => {
@@ -49,7 +48,6 @@ const Sale = ({ sale, setSalesEntries, salesEntries }) => {
     });
     setSalesEntries(newState);
     setEditState(false);
-    setSaveBtn(true);
   }
 
   function removeSalesEntryHandler(id) {
@@ -77,7 +75,6 @@ const Sale = ({ sale, setSalesEntries, salesEntries }) => {
                 ...editData,
                 date: newDate,
               });
-              setSaveBtn(false);
             }}
           />
           <label className="block">Amount</label>
@@ -94,7 +91,6 @@ const Sale = ({ sale, setSalesEntries, salesEntries }) => {
                 ...editData,
                 amount_paid: newAmount,
               });
-              setSaveBtn(false);
             }}
           />
           <button
@@ -109,7 +105,6 @@ const Sale = ({ sale, setSalesEntries, salesEntries }) => {
           >
             Cancel
           </button>
-          {/* {editDataState.date || editDataState.amount_paid ? ( */}
           <button
             onClick={() => {
               updateSalesEntryHandler(sale.id);

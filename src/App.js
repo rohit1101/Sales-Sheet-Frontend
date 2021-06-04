@@ -65,22 +65,18 @@ function App() {
         >
           {cardId || date ? "Get Sales Summary" : "Get All Sales Summary"}
         </button>
-        {cardId && salesRepId && amount ? (
-          <button
-            onClick={addSalesEntryHandler}
-            className="block my-2 min-w-full bg-purple-300 text-purple-600 font-normal hover:bg-purple-200 duration-100 hover:text-purple-800 rounded-md px-2 py-1 shadow-2xl"
-          >
-            Add Sales Entry
-          </button>
-        ) : (
-          <button
-            disabled={true}
-            style={{ cursor: "not-allowed" }}
-            className="opacity-40 block my-2 min-w-full bg-purple-300 text-purple-600 font-normal rounded-md px-2 py-1 shadow-2xl"
-          >
-            Add Sales Entry
-          </button>
-        )}
+
+        <button
+          onClick={addSalesEntryHandler}
+          className={
+            cardId && salesRepId && amount
+              ? "block my-2 min-w-full bg-purple-300 text-purple-600 font-normal hover:bg-purple-200 duration-100 hover:text-purple-800 rounded-md px-2 py-1 shadow-2xl"
+              : "opacity-40 block my-2 min-w-full bg-purple-300 text-purple-600 font-normal rounded-md px-2 py-1 shadow-2xl"
+          }
+        >
+          Add Sales Entry
+        </button>
+
         <SalesTable
           sales={salesEntries}
           salesEntries={salesEntries}
