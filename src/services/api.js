@@ -1,6 +1,6 @@
 export function getSalesEntries(cardId, date) {
-  // let url = new URL(`http://127.0.0.1:3000/sales`);
-  let url = new URL(`http://54.175.205.131/sales`);
+  let url = new URL(`http://127.0.0.1:3000/sales`);
+  // let url = new URL(`http://54.175.205.131/sales`);
 
   let params = {
     cardId,
@@ -21,9 +21,15 @@ export function getSalesEntries(cardId, date) {
     .catch((e) => console.log("Error:", e));
 }
 
-export function addSalesEntry(card_id, sales_rep_id, amount_paid, date = "") {
-  // let url = new URL(`http://127.0.0.1:3000/sale`);
-  let url = new URL(`http://54.175.205.131/sale`);
+export function addSalesEntry(
+  card_id,
+  sales_rep_id,
+  amount_paid,
+  date = "",
+  description
+) {
+  let url = new URL(`http://127.0.0.1:3000/sale`);
+  // let url = new URL(`http://54.175.205.131/sale`);
 
   return fetch(url, {
     headers: {
@@ -32,8 +38,14 @@ export function addSalesEntry(card_id, sales_rep_id, amount_paid, date = "") {
     },
     method: "POST",
     body: Boolean(date)
-      ? JSON.stringify({ card_id, sales_rep_id, date, amount_paid })
-      : JSON.stringify({ card_id, sales_rep_id, amount_paid }),
+      ? JSON.stringify({
+          card_id,
+          sales_rep_id,
+          date,
+          amount_paid,
+          description,
+        })
+      : JSON.stringify({ card_id, sales_rep_id, amount_paid, description }),
   })
     .then((data) => data.json())
     .then((res) => {
@@ -44,8 +56,8 @@ export function addSalesEntry(card_id, sales_rep_id, amount_paid, date = "") {
 }
 
 export function updateSalesEntry(id, body) {
-  // let url = new URL(`http://127.0.0.1:3000/sales/${id}`);
-  let url = new URL(`http://54.175.205.131/sales/${id}`);
+  let url = new URL(`http://127.0.0.1:3000/sales/${id}`);
+  // let url = new URL(`http://54.175.205.131/sales/${id}`);
 
   return fetch(url, {
     headers: {
@@ -61,8 +73,8 @@ export function updateSalesEntry(id, body) {
 }
 
 export function deleteSalesEntry(id) {
-  // let url = new URL(`http://127.0.0.1:3000/sales/${id}`);
-  let url = new URL(`http://54.175.205.131/sales/${id}`);
+  let url = new URL(`http://127.0.0.1:3000/sales/${id}`);
+  // let url = new URL(`http://54.175.205.131/sales/${id}`);
 
   return fetch(url, {
     headers: {

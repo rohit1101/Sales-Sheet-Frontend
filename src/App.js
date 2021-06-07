@@ -7,6 +7,11 @@ function App() {
   const [cardId, setCardId] = useState();
   const [date, setDate] = useState();
   const [amount, setAmount] = useState();
+  const [incomeOrExpense, setIncomeOrExpense] = useState({
+    income: false,
+    expense: false,
+  });
+  const [description, setDescription] = useState("");
   const salesRepId = 1;
 
   function getSalesEntriesHandler() {
@@ -16,10 +21,20 @@ function App() {
 
     setCardId("");
     setDate("");
+    setIncomeOrExpense({
+      income: false,
+      expense: false,
+    });
   }
 
   function addSalesEntryHandler() {
-    addSalesEntry(cardId, salesRepId, amount, date)
+    addSalesEntry(
+      cardId,
+      salesRepId,
+      incomeOrExpense.income ? amount : `-${amount}`,
+      date,
+      description ? description : "NIL"
+    )
       .then((res) => {
         console.log(res);
         setSalesEntries([...salesEntries, res]);
@@ -28,7 +43,23 @@ function App() {
     setCardId("");
     setDate("");
     setAmount("");
+    setIncomeOrExpense({
+      income: false,
+      expense: false,
+    });
+    setDescription("");
   }
+
+  function handleIncomeOrExpense(e) {
+    setIncomeOrExpense({
+      ...incomeOrExpense,
+      [e.target.name]: e.target.checked,
+    });
+  }
+
+  let condition = incomeOrExpense.income
+    ? cardId && salesRepId && amount && incomeOrExpense.income
+    : cardId && salesRepId && amount && incomeOrExpense.expense && description;
 
   return (
     <div className="h-screen bg-blue-100">
@@ -52,6 +83,25 @@ function App() {
             setDate(e.target.value.split("/").reverse().join("-"))
           }
         />
+        <label className="px-2">
+          <input
+            type="checkbox"
+            name="income"
+            checked={incomeOrExpense.income}
+            onChange={handleIncomeOrExpense}
+          />{" "}
+          Income
+        </label>
+        <label className="px-2">
+          <input
+            type="checkbox"
+            name="expense"
+            checked={incomeOrExpense.expense}
+            onChange={handleIncomeOrExpense}
+          />{" "}
+          Expense
+        </label>
+
         <label className="block">Amount</label>
         <input
           className="block mb-2"
@@ -59,6 +109,18 @@ function App() {
           value={amount}
           onChange={(e) => setAmount(e.target.value)}
         />
+        {incomeOrExpense.expense ? (
+          <>
+            <label className="block">Description</label>
+            <input
+              className="block mb-2"
+              type="text"
+              value={description}
+              onChange={(e) => setDescription(e.target.value)}
+            />
+          </>
+        ) : null}
+
         <button
           onClick={getSalesEntriesHandler}
           className="min-w-full bg-purple-300 text-purple-600 font-normal hover:bg-purple-200 duration-100 hover:text-purple-800 rounded-md px-2 py-1 shadow-2xl"
@@ -68,10 +130,11 @@ function App() {
 
         <button
           onClick={addSalesEntryHandler}
+          disabled={condition ? false : true}
           className={
-            cardId && salesRepId && amount
+            condition
               ? "block my-2 min-w-full bg-purple-300 text-purple-600 font-normal hover:bg-purple-200 duration-100 hover:text-purple-800 rounded-md px-2 py-1 shadow-2xl"
-              : "opacity-40 block my-2 min-w-full bg-purple-300 text-purple-600 font-normal rounded-md px-2 py-1 shadow-2xl"
+              : "cursor-not-allowed opacity-40 block my-2 min-w-full bg-purple-300 text-purple-600 font-normal rounded-md px-2 py-1 shadow-2xl"
           }
         >
           Add Sales Entry
