@@ -24,7 +24,6 @@ const Sale = ({ sale, setSalesEntries, salesEntries }) => {
   });
 
   function updateSalesEntryHandler(id) {
-    console.log(id, editData);
     const { date, amount_paid, description } = editDataState;
     const newState = [...salesEntries].map((item) => {
       if (item.id === id && date && amount_paid && description) {
@@ -37,11 +36,51 @@ const Sale = ({ sale, setSalesEntries, salesEntries }) => {
           description: editData.description,
         }).then((result) => console.log(result));
         console.log("FE: inside both");
+      } else if (item.id === id && date && amount_paid) {
+        item.date = editData.date;
+        item.amount_paid = editData.amount_paid;
+        if (parseFloat(editData.amount_paid) > 0) {
+          item.description = "NIL";
+        } else {
+          item.description = editData.description;
+        }
+        updateSalesEntry(id, {
+          date: editData.date,
+          amount_paid: editData.amount_paid,
+          description: item.description,
+        }).then((result) => console.log(result));
+        console.log("FE: inside both");
+      } else if (item.id === id && amount_paid && description) {
+        item.amount_paid = editData.amount_paid;
+        if (parseFloat(editData.amount_paid) > 0) {
+          item.description = "NIL";
+        } else {
+          item.description = editData.description;
+        }
+        updateSalesEntry(id, {
+          amount_paid: editData.amount_paid,
+          description: item.description,
+        }).then((result) => console.log(result));
+        console.log("FE: inside both");
+      } else if (item.id === id && date && description) {
+        item.date = editData.date;
+        item.description = editData.description;
+        updateSalesEntry(id, {
+          date: editData.date,
+          description: editData.description,
+        }).then((result) => console.log(result));
+        console.log("FE: inside both");
       } else if (item.id === id && amount_paid) {
         item.amount_paid = editData.amount_paid;
-        updateSalesEntry(id, { amount_paid: editData.amount_paid }).then(
-          (result) => console.log(result)
-        );
+        if (parseFloat(editData.amount_paid) > 0) {
+          item.description = "NIL";
+        } else {
+          item.description = editData.description;
+        }
+        updateSalesEntry(id, {
+          amount_paid: editData.amount_paid,
+          description: item.description,
+        }).then((result) => console.log(result));
         console.log("FE: inside amount");
       } else if (item.id === id && date) {
         item.date = editData.date;
@@ -64,10 +103,10 @@ const Sale = ({ sale, setSalesEntries, salesEntries }) => {
       date: false,
       description: false,
     });
-    setEditIncomeOrExpense({
-      income: false,
-      expense: false,
-    });
+    // setEditIncomeOrExpense({
+    //   income: false,
+    //   expense: false,
+    // });
     setSalesEntries(newState);
     setEditState(false);
   }
