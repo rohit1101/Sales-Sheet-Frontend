@@ -6,7 +6,13 @@ const Sale = ({ sale, setSalesEntries, salesEntries }) => {
   const [editDataState, setEditDataState] = useState({
     date: false,
     amount_paid: false,
+    description: false,
   });
+  const [editIncomeOrExpense, setEditIncomeOrExpense] = useState({
+    income: parseFloat(sale.amount_paid) > 0 ? true : false,
+    expense: parseFloat(sale.amount_paid) < 0 ? true : false,
+  });
+
   const [editData, setEditData] = useState({
     date: new Date(sale.date)
       .toLocaleDateString()
@@ -14,30 +20,41 @@ const Sale = ({ sale, setSalesEntries, salesEntries }) => {
       .reverse()
       .join("-"),
     amount_paid: sale.amount_paid,
+    description: sale.description,
   });
 
   function updateSalesEntryHandler(id) {
+    console.log(id, editData);
+    const { date, amount_paid, description } = editDataState;
     const newState = [...salesEntries].map((item) => {
-      if (item.id === id && editDataState.date && editDataState.amount_paid) {
+      if (item.id === id && date && amount_paid && description) {
         item.date = editData.date;
         item.amount_paid = editData.amount_paid;
+        item.description = editData.description;
         updateSalesEntry(id, {
           date: editData.date,
           amount_paid: editData.amount_paid,
+          description: editData.description,
         }).then((result) => console.log(result));
         console.log("FE: inside both");
-      } else if (item.id === id && editDataState.amount_paid) {
+      } else if (item.id === id && amount_paid) {
         item.amount_paid = editData.amount_paid;
         updateSalesEntry(id, { amount_paid: editData.amount_paid }).then(
           (result) => console.log(result)
         );
         console.log("FE: inside amount");
-      } else if (item.id === id && editDataState.date) {
+      } else if (item.id === id && date) {
         item.date = editData.date;
         updateSalesEntry(id, { date: editData.date }).then((result) =>
           console.log(result)
         );
         console.log("FE: inside date");
+      } else if (item.id === id && description) {
+        item.description = editData.description;
+        updateSalesEntry(id, { description: editData.description }).then(
+          (result) => console.log(result)
+        );
+        console.log("FE: inside description");
       }
       return item;
     });
@@ -45,6 +62,11 @@ const Sale = ({ sale, setSalesEntries, salesEntries }) => {
     setEditDataState({
       amount_paid: false,
       date: false,
+      description: false,
+    });
+    setEditIncomeOrExpense({
+      income: false,
+      expense: false,
     });
     setSalesEntries(newState);
     setEditState(false);
@@ -55,6 +77,13 @@ const Sale = ({ sale, setSalesEntries, salesEntries }) => {
     deleteSalesEntry(id).then((result) => console.log(result));
     const newState = [...salesEntries].filter((item) => item.id !== id);
     setSalesEntries(newState);
+  }
+
+  function handleEditIncomeOrExpense(e) {
+    setEditIncomeOrExpense({
+      ...editIncomeOrExpense,
+      [e.target.name]: e.target.checked,
+    });
   }
 
   return (
@@ -77,6 +106,26 @@ const Sale = ({ sale, setSalesEntries, salesEntries }) => {
               });
             }}
           />
+          <div className="block my-2"></div>
+          <label className="px-2 ">
+            <input
+              type="checkbox"
+              name="income"
+              checked={editIncomeOrExpense.income}
+              onChange={handleEditIncomeOrExpense}
+            />{" "}
+            Income
+          </label>
+          <label className="px-2">
+            <input
+              type="checkbox"
+              name="expense"
+              checked={editIncomeOrExpense.expense}
+              onChange={handleEditIncomeOrExpense}
+            />{" "}
+            Expense
+          </label>
+
           <label className="block">Amount</label>
           <input
             type="text"
@@ -93,12 +142,34 @@ const Sale = ({ sale, setSalesEntries, salesEntries }) => {
               });
             }}
           />
+          {editIncomeOrExpense.expense ? (
+            <>
+              <label className="block">Description</label>
+              <input
+                className="block mb-2"
+                type="text"
+                value={editData.description}
+                onChange={(e) => {
+                  setEditData({ ...editData, description: e.target.value });
+                  setEditDataState({
+                    ...editDataState,
+                    description: true,
+                  });
+                }}
+              />
+            </>
+          ) : null}
           <button
             onClick={() => {
               setEditState(false);
               setEditDataState({
                 amount_paid: false,
                 date: false,
+                description: false,
+              });
+              setEditIncomeOrExpense({
+                income: false,
+                expense: false,
               });
             }}
             className="block my-2 min-w-full bg-purple-300 text-purple-600 font-normal hover:bg-purple-200 duration-100 hover:text-purple-800 rounded-md px-2 py-1 shadow-2xl"
@@ -110,7 +181,9 @@ const Sale = ({ sale, setSalesEntries, salesEntries }) => {
               updateSalesEntryHandler(sale.id);
             }}
             className={
-              editDataState.date || editDataState.amount_paid
+              editDataState.date ||
+              editDataState.amount_paid ||
+              editDataState.description
                 ? "block my-2 min-w-full bg-purple-300 text-purple-600 font-normal hover:bg-purple-200 duration-100 hover:text-purple-800 rounded-md px-2 py-1 shadow-2xl"
                 : "opacity-40 block my-2 min-w-full bg-purple-300 text-purple-600 font-normal rounded-md px-2 py-1 shadow-2xl"
             }
