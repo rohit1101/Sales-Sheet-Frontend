@@ -10,7 +10,6 @@ const SalesTable = ({ sales, setSalesEntries, salesEntries }) => {
           <thead>
             <tr>
               <th className="border border-green-600">Card ID</th>
-              <th className="border border-green-600">Sales Rep ID</th>
               <th className="border border-green-600">Date</th>
               <th className="border border-green-600">Amount</th>
               <th className="border border-green-600">Delete</th>

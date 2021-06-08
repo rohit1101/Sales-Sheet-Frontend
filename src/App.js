@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import SalesTable from "./Components/DisplaySales/SalesTable";
-import { getSalesEntries, addSalesEntry } from "./services/api";
+import { getSalesEntries, addSalesEntry, filterSales } from "./services/api";
 
 function App() {
   const [salesEntries, setSalesEntries] = useState([]);
@@ -12,6 +12,7 @@ function App() {
     expense: false,
   });
   const [description, setDescription] = useState("");
+  const [filterBy, setFilterBy] = useState("");
   const salesRepId = 1;
 
   function getSalesEntriesHandler() {
@@ -55,6 +56,16 @@ function App() {
       ...incomeOrExpense,
       [e.target.name]: e.target.checked,
     });
+  }
+
+  function handleFilterRequest(filterValue) {
+    filterSales(filterValue);
+    // setFilterBy("");
+  }
+
+  function handleFilterChange(e) {
+    setFilterBy(e.target.value);
+    handleFilterRequest(e.target.value);
   }
 
   let condition = incomeOrExpense.income
@@ -139,6 +150,14 @@ function App() {
         >
           Add Sales Entry
         </button>
+        <label className="block">
+          <span className="block">Filter Sales</span>
+          <select value={filterBy} onChange={handleFilterChange}>
+            <option value="Choose Filter">Choose Filter</option>
+            <option value="date">Filter by day</option>
+            <option value="card_id">Filter by card ID</option>
+          </select>
+        </label>
 
         <SalesTable
           sales={salesEntries}
