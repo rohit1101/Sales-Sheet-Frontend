@@ -90,9 +90,19 @@ export function deleteSalesEntry(id) {
 
 export function filterSales(val) {
   console.log(val);
-  let url = new URL(`http://127.0.0.1:3000/filter?by=${val}`);
-  return fetch(url)
-    .then((result) => result.json())
-    .then((res) => res)
-    .catch((e) => console.log("ERROR while filtering sales FE:", e));
+  if (typeof val === "object") {
+    let url = new URL(
+      `http://127.0.0.1:3000/filter?start=${val.startDate}&end=${val.endDate}`
+    );
+    return fetch(url)
+      .then((result) => result.json())
+      .then((res) => res)
+      .catch((e) => console.log("ERROR while filtering sales FE:", e));
+  } else {
+    let url = new URL(`http://127.0.0.1:3000/filter?by=${val}`);
+    return fetch(url)
+      .then((result) => result.json())
+      .then((res) => res)
+      .catch((e) => console.log("ERROR while filtering sales FE:", e));
+  }
 }

@@ -13,6 +13,11 @@ function App() {
   });
   const [description, setDescription] = useState("");
   const [filterBy, setFilterBy] = useState("");
+  const [filterData, setFilterData] = useState([]);
+  const [dateFilter, setDateFilter] = useState({
+    startDate: "",
+    endDate: "",
+  });
   const salesRepId = 1;
 
   function getSalesEntriesHandler() {
@@ -59,13 +64,24 @@ function App() {
   }
 
   function handleFilterRequest(filterValue) {
-    filterSales(filterValue);
-    // setFilterBy("");
+    if (typeof filterValue === "object") {
+      filterSales(filterValue)
+        .then((res) => setFilterData(res))
+        .catch((e) => console.log("Error e", e));
+    } else {
+      filterSales(filterValue)
+        .then((res) => setFilterData(res))
+        .catch((e) => console.log("Error e", e));
+    }
   }
 
   function handleFilterChange(e) {
-    setFilterBy(e.target.value);
-    handleFilterRequest(e.target.value);
+    if (e.target.value === "date" || e.target.value === "card_id") {
+      setFilterBy(e.target.value);
+      handleFilterRequest(e.target.value);
+    } else if (e.target.value === "date_range") {
+      setFilterBy(e.target.value);
+    }
   }
 
   let condition = incomeOrExpense.income
@@ -156,8 +172,52 @@ function App() {
             <option value="Choose Filter">Choose Filter</option>
             <option value="date">Filter by day</option>
             <option value="card_id">Filter by card ID</option>
+            <option value="date_range">Filter by date range</option>
           </select>
         </label>
+        {filterBy === "date_range" ? (
+          <>
+            <label className="block">Start Date</label>
+            <input
+              className="block mb-2"
+              type="date"
+              value={date}
+              name="startDate"
+              onChange={(e) =>
+                setDateFilter({
+                  ...dateFilter,
+                  [e.target.name]: e.target.value,
+                })
+              }
+            />
+            <label className="block">End Date</label>
+            <input
+              className="block mb-2"
+              type="date"
+              value={date}
+              name="endDate"
+              onChange={(e) =>
+                setDateFilter({
+                  ...dateFilter,
+                  [e.target.name]: e.target.value,
+                })
+              }
+            />
+            <button
+              onClick={() => {
+                if (Object.values(dateFilter).length === 2) {
+                  handleFilterRequest(dateFilter);
+                  setDateFilter({
+                    startDate: "",
+                    endDate: "",
+                  });
+                }
+              }}
+            >
+              Submit
+            </button>
+          </>
+        ) : null}
 
         <SalesTable
           sales={salesEntries}
