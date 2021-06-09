@@ -1,5 +1,7 @@
 import React, { useState } from "react";
 import SalesTable from "./Components/DisplaySales/SalesTable";
+import FilterByCardId from "./Components/FilterSales/FilterByCardId";
+import FilterByDate from "./Components/FilterSales/FilterByDate";
 import { getSalesEntries, addSalesEntry, filterSales } from "./services/api";
 
 function App() {
@@ -87,6 +89,8 @@ function App() {
   let condition = incomeOrExpense.income
     ? cardId && salesRepId && amount && incomeOrExpense.income
     : cardId && salesRepId && amount && incomeOrExpense.expense && description;
+
+  console.log(filterData);
 
   return (
     <div className="h-screen bg-blue-100">
@@ -204,6 +208,7 @@ function App() {
               }
             />
             <button
+              className="block p-2 bg-yellow-100 text-yellow-600  rounded-md px-2 py-1 shadow-2xl"
               onClick={() => {
                 if (Object.values(dateFilter).length === 2) {
                   handleFilterRequest(dateFilter);
@@ -219,6 +224,13 @@ function App() {
           </>
         ) : null}
 
+        {filterBy === "date" ? <FilterByDate filterData={filterData} /> : null}
+        {filterBy === "card_id" ? (
+          <FilterByCardId filterData={filterData} />
+        ) : null}
+        {filterBy === "date_range" ? (
+          <FilterByCardId filterData={filterData} />
+        ) : null}
         <SalesTable
           sales={salesEntries}
           salesEntries={salesEntries}
