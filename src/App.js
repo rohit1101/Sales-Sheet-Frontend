@@ -188,7 +188,7 @@ function App() {
             <input
               className="block mb-2"
               type="date"
-              value={date}
+              value={dateFilter.startDate}
               name="startDate"
               onChange={(e) =>
                 setDateFilter({
@@ -201,7 +201,7 @@ function App() {
             <input
               className="block mb-2"
               type="date"
-              value={date}
+              value={dateFilter.endDate}
               name="endDate"
               onChange={(e) =>
                 setDateFilter({
