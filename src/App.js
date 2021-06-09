@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import SalesTable from "./Components/DisplaySales/SalesTable";
 import FilterByCardId from "./Components/FilterSales/FilterByCardId";
 import FilterByDate from "./Components/FilterSales/FilterByDate";
+import FilterByDateRange from "./Components/FilterSales/FilterByDateRange";
 import { getSalesEntries, addSalesEntry, filterSales } from "./services/api";
 
 function App() {
@@ -90,10 +91,8 @@ function App() {
     ? cardId && salesRepId && amount && incomeOrExpense.income
     : cardId && salesRepId && amount && incomeOrExpense.expense && description;
 
-  console.log(filterData);
-
   return (
-    <div className="h-screen bg-blue-100">
+    <div className="h-full bg-blue-100">
       <div className="w-full max-w-screen-md mx-auto rounded-sm shadow-xl h-full">
         <h1 className="font-sans text-2xl font-medium text-gray-500 text-center">
           Sales Summary
@@ -228,8 +227,8 @@ function App() {
         {filterBy === "card_id" ? (
           <FilterByCardId filterData={filterData} />
         ) : null}
-        {filterBy === "date_range" ? (
-          <FilterByCardId filterData={filterData} />
+        {filterBy === "date_range" && Object.values(dateFilter).length === 2 ? (
+          <FilterByDateRange filterData={filterData} />
         ) : null}
         <SalesTable
           sales={salesEntries}

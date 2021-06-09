@@ -7,7 +7,7 @@ const FilterByDate = ({ filterData }) => {
         <thead className="bg-gray-300">
           <tr>
             <th>Date</th>
-            <th>Total Sales</th>
+            <th>Total Sales (in Rs.)</th>
           </tr>
         </thead>
         <tbody>
