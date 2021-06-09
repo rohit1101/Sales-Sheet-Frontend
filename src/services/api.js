@@ -89,7 +89,6 @@ export function deleteSalesEntry(id) {
 }
 
 export function filterSales(val) {
-  console.log(val);
   if (typeof val === "object") {
     let url = new URL(
       `http://127.0.0.1:3000/filter?start=${val.startDate}&end=${val.endDate}`

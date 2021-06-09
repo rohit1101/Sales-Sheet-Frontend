@@ -84,6 +84,8 @@ function App() {
       handleFilterRequest(e.target.value);
     } else if (e.target.value === "date_range") {
       setFilterBy(e.target.value);
+    } else if (e.target.value === "Choose Filter") {
+      setFilterBy(e.target.value);
     }
   }
 
@@ -172,7 +174,9 @@ function App() {
         <label className="block">
           <span className="block">Filter Sales</span>
           <select value={filterBy} onChange={handleFilterChange}>
-            <option value="Choose Filter">Choose Filter</option>
+            <option value="Choose Filter" name="Choose Filter">
+              Choose Filter
+            </option>
             <option value="date">Filter by day</option>
             <option value="card_id">Filter by card ID</option>
             <option value="date_range">Filter by date range</option>
