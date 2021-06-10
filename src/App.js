@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { useForm } from "react-hook-form";
 import SalesTable from "./Components/DisplaySales/SalesTable";
 import FilterByCardId from "./Components/FilterSales/FilterByCardId";
 import FilterByDate from "./Components/FilterSales/FilterByDate";
@@ -6,6 +7,14 @@ import FilterByDateRange from "./Components/FilterSales/FilterByDateRange";
 import { getSalesEntries, addSalesEntry, filterSales } from "./services/api";
 
 function App() {
+  const {
+    register,
+    handleSubmit,
+    setValue,
+    watch,
+    formState: { errors },
+  } = useForm();
+  const watchRadio = watch("sales");
   const [salesEntries, setSalesEntries] = useState([]);
   const [cardId, setCardId] = useState();
   const [date, setDate] = useState();
@@ -93,54 +102,119 @@ function App() {
     ? cardId && salesRepId && amount && incomeOrExpense.income
     : cardId && salesRepId && amount && incomeOrExpense.expense && description;
 
+  const onSubmit = (data, e) => {
+    // const addSalesBody = { ...data };
+    const { card_id, amount_paid, description, date, sales } = data;
+    addSalesEntry(
+      card_id,
+      salesRepId,
+      sales === "income" ? amount_paid : -amount_paid,
+      date,
+      description ? description : "NIL"
+    )
+      .then((res) => {
+        console.log(res);
+        setSalesEntries([...salesEntries, res]);
+      })
+      .catch((error) => console.log("From App.js METHOD = POST", error));
+    setValue("sales", "");
+    e.target.reset();
+    console.log(data);
+  };
+
+  console.log(errors);
+
   return (
     <div className="h-full bg-blue-100">
       <div className="w-full max-w-screen-md mx-auto rounded-sm shadow-xl h-full">
         <h1 className="font-sans text-2xl font-medium text-gray-500 text-center">
           Sales Summary
         </h1>
-
-        <label className="block">Card Id</label>
-        <input
-          type="text"
-          value={cardId}
-          onChange={(e) => setCardId(e.target.value)}
-        />
-        <label className="block">Date</label>
-        <input
-          className="block mb-2"
-          type="date"
-          value={date}
-          onChange={(e) =>
-            setDate(e.target.value.split("/").reverse().join("-"))
-          }
-        />
-        <label className="px-2">
+        <form onSubmit={handleSubmit(onSubmit)}>
+          <label className="block">Card Number</label>
           <input
-            type="checkbox"
-            name="income"
-            checked={incomeOrExpense.income}
-            onChange={handleIncomeOrExpense}
-          />{" "}
-          Income
-        </label>
-        <label className="px-2">
+            type="number"
+            {...register("card_id", {
+              valueAsNumber: true,
+              required: "This field is required!",
+            })}
+            placeholder="Card Number"
+          />
+          {errors.card_id && <p>{errors.card_id.message}</p>}
+          <label className="block">Date</label>
           <input
-            type="checkbox"
-            name="expense"
-            checked={incomeOrExpense.expense}
-            onChange={handleIncomeOrExpense}
-          />{" "}
-          Expense
-        </label>
+            className="block mb-2"
+            type="date"
+            {...register("date", {
+              value: new Date()
+                .toLocaleDateString()
+                .split("/")
+                .reverse()
+                .join("-"),
+              // valueAsDate: true,
+            })}
+          />
 
-        <label className="block">Amount</label>
-        <input
-          className="block mb-2"
-          type="number"
-          value={amount}
-          onChange={(e) => setAmount(e.target.value)}
-        />
+          <label className="px-2">
+            <input
+              {...register("sales", {
+                required: "Choose any one type",
+              })}
+              type="radio"
+              id="income"
+              value="income" // checked={incomeOrExpense.income}
+            />{" "}
+            Income
+          </label>
+
+          <label className="px-2">
+            <input
+              {...register("sales", {
+                required: "Choose any one type",
+              })}
+              type="radio"
+              id="expense"
+              value="expense"
+
+              // checked={incomeOrExpense.expense}
+              // onChange={handleIncomeOrExpense}
+            />{" "}
+            Expense
+          </label>
+          {errors.sales && <p>{errors.sales.message}</p>}
+          <label className="block">Amount</label>
+          <input
+            className="block mb-2"
+            type="number"
+            {...register("amount_paid", {
+              required: "This field is required!",
+              valueAsNumber: true,
+            })}
+            // onChange={(e) => setAmount(e.target.value)}
+          />
+          {errors.amount_paid && <p>{errors.amount_paid.message}</p>}
+
+          {watchRadio === "expense" ? (
+            <>
+              <label className="block">Description</label>
+              <input
+                className="block mb-2"
+                {...register("description", {
+                  required: "This field is required!",
+                })}
+                // onChange={(e) => setAmount(e.target.value)}
+              />
+              {errors.description && <p>{errors.description.message}</p>}
+            </>
+          ) : null}
+
+          <input
+            // disabled={!Object.keys(errors).length > 0 ? true : false}
+            type="submit"
+            className="block my-2 min-w-full bg-purple-300 text-purple-600 font-normal hover:bg-purple-200 duration-100 hover:text-purple-800 rounded-md px-2 py-1 shadow-2xl"
+          />
+        </form>
+
         {incomeOrExpense.expense ? (
           <>
             <label className="block">Description</label>
@@ -160,7 +234,7 @@ function App() {
           {cardId || date ? "Get Sales Summary" : "Get All Sales Summary"}
         </button>
 
-        <button
+        {/* <button
           onClick={addSalesEntryHandler}
           disabled={condition ? false : true}
           className={
@@ -170,7 +244,7 @@ function App() {
           }
         >
           Add Sales Entry
-        </button>
+        </button> */}
         <label className="block">
           <span className="block">Filter Sales</span>
           <select value={filterBy} onChange={handleFilterChange}>
