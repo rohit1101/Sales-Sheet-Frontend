@@ -27,8 +27,15 @@ const Sale = ({ sale, setSalesEntries, salesEntries }) => {
   const {
     register,
     watch,
-    formState: { errors },
-  } = useForm();
+    reset,
+    formState: { errors, dirtyFields },
+  } = useForm({
+    defaultValues: {
+      sales: parseFloat(sale.amount_paid) < 0 ? "expense" : "income",
+      amount_paid: parseFloat(sale.amount_paid),
+      description: parseFloat(sale.amount_paid) < 0 ? sale.description : "NIL",
+    },
+  });
   const watchRadio = watch("sales");
 
   function updateSalesEntryHandler(id) {
@@ -133,6 +140,15 @@ const Sale = ({ sale, setSalesEntries, salesEntries }) => {
     });
   }
 
+  let condition =
+    watchRadio === "income"
+      ? Object.keys(dirtyFields).length === 2
+        ? false
+        : true
+      : Object.keys(dirtyFields).length === 3
+      ? false
+      : true;
+  console.log(errors, dirtyFields, condition);
   return (
     <>
       {editState ? (
@@ -142,12 +158,11 @@ const Sale = ({ sale, setSalesEntries, salesEntries }) => {
             className="block mb-2"
             type="date"
             {...register("date", {
-              value: new Date()
+              value: new Date(sale.date)
                 .toLocaleDateString()
                 .split("/")
                 .reverse()
                 .join("-"),
-              // valueAsDate: true,
             })}
           />
 
@@ -206,16 +221,17 @@ const Sale = ({ sale, setSalesEntries, salesEntries }) => {
 
           <button
             onClick={() => {
+              reset();
               setEditState(false);
-              setEditDataState({
-                amount_paid: false,
-                date: false,
-                description: false,
-              });
-              setEditIncomeOrExpense({
-                income: false,
-                expense: false,
-              });
+              // setEditDataState({
+              //   amount_paid: false,
+              //   date: false,
+              //   description: false,
+              // });
+              // setEditIncomeOrExpense({
+              //   income: false,
+              //   expense: false,
+              // });
             }}
             className="block my-2 min-w-full bg-purple-300 text-purple-600 font-normal hover:bg-purple-200 duration-100 hover:text-purple-800 rounded-md px-2 py-1 shadow-2xl"
           >
@@ -223,15 +239,14 @@ const Sale = ({ sale, setSalesEntries, salesEntries }) => {
           </button>
 
           <button
+            disabled={condition}
             onClick={() => {
               updateSalesEntryHandler(sale.id);
             }}
             className={
-              editDataState.date ||
-              editDataState.amount_paid ||
-              editDataState.description
-                ? "block my-2 min-w-full bg-purple-300 text-purple-600 font-normal hover:bg-purple-200 duration-100 hover:text-purple-800 rounded-md px-2 py-1 shadow-2xl"
-                : "opacity-40 block my-2 min-w-full bg-purple-300 text-purple-600 font-normal rounded-md px-2 py-1 shadow-2xl"
+              condition
+                ? "cursor-not-allowed opacity-40 block my-2 min-w-full bg-purple-300 text-purple-600 font-normal rounded-md px-2 py-1 shadow-2xl"
+                : "block my-2 min-w-full bg-purple-300 text-purple-600 font-normal hover:bg-purple-200 duration-100 hover:text-purple-800 rounded-md px-2 py-1 shadow-2xl"
             }
           >
             Save Changes
