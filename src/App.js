@@ -12,7 +12,8 @@ function App() {
     handleSubmit,
     setValue,
     watch,
-    formState: { errors },
+    reset,
+    formState: { errors, dirtyFields },
   } = useForm();
   const watchRadio = watch("sales");
   const [salesEntries, setSalesEntries] = useState([]);
@@ -98,12 +99,8 @@ function App() {
     }
   }
 
-  let condition = incomeOrExpense.income
-    ? cardId && salesRepId && amount && incomeOrExpense.income
-    : cardId && salesRepId && amount && incomeOrExpense.expense && description;
-
   const onSubmit = (data, e) => {
-    // const addSalesBody = { ...data };
+    console.log(data);
     const { card_id, amount_paid, description, date, sales } = data;
     addSalesEntry(
       card_id,
@@ -113,16 +110,23 @@ function App() {
       description ? description : "NIL"
     )
       .then((res) => {
-        console.log(res);
         setSalesEntries([...salesEntries, res]);
       })
       .catch((error) => console.log("From App.js METHOD = POST", error));
     setValue("sales", "");
-    e.target.reset();
-    console.log(data);
+    reset();
   };
 
-  console.log(errors);
+  let condition =
+    watchRadio === "income"
+      ? Object.keys(dirtyFields).length === 3
+        ? false
+        : true
+      : Object.keys(dirtyFields).length === 4
+      ? false
+      : true;
+
+  console.log(errors, dirtyFields, condition);
 
   return (
     <div className="h-full bg-blue-100">
@@ -209,9 +213,13 @@ function App() {
           ) : null}
 
           <input
-            // disabled={!Object.keys(errors).length > 0 ? true : false}
+            disabled={condition}
             type="submit"
-            className="block my-2 min-w-full bg-purple-300 text-purple-600 font-normal hover:bg-purple-200 duration-100 hover:text-purple-800 rounded-md px-2 py-1 shadow-2xl"
+            className={
+              condition
+                ? "cursor-not-allowed opacity-40 block my-2 min-w-full bg-purple-300 text-purple-600 font-normal rounded-md px-2 py-1 shadow-2xl"
+                : "block my-2 min-w-full bg-purple-300 text-purple-600 font-normal hover:bg-purple-200 duration-100 hover:text-purple-800 rounded-md px-2 py-1 shadow-2xl"
+            }
           />
         </form>
 

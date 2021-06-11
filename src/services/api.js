@@ -49,7 +49,7 @@ export function addSalesEntry(
   })
     .then((data) => data.json())
     .then((res) => {
-      console.log(res);
+      // console.log(res);
       return res;
     })
     .catch((e) => console.log("Error:", e));

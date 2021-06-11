@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useForm } from "react-hook-form";
 import { deleteSalesEntry, updateSalesEntry } from "../../services/api";
 
 const Sale = ({ sale, setSalesEntries, salesEntries }) => {
@@ -22,6 +23,13 @@ const Sale = ({ sale, setSalesEntries, salesEntries }) => {
     amount_paid: sale.amount_paid,
     description: sale.description,
   });
+
+  const {
+    register,
+    watch,
+    formState: { errors },
+  } = useForm();
+  const watchRadio = watch("sales");
 
   function updateSalesEntryHandler(id) {
     const { date, amount_paid, description } = editDataState;
@@ -129,75 +137,73 @@ const Sale = ({ sale, setSalesEntries, salesEntries }) => {
     <>
       {editState ? (
         <>
-          <label className="block">date</label>
+          <label className="block">Date</label>
           <input
+            className="block mb-2"
             type="date"
-            value={editData.date}
-            onChange={(e) => {
-              setEditDataState({
-                ...editDataState,
-                date: true,
-              });
-              const newDate = e.target.value.split("/").reverse().join("-");
-              setEditData({
-                ...editData,
-                date: newDate,
-              });
-            }}
+            {...register("date", {
+              value: new Date()
+                .toLocaleDateString()
+                .split("/")
+                .reverse()
+                .join("-"),
+              // valueAsDate: true,
+            })}
           />
-          <div className="block my-2"></div>
-          <label className="px-2 ">
+
+          <label className="px-2">
             <input
-              type="checkbox"
-              name="income"
-              checked={editIncomeOrExpense.income}
-              onChange={handleEditIncomeOrExpense}
+              {...register("sales", {
+                required: "Choose any one type",
+              })}
+              type="radio"
+              id="income"
+              value="income" // checked={incomeOrExpense.income}
             />{" "}
             Income
           </label>
+
           <label className="px-2">
             <input
-              type="checkbox"
-              name="expense"
-              checked={editIncomeOrExpense.expense}
-              onChange={handleEditIncomeOrExpense}
+              {...register("sales", {
+                required: "Choose any one type",
+              })}
+              type="radio"
+              id="expense"
+              value="expense"
+
+              // checked={incomeOrExpense.expense}
+              // onChange={handleIncomeOrExpense}
             />{" "}
             Expense
           </label>
-
+          {errors.sales && <p>{errors.sales.message}</p>}
           <label className="block">Amount</label>
           <input
-            type="text"
-            value={editData.amount_paid}
-            onChange={(e) => {
-              setEditDataState({
-                ...editDataState,
-                amount_paid: true,
-              });
-              const newAmount = e.target.value;
-              setEditData({
-                ...editData,
-                amount_paid: newAmount,
-              });
-            }}
+            className="block mb-2"
+            type="number"
+            {...register("amount_paid", {
+              required: "This field is required!",
+              valueAsNumber: true,
+            })}
+            // onChange={(e) => setAmount(e.target.value)}
           />
-          {editIncomeOrExpense.expense ? (
+          {errors.amount_paid && <p>{errors.amount_paid.message}</p>}
+
+          {watchRadio === "expense" ? (
             <>
               <label className="block">Description</label>
               <input
                 className="block mb-2"
-                type="text"
-                value={editData.description}
-                onChange={(e) => {
-                  setEditData({ ...editData, description: e.target.value });
-                  setEditDataState({
-                    ...editDataState,
-                    description: true,
-                  });
-                }}
+                {...register("description", {
+                  required: "This field is required!",
+                })}
+                // onChange={(e) => setAmount(e.target.value)}
               />
+              {errors.description && <p>{errors.description.message}</p>}
             </>
           ) : null}
+
           <button
             onClick={() => {
               setEditState(false);
@@ -215,6 +221,7 @@ const Sale = ({ sale, setSalesEntries, salesEntries }) => {
           >
             Cancel
           </button>
+
           <button
             onClick={() => {
               updateSalesEntryHandler(sale.id);
