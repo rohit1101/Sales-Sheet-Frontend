@@ -96,8 +96,6 @@ function App() {
       ? false
       : true;
 
-  console.log(errors, dirtyFields, condition);
-
   return (
     <div className="h-full bg-blue-100">
       <div className="w-full max-w-screen-md mx-auto rounded-sm shadow-xl h-full">

@@ -4,25 +4,6 @@ import { deleteSalesEntry, updateSalesEntry } from "../../services/api";
 
 const Sale = ({ sale, setSalesEntries, salesEntries }) => {
   const [editState, setEditState] = useState(false);
-  // const [editDataState, setEditDataState] = useState({
-  //   date: false,
-  //   amount_paid: false,
-  //   description: false,
-  // });
-  // const [editIncomeOrExpense, setEditIncomeOrExpense] = useState({
-  //   income: parseFloat(sale.amount_paid) > 0 ? true : false,
-  //   expense: parseFloat(sale.amount_paid) < 0 ? true : false,
-  // });
-
-  // const [editData, setEditData] = useState({
-  //   date: new Date(sale.date)
-  //     .toLocaleDateString()
-  //     .split("/")
-  //     .reverse()
-  //     .join("-"),
-  //   amount_paid: sale.amount_paid,
-  //   description: sale.description,
-  // });
 
   const {
     register,
@@ -43,8 +24,8 @@ const Sale = ({ sale, setSalesEntries, salesEntries }) => {
   function updateSalesEntryHandler(id) {
     const editFormData = getValues();
     console.log(editFormData);
-    const { date, amount_paid, description } = editFormData;
-
+    const { date, amount_paid, description, sales } = editFormData;
+    // const amt = sales === "income" ? amount_paid : -amount_paid;
     const newState = [...salesEntries].map((item) => {
       if (
         item.id === id &&
@@ -53,11 +34,15 @@ const Sale = ({ sale, setSalesEntries, salesEntries }) => {
         dirtyFields.description
       ) {
         item.date = date;
-        item.amount_paid = amount_paid;
-        item.description = description;
+        item.amount_paid = sales === "income" ? amount_paid : -amount_paid;
+        if (parseFloat(amount_paid) > 0) {
+          item.description = "NIL";
+        } else {
+          item.description = description;
+        }
         updateSalesEntry(id, {
           date: date,
-          amount_paid: amount_paid,
+          amount_paid: item.amount_paid,
           description: description,
         }).then((result) => console.log(result));
         console.log("FE: inside both");
@@ -67,7 +52,7 @@ const Sale = ({ sale, setSalesEntries, salesEntries }) => {
         dirtyFields.amount_paid
       ) {
         item.date = date;
-        item.amount_paid = amount_paid;
+        item.amount_paid = sales === "income" ? amount_paid : -amount_paid;
         if (parseFloat(amount_paid) > 0) {
           item.description = "NIL";
         } else {
@@ -75,7 +60,7 @@ const Sale = ({ sale, setSalesEntries, salesEntries }) => {
         }
         updateSalesEntry(id, {
           date: date,
-          amount_paid: amount_paid,
+          amount_paid: item.amount_paid,
           description: item.description,
         }).then((result) => console.log(result));
         console.log("FE: inside both");
@@ -84,14 +69,14 @@ const Sale = ({ sale, setSalesEntries, salesEntries }) => {
         dirtyFields.amount_paid &&
         dirtyFields.description
       ) {
-        item.amount_paid = amount_paid;
+        item.amount_paid = sales === "income" ? -amount_paid : amount_paid;
         if (parseFloat(amount_paid) > 0) {
           item.description = "NIL";
         } else {
           item.description = description;
         }
         updateSalesEntry(id, {
-          amount_paid: amount_paid,
+          amount_paid: item.amount_paid,
           description: item.description,
         }).then((result) => console.log(result));
         console.log("FE: inside both");
@@ -108,14 +93,14 @@ const Sale = ({ sale, setSalesEntries, salesEntries }) => {
         }).then((result) => console.log(result));
         console.log("FE: inside both");
       } else if (item.id === id && dirtyFields.amount_paid) {
-        item.amount_paid = amount_paid;
+        item.amount_paid = sales === "income" ? amount_paid : -amount_paid;
         if (parseFloat(amount_paid) > 0) {
           item.description = "NIL";
         } else {
           item.description = description;
         }
         updateSalesEntry(id, {
-          amount_paid: amount_paid,
+          amount_paid: item.amount_paid,
           description: item.description,
         }).then((result) => console.log(result));
         console.log("FE: inside amount");
@@ -135,9 +120,12 @@ const Sale = ({ sale, setSalesEntries, salesEntries }) => {
       return item;
     });
     console.log(newState);
-    // setSalesEntries(newState);
-    reset();
+    setSalesEntries(newState);
     setEditState(false);
+    // reset({
+    //   date, amount_paid, description, sales
+    // }, { keepDefaultValues: false, keepDirty: false });
+    console.log(editFormData);
   }
 
   function removeSalesEntryHandler(id) {
@@ -147,12 +135,13 @@ const Sale = ({ sale, setSalesEntries, salesEntries }) => {
     setSalesEntries(newState);
   }
 
+  const condition = Object.values(dirtyFields).length === 0 ? true : false;
+
   console.log(errors, dirtyFields);
   return (
     <>
       {editState ? (
         <>
-          {/* <form onSubmit={handleSubmit}></form> */}
           <label className="block">Date</label>
           <input
             className="block mb-2"
@@ -173,7 +162,7 @@ const Sale = ({ sale, setSalesEntries, salesEntries }) => {
               })}
               type="radio"
               id="income"
-              value="income" // checked={incomeOrExpense.income}
+              value="income"
             />{" "}
             Income
           </label>
@@ -186,9 +175,6 @@ const Sale = ({ sale, setSalesEntries, salesEntries }) => {
               type="radio"
               id="expense"
               value="expense"
-
-              // checked={incomeOrExpense.expense}
-              // onChange={handleIncomeOrExpense}
             />{" "}
             Expense
           </label>
@@ -201,7 +187,6 @@ const Sale = ({ sale, setSalesEntries, salesEntries }) => {
               required: "This field is required!",
               valueAsNumber: true,
             })}
-            // onChange={(e) => setAmount(e.target.value)}
           />
           {errors.amount_paid && <p>{errors.amount_paid.message}</p>}
 
@@ -213,7 +198,6 @@ const Sale = ({ sale, setSalesEntries, salesEntries }) => {
                 {...register("description", {
                   required: "This field is required!",
                 })}
-                // onChange={(e) => setAmount(e.target.value)}
               />
               {errors.description && <p>{errors.description.message}</p>}
             </>
@@ -230,10 +214,15 @@ const Sale = ({ sale, setSalesEntries, salesEntries }) => {
           </button>
 
           <button
+            disabled={condition}
             onClick={() => {
               updateSalesEntryHandler(sale.id);
             }}
-            className="block my-2 min-w-full bg-purple-300 text-purple-600 font-normal hover:bg-purple-200 duration-100 hover:text-purple-800 rounded-md px-2 py-1 shadow-2xl"
+            className={
+              condition
+                ? "cursor-not-allowed opacity-40 block my-2 min-w-full bg-purple-300 text-purple-600 font-normal rounded-md px-2 py-1 shadow-2xl"
+                : "block my-2 min-w-full bg-purple-300 text-purple-600 font-normal hover:bg-purple-200 duration-100 hover:text-purple-800 rounded-md px-2 py-1 shadow-2xl"
+            }
           >
             Save Changes
           </button>
