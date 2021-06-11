@@ -4,125 +4,139 @@ import { deleteSalesEntry, updateSalesEntry } from "../../services/api";
 
 const Sale = ({ sale, setSalesEntries, salesEntries }) => {
   const [editState, setEditState] = useState(false);
-  const [editDataState, setEditDataState] = useState({
-    date: false,
-    amount_paid: false,
-    description: false,
-  });
-  const [editIncomeOrExpense, setEditIncomeOrExpense] = useState({
-    income: parseFloat(sale.amount_paid) > 0 ? true : false,
-    expense: parseFloat(sale.amount_paid) < 0 ? true : false,
-  });
+  // const [editDataState, setEditDataState] = useState({
+  //   date: false,
+  //   amount_paid: false,
+  //   description: false,
+  // });
+  // const [editIncomeOrExpense, setEditIncomeOrExpense] = useState({
+  //   income: parseFloat(sale.amount_paid) > 0 ? true : false,
+  //   expense: parseFloat(sale.amount_paid) < 0 ? true : false,
+  // });
 
-  const [editData, setEditData] = useState({
-    date: new Date(sale.date)
-      .toLocaleDateString()
-      .split("/")
-      .reverse()
-      .join("-"),
-    amount_paid: sale.amount_paid,
-    description: sale.description,
-  });
+  // const [editData, setEditData] = useState({
+  //   date: new Date(sale.date)
+  //     .toLocaleDateString()
+  //     .split("/")
+  //     .reverse()
+  //     .join("-"),
+  //   amount_paid: sale.amount_paid,
+  //   description: sale.description,
+  // });
 
   const {
     register,
     watch,
     reset,
+    getValues,
     formState: { errors, dirtyFields },
   } = useForm({
     defaultValues: {
       sales: parseFloat(sale.amount_paid) < 0 ? "expense" : "income",
       amount_paid: parseFloat(sale.amount_paid),
       description: parseFloat(sale.amount_paid) < 0 ? sale.description : "NIL",
+      id: sale.id,
     },
   });
   const watchRadio = watch("sales");
 
   function updateSalesEntryHandler(id) {
-    const { date, amount_paid, description } = editDataState;
+    const editFormData = getValues();
+    console.log(editFormData);
+    const { date, amount_paid, description } = editFormData;
+
     const newState = [...salesEntries].map((item) => {
-      if (item.id === id && date && amount_paid && description) {
-        item.date = editData.date;
-        item.amount_paid = editData.amount_paid;
-        item.description = editData.description;
+      if (
+        item.id === id &&
+        dirtyFields.date &&
+        dirtyFields.amount_paid &&
+        dirtyFields.description
+      ) {
+        item.date = date;
+        item.amount_paid = amount_paid;
+        item.description = description;
         updateSalesEntry(id, {
-          date: editData.date,
-          amount_paid: editData.amount_paid,
-          description: editData.description,
+          date: date,
+          amount_paid: amount_paid,
+          description: description,
         }).then((result) => console.log(result));
         console.log("FE: inside both");
-      } else if (item.id === id && date && amount_paid) {
-        item.date = editData.date;
-        item.amount_paid = editData.amount_paid;
-        if (parseFloat(editData.amount_paid) > 0) {
+      } else if (
+        item.id === id &&
+        dirtyFields.date &&
+        dirtyFields.amount_paid
+      ) {
+        item.date = date;
+        item.amount_paid = amount_paid;
+        if (parseFloat(amount_paid) > 0) {
           item.description = "NIL";
         } else {
-          item.description = editData.description;
+          item.description = description;
         }
         updateSalesEntry(id, {
-          date: editData.date,
-          amount_paid: editData.amount_paid,
+          date: date,
+          amount_paid: amount_paid,
           description: item.description,
         }).then((result) => console.log(result));
         console.log("FE: inside both");
-      } else if (item.id === id && amount_paid && description) {
-        item.amount_paid = editData.amount_paid;
-        if (parseFloat(editData.amount_paid) > 0) {
+      } else if (
+        item.id === id &&
+        dirtyFields.amount_paid &&
+        dirtyFields.description
+      ) {
+        item.amount_paid = amount_paid;
+        if (parseFloat(amount_paid) > 0) {
           item.description = "NIL";
         } else {
-          item.description = editData.description;
+          item.description = description;
         }
         updateSalesEntry(id, {
-          amount_paid: editData.amount_paid,
+          amount_paid: amount_paid,
           description: item.description,
         }).then((result) => console.log(result));
         console.log("FE: inside both");
-      } else if (item.id === id && date && description) {
-        item.date = editData.date;
-        item.description = editData.description;
+      } else if (
+        item.id === id &&
+        dirtyFields.date &&
+        dirtyFields.description
+      ) {
+        item.date = date;
+        item.description = description;
         updateSalesEntry(id, {
-          date: editData.date,
-          description: editData.description,
+          date: date,
+          description: description,
         }).then((result) => console.log(result));
         console.log("FE: inside both");
-      } else if (item.id === id && amount_paid) {
-        item.amount_paid = editData.amount_paid;
-        if (parseFloat(editData.amount_paid) > 0) {
+      } else if (item.id === id && dirtyFields.amount_paid) {
+        item.amount_paid = amount_paid;
+        if (parseFloat(amount_paid) > 0) {
           item.description = "NIL";
         } else {
-          item.description = editData.description;
+          item.description = description;
         }
         updateSalesEntry(id, {
-          amount_paid: editData.amount_paid,
+          amount_paid: amount_paid,
           description: item.description,
         }).then((result) => console.log(result));
         console.log("FE: inside amount");
-      } else if (item.id === id && date) {
-        item.date = editData.date;
-        updateSalesEntry(id, { date: editData.date }).then((result) =>
+      } else if (item.id === id && dirtyFields.date) {
+        item.date = date;
+        updateSalesEntry(id, { date: date }).then((result) =>
           console.log(result)
         );
         console.log("FE: inside date");
-      } else if (item.id === id && description) {
-        item.description = editData.description;
-        updateSalesEntry(id, { description: editData.description }).then(
-          (result) => console.log(result)
+      } else if (item.id === id && dirtyFields.description) {
+        item.description = description;
+        updateSalesEntry(id, { description: description }).then((result) =>
+          console.log(result)
         );
         console.log("FE: inside description");
       }
       return item;
     });
     console.log(newState);
-    setEditDataState({
-      amount_paid: false,
-      date: false,
-      description: false,
-    });
-    // setEditIncomeOrExpense({
-    //   income: false,
-    //   expense: false,
-    // });
-    setSalesEntries(newState);
+    // setSalesEntries(newState);
+    reset();
     setEditState(false);
   }
 
@@ -133,26 +147,12 @@ const Sale = ({ sale, setSalesEntries, salesEntries }) => {
     setSalesEntries(newState);
   }
 
-  function handleEditIncomeOrExpense(e) {
-    setEditIncomeOrExpense({
-      ...editIncomeOrExpense,
-      [e.target.name]: e.target.checked,
-    });
-  }
-
-  let condition =
-    watchRadio === "income"
-      ? Object.keys(dirtyFields).length === 2
-        ? false
-        : true
-      : Object.keys(dirtyFields).length === 3
-      ? false
-      : true;
-  console.log(errors, dirtyFields, condition);
+  console.log(errors, dirtyFields);
   return (
     <>
       {editState ? (
         <>
+          {/* <form onSubmit={handleSubmit}></form> */}
           <label className="block">Date</label>
           <input
             className="block mb-2"
@@ -223,15 +223,6 @@ const Sale = ({ sale, setSalesEntries, salesEntries }) => {
             onClick={() => {
               reset();
               setEditState(false);
-              // setEditDataState({
-              //   amount_paid: false,
-              //   date: false,
-              //   description: false,
-              // });
-              // setEditIncomeOrExpense({
-              //   income: false,
-              //   expense: false,
-              // });
             }}
             className="block my-2 min-w-full bg-purple-300 text-purple-600 font-normal hover:bg-purple-200 duration-100 hover:text-purple-800 rounded-md px-2 py-1 shadow-2xl"
           >
@@ -239,15 +230,10 @@ const Sale = ({ sale, setSalesEntries, salesEntries }) => {
           </button>
 
           <button
-            disabled={condition}
             onClick={() => {
               updateSalesEntryHandler(sale.id);
             }}
-            className={
-              condition
-                ? "cursor-not-allowed opacity-40 block my-2 min-w-full bg-purple-300 text-purple-600 font-normal rounded-md px-2 py-1 shadow-2xl"
-                : "block my-2 min-w-full bg-purple-300 text-purple-600 font-normal hover:bg-purple-200 duration-100 hover:text-purple-800 rounded-md px-2 py-1 shadow-2xl"
-            }
+            className="block my-2 min-w-full bg-purple-300 text-purple-600 font-normal hover:bg-purple-200 duration-100 hover:text-purple-800 rounded-md px-2 py-1 shadow-2xl"
           >
             Save Changes
           </button>

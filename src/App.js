@@ -19,7 +19,7 @@ function App() {
   const [salesEntries, setSalesEntries] = useState([]);
   const [cardId, setCardId] = useState();
   const [date, setDate] = useState();
-  const [amount, setAmount] = useState();
+
   const [incomeOrExpense, setIncomeOrExpense] = useState({
     income: false,
     expense: false,
@@ -43,36 +43,6 @@ function App() {
     setIncomeOrExpense({
       income: false,
       expense: false,
-    });
-  }
-
-  function addSalesEntryHandler() {
-    addSalesEntry(
-      cardId,
-      salesRepId,
-      incomeOrExpense.income ? amount : `-${amount}`,
-      date,
-      description ? description : "NIL"
-    )
-      .then((res) => {
-        console.log(res);
-        setSalesEntries([...salesEntries, res]);
-      })
-      .catch((error) => console.log("From App.js METHOD = POST", error));
-    setCardId("");
-    setDate("");
-    setAmount("");
-    setIncomeOrExpense({
-      income: false,
-      expense: false,
-    });
-    setDescription("");
-  }
-
-  function handleIncomeOrExpense(e) {
-    setIncomeOrExpense({
-      ...incomeOrExpense,
-      [e.target.name]: e.target.checked,
     });
   }
 
