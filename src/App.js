@@ -1,30 +1,16 @@
-import React, { useState } from "react";
-import { useForm } from "react-hook-form";
+import React, { useEffect, useState } from "react";
+import { useHistory } from "react-router-dom";
+
 import SalesTable from "./Components/DisplaySales/SalesTable";
 import FilterByCardId from "./Components/FilterSales/FilterByCardId";
 import FilterByDate from "./Components/FilterSales/FilterByDate";
 import FilterByDateRange from "./Components/FilterSales/FilterByDateRange";
+import Layout from "./Layout";
 import { getSalesEntries, addSalesEntry, filterSales } from "./services/api";
 
 function App() {
-  const {
-    register,
-    handleSubmit,
-    setValue,
-    watch,
-    reset,
-    formState: { errors },
-  } = useForm();
-  const watchRadio = watch("sales");
+  const history = useHistory();
   const [salesEntries, setSalesEntries] = useState([]);
-  const [cardId, setCardId] = useState();
-  const [date, setDate] = useState();
-
-  const [incomeOrExpense, setIncomeOrExpense] = useState({
-    income: false,
-    expense: false,
-  });
-  const [description, setDescription] = useState("");
   const [filterBy, setFilterBy] = useState("");
   const [filterData, setFilterData] = useState([]);
   const [dateFilter, setDateFilter] = useState({
@@ -33,17 +19,17 @@ function App() {
   });
   const salesRepId = 1;
 
-  function getSalesEntriesHandler() {
-    getSalesEntries(cardId, date)
+  useEffect(() => {
+    getSalesEntries()
       .then((res) => setSalesEntries(res))
       .catch((error) => console.log("From App.js METHOD = GET: ", error));
+  }, []);
 
-    setCardId("");
-    setDate("");
-    setIncomeOrExpense({
-      income: false,
-      expense: false,
-    });
+  function getSalesEntriesHandler() {
+    // query filters
+    // getSalesEntries(cardId, (date = ""))
+    //   .then((res) => setSalesEntries(res))
+    //   .catch((error) => console.log("From App.js METHOD = GET: ", error));
   }
 
   function handleFilterRequest(filterValue) {
@@ -69,142 +55,29 @@ function App() {
     }
   }
 
-  const onSubmit = (data, e) => {
-    console.log(data);
-    const { card_id, amount_paid, description, date, sales } = data;
-    addSalesEntry(
-      card_id,
-      salesRepId,
-      sales === "income" ? amount_paid : -amount_paid,
-      date,
-      description ? description : "NIL"
-    )
-      .then((res) => {
-        setSalesEntries([...salesEntries, res]);
-      })
-      .catch((error) => console.log("From App.js METHOD = POST", error));
-    setValue("sales", "");
-    reset();
-  };
-
   return (
-    <div className="h-full bg-blue-100">
-      <div className="w-full max-w-screen-md mx-auto rounded-sm shadow-xl h-full">
-        <h1 className="font-sans text-2xl font-medium text-gray-500 text-center">
-          Sales Summary
-        </h1>
-        <form onSubmit={handleSubmit(onSubmit)}>
-          <label className="block">Card Number</label>
-          <input
-            type="number"
-            {...register("card_id", {
-              valueAsNumber: true,
-              required: "This field is required!",
-            })}
-            placeholder="Card Number"
-          />
-          {errors.card_id && (
-            <p style={{ color: "red" }}>{errors.card_id.message}</p>
-          )}
-          <label className="block">Date</label>
-          <input
-            className="block mb-2"
-            type="date"
-            {...register("date", {
-              value: new Date()
-                .toLocaleDateString()
-                .split("/")
-                .reverse()
-                .join("-"),
-              // valueAsDate: true,
-            })}
-          />
-
-          <label className="px-2">
-            <input
-              {...register("sales", {
-                required: "Choose any one type",
-              })}
-              type="radio"
-              id="income"
-              value="income" // checked={incomeOrExpense.income}
-            />{" "}
-            Income
-          </label>
-
-          <label className="px-2">
-            <input
-              {...register("sales", {
-                required: "Choose any one type",
-              })}
-              type="radio"
-              id="expense"
-              value="expense"
-
-              // checked={incomeOrExpense.expense}
-              // onChange={handleIncomeOrExpense}
-            />{" "}
-            Expense
-          </label>
-          {errors.sales && (
-            <p style={{ color: "red" }}>{errors.sales.message}</p>
-          )}
-          <label className="block">Amount</label>
-          <input
-            className="block mb-2"
-            type="number"
-            {...register("amount_paid", {
-              required: "This field is required!",
-              valueAsNumber: true,
-            })}
-            // onChange={(e) => setAmount(e.target.value)}
-          />
-          {errors.amount_paid && (
-            <p style={{ color: "red" }}>{errors.amount_paid.message}</p>
-          )}
-
-          {watchRadio === "expense" ? (
-            <>
-              <label className="block">Description</label>
-              <input
-                className="block mb-2"
-                {...register("description", {
-                  required: "This field is required!",
-                })}
-                // onChange={(e) => setAmount(e.target.value)}
-              />
-              {errors.description && (
-                <p style={{ color: "red" }}>{errors.description.message}</p>
-              )}
-            </>
-          ) : null}
-
-          <input
-            type="submit"
-            className="block my-2 min-w-full bg-purple-300 text-purple-600 font-normal hover:bg-purple-200 duration-100 hover:text-purple-800 rounded-md px-2 py-1 shadow-2xl"
-          />
-        </form>
-
-        {incomeOrExpense.expense ? (
-          <>
-            <label className="block">Description</label>
-            <input
-              className="block mb-2"
-              type="text"
-              value={description}
-              onChange={(e) => setDescription(e.target.value)}
-            />
-          </>
-        ) : null}
-
+    <Layout>
+      <h1 className="font-sans text-2xl font-medium text-gray-500 text-center">
+        Sales Summary
+      </h1>
+      <div className="text-center my-5">
         <button
+          className="bg-purple-300 text-purple-600 font-normal hover:bg-purple-200 duration-100 hover:text-purple-800 rounded-md px-2 py-1 shadow-2xl"
+          onClick={() => history.push("/createsales")}
+        >
+          Add Sales Entry
+        </button>
+      </div>
+
+      {/* <button
           onClick={getSalesEntriesHandler}
           className="min-w-full bg-purple-300 text-purple-600 font-normal hover:bg-purple-200 duration-100 hover:text-purple-800 rounded-md px-2 py-1 shadow-2xl"
         >
+          Get All Sales Summary
           {cardId || date ? "Get Sales Summary" : "Get All Sales Summary"}
-        </button>
+        </button> */}
 
-        <label className="block">
+      {/* <label className="block">
           <span className="block">Filter Sales</span>
           <select value={filterBy} onChange={handleFilterChange}>
             <option value="Choose Filter" name="Choose Filter">
@@ -266,14 +139,13 @@ function App() {
         ) : null}
         {filterBy === "date_range" && Object.values(dateFilter).length === 2 ? (
           <FilterByDateRange filterData={filterData} />
-        ) : null}
-        <SalesTable
-          sales={salesEntries}
-          salesEntries={salesEntries}
-          setSalesEntries={setSalesEntries}
-        />
-      </div>
-    </div>
+        ) : null} */}
+      <SalesTable
+        sales={salesEntries}
+        salesEntries={salesEntries}
+        setSalesEntries={setSalesEntries}
+      />
+    </Layout>
   );
 }
 

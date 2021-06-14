@@ -22,7 +22,7 @@ const Sale = ({ sale, setSalesEntries, salesEntries }) => {
   const watchRadio = watch("sales");
 
   function updateSalesEntryHandler(data) {
-    const { date, amount_paid, description, sales } = data;
+    // const { date, amount_paid, description, sales } = data;
     // const amt = sales === "income" ? amount_paid : -amount_paid;
 
     setEditState(false);
