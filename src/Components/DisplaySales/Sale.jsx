@@ -9,8 +9,8 @@ const Sale = ({ sale, setSalesEntries, salesEntries }) => {
     register,
     watch,
     reset,
-    getValues,
-    formState: { errors, dirtyFields },
+    handleSubmit,
+    formState: { errors },
   } = useForm({
     defaultValues: {
       sales: parseFloat(sale.amount_paid) < 0 ? "expense" : "income",
@@ -21,111 +21,16 @@ const Sale = ({ sale, setSalesEntries, salesEntries }) => {
   });
   const watchRadio = watch("sales");
 
-  function updateSalesEntryHandler(id) {
-    const editFormData = getValues();
-    console.log(editFormData);
-    const { date, amount_paid, description, sales } = editFormData;
+  function updateSalesEntryHandler(data) {
+    const { date, amount_paid, description, sales } = data;
     // const amt = sales === "income" ? amount_paid : -amount_paid;
-    const newState = [...salesEntries].map((item) => {
-      if (
-        item.id === id &&
-        dirtyFields.date &&
-        dirtyFields.amount_paid &&
-        dirtyFields.description
-      ) {
-        item.date = date;
-        item.amount_paid = sales === "income" ? amount_paid : -amount_paid;
-        if (parseFloat(amount_paid) > 0) {
-          item.description = "NIL";
-        } else {
-          item.description = description;
-        }
-        updateSalesEntry(id, {
-          date: date,
-          amount_paid: item.amount_paid,
-          description: description,
-        }).then((result) => console.log(result));
-        console.log("FE: inside both");
-      } else if (
-        item.id === id &&
-        dirtyFields.date &&
-        dirtyFields.amount_paid
-      ) {
-        item.date = date;
-        item.amount_paid = sales === "income" ? amount_paid : -amount_paid;
-        if (parseFloat(amount_paid) > 0) {
-          item.description = "NIL";
-        } else {
-          item.description = description;
-        }
-        updateSalesEntry(id, {
-          date: date,
-          amount_paid: item.amount_paid,
-          description: item.description,
-        }).then((result) => console.log(result));
-        console.log("FE: inside both");
-      } else if (
-        item.id === id &&
-        dirtyFields.amount_paid &&
-        dirtyFields.description
-      ) {
-        item.amount_paid = sales === "income" ? -amount_paid : amount_paid;
-        if (parseFloat(amount_paid) > 0) {
-          item.description = "NIL";
-        } else {
-          item.description = description;
-        }
-        updateSalesEntry(id, {
-          amount_paid: item.amount_paid,
-          description: item.description,
-        }).then((result) => console.log(result));
-        console.log("FE: inside both");
-      } else if (
-        item.id === id &&
-        dirtyFields.date &&
-        dirtyFields.description
-      ) {
-        item.date = date;
-        item.description = description;
-        updateSalesEntry(id, {
-          date: date,
-          description: description,
-        }).then((result) => console.log(result));
-        console.log("FE: inside both");
-      } else if (item.id === id && dirtyFields.amount_paid) {
-        item.amount_paid = sales === "income" ? amount_paid : -amount_paid;
-        if (parseFloat(amount_paid) > 0) {
-          item.description = "NIL";
-        } else {
-          item.description = description;
-        }
-        updateSalesEntry(id, {
-          amount_paid: item.amount_paid,
-          description: item.description,
-        }).then((result) => console.log(result));
-        console.log("FE: inside amount");
-      } else if (item.id === id && dirtyFields.date) {
-        item.date = date;
-        updateSalesEntry(id, { date: date }).then((result) =>
-          console.log(result)
-        );
-        console.log("FE: inside date");
-      } else if (item.id === id && dirtyFields.description) {
-        item.description = description;
-        updateSalesEntry(id, { description: description }).then((result) =>
-          console.log(result)
-        );
-        console.log("FE: inside description");
-      }
-      return item;
-    });
-    console.log(newState);
-    setSalesEntries(newState);
+
     setEditState(false);
+    console.log(data);
+    // reset();
     // reset({
     //   date, amount_paid, description, sales
     // }, { keepDefaultValues: false, keepDirty: false });
-    console.log(editFormData);
   }
 
   function removeSalesEntryHandler(id) {
@@ -135,13 +40,13 @@ const Sale = ({ sale, setSalesEntries, salesEntries }) => {
     setSalesEntries(newState);
   }
 
-  const condition = Object.values(dirtyFields).length === 0 ? true : false;
+  // const condition = Object.values(dirtyFields).length === 0 ? true : false;
 
-  console.log(errors, dirtyFields);
+  console.log(errors);
   return (
     <>
       {editState ? (
-        <>
+        <form onSubmit={handleSubmit(updateSalesEntryHandler)}>
           <label className="block">Date</label>
           <input
             className="block mb-2"
@@ -213,20 +118,15 @@ const Sale = ({ sale, setSalesEntries, salesEntries }) => {
             Cancel
           </button>
 
-          <button
-            disabled={condition}
-            onClick={() => {
-              updateSalesEntryHandler(sale.id);
-            }}
-            className={
-              condition
-                ? "cursor-not-allowed opacity-40 block my-2 min-w-full bg-purple-300 text-purple-600 font-normal rounded-md px-2 py-1 shadow-2xl"
-                : "block my-2 min-w-full bg-purple-300 text-purple-600 font-normal hover:bg-purple-200 duration-100 hover:text-purple-800 rounded-md px-2 py-1 shadow-2xl"
-            }
-          >
-            Save Changes
-          </button>
-        </>
+          <input
+            type="submit"
+            // disabled={condition}
+            value="Save Changes"
+            className="block my-2 min-w-full bg-purple-300 text-purple-600 font-normal hover:bg-purple-200 duration-100 hover:text-purple-800 rounded-md px-2 py-1 shadow-2xl"
+            // condition
+            // ? "cursor-not-allowed opacity-40 block my-2 min-w-full bg-purple-300 text-purple-600 font-normal rounded-md px-2 py-1 shadow-2xl"
+          />
+        </form>
       ) : (
         <tr className="bg-yellow-200">
           <td className="border border-green-600">{sale.card_id}</td>

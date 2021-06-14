@@ -13,7 +13,7 @@ function App() {
     setValue,
     watch,
     reset,
-    formState: { errors, dirtyFields },
+    formState: { errors },
   } = useForm();
   const watchRadio = watch("sales");
   const [salesEntries, setSalesEntries] = useState([]);
@@ -87,15 +87,6 @@ function App() {
     reset();
   };
 
-  let condition =
-    watchRadio === "income"
-      ? Object.keys(dirtyFields).length === 3
-        ? false
-        : true
-      : Object.keys(dirtyFields).length === 4
-      ? false
-      : true;
-
   return (
     <div className="h-full bg-blue-100">
       <div className="w-full max-w-screen-md mx-auto rounded-sm shadow-xl h-full">
@@ -112,7 +103,9 @@ function App() {
             })}
             placeholder="Card Number"
           />
-          {errors.card_id && <p>{errors.card_id.message}</p>}
+          {errors.card_id && (
+            <p style={{ color: "red" }}>{errors.card_id.message}</p>
+          )}
           <label className="block">Date</label>
           <input
             className="block mb-2"
@@ -153,7 +146,9 @@ function App() {
             />{" "}
             Expense
           </label>
-          {errors.sales && <p>{errors.sales.message}</p>}
+          {errors.sales && (
+            <p style={{ color: "red" }}>{errors.sales.message}</p>
+          )}
           <label className="block">Amount</label>
           <input
             className="block mb-2"
@@ -164,7 +159,9 @@ function App() {
             })}
             // onChange={(e) => setAmount(e.target.value)}
           />
-          {errors.amount_paid && <p>{errors.amount_paid.message}</p>}
+          {errors.amount_paid && (
+            <p style={{ color: "red" }}>{errors.amount_paid.message}</p>
+          )}
 
           {watchRadio === "expense" ? (
             <>
@@ -176,18 +173,15 @@ function App() {
                 })}
                 // onChange={(e) => setAmount(e.target.value)}
               />
-              {errors.description && <p>{errors.description.message}</p>}
+              {errors.description && (
+                <p style={{ color: "red" }}>{errors.description.message}</p>
+              )}
             </>
           ) : null}
 
           <input
-            disabled={condition}
             type="submit"
-            className={
-              condition
-                ? "cursor-not-allowed opacity-40 block my-2 min-w-full bg-purple-300 text-purple-600 font-normal rounded-md px-2 py-1 shadow-2xl"
-                : "block my-2 min-w-full bg-purple-300 text-purple-600 font-normal hover:bg-purple-200 duration-100 hover:text-purple-800 rounded-md px-2 py-1 shadow-2xl"
-            }
+            className="block my-2 min-w-full bg-purple-300 text-purple-600 font-normal hover:bg-purple-200 duration-100 hover:text-purple-800 rounded-md px-2 py-1 shadow-2xl"
           />
         </form>
 
@@ -210,17 +204,6 @@ function App() {
           {cardId || date ? "Get Sales Summary" : "Get All Sales Summary"}
         </button>
 
-        {/* <button
-          onClick={addSalesEntryHandler}
-          disabled={condition ? false : true}
-          className={
-            condition
-              ? "block my-2 min-w-full bg-purple-300 text-purple-600 font-normal hover:bg-purple-200 duration-100 hover:text-purple-800 rounded-md px-2 py-1 shadow-2xl"
-              : "cursor-not-allowed opacity-40 block my-2 min-w-full bg-purple-300 text-purple-600 font-normal rounded-md px-2 py-1 shadow-2xl"
-          }
-        >
-          Add Sales Entry
-        </button> */}
         <label className="block">
           <span className="block">Filter Sales</span>
           <select value={filterBy} onChange={handleFilterChange}>
