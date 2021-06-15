@@ -1,14 +1,14 @@
 import { useHistory } from "react-router-dom";
 import { deleteSalesEntry } from "../../services/api";
 
-const Sale = ({ sale, setSalesEntries, salesEntries }) => {
+const Sale = ({ sale, setIncomeEntries, incomeEntries }) => {
   const history = useHistory();
 
   function removeSalesEntryHandler(id) {
     // use the result from promise with snackbar component
     deleteSalesEntry(id).then((result) => console.log(result));
-    const newState = [...salesEntries].filter((item) => item.id !== id);
-    setSalesEntries(newState);
+    const newState = [...incomeEntries].filter((item) => item.id !== id);
+    setIncomeEntries(newState);
   }
 
   return (
@@ -29,7 +29,7 @@ const Sale = ({ sale, setSalesEntries, salesEntries }) => {
         </td>
         <td
           onClick={() => {
-            history.push(`/editsales/${sale.id}`, [sale]);
+            history.push(`/income/${sale.id}`, [sale]);
           }}
           style={{ cursor: "pointer" }}
         >

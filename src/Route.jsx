@@ -1,7 +1,6 @@
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import App from "./App";
 import CreateSalesEntry from "./pages/CreateSalesEntry";
-import EditSalesEntry from "./pages/EditSalesEntry";
 
 const Routes = () => {
   return (
@@ -13,10 +12,13 @@ const Routes = () => {
         <Route exact path="/income">
           <CreateSalesEntry />
         </Route>
-        <Route path="/editsales/:id" exact>
-          <EditSalesEntry />
+        <Route path="/income/:id" exact>
+          <CreateSalesEntry />
         </Route>
         <Route path="/expense" exact>
+          <CreateSalesEntry />
+        </Route>
+        <Route path="/expense/:id" exact>
           <CreateSalesEntry />
         </Route>
       </Switch>

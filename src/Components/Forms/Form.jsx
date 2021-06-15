@@ -1,6 +1,15 @@
 import React from "react";
+import { useForm } from "react-hook-form";
 
-const Form = ({ type, handleSubmit, onSubmit, history, register, errors }) => {
+const Form = ({
+  type,
+  handleSubmit,
+  onSubmit,
+  history,
+  register,
+  errors,
+  edit,
+}) => {
   return (
     <>
       {type === "income" ? (
@@ -10,6 +19,7 @@ const Form = ({ type, handleSubmit, onSubmit, history, register, errors }) => {
         >
           <label className="block">Card Number</label>
           <input
+            defaultValue={edit && history.location.state[0].card_id}
             type="number"
             {...register("card_id", {
               valueAsNumber: true,
@@ -24,12 +34,19 @@ const Form = ({ type, handleSubmit, onSubmit, history, register, errors }) => {
           <input
             className="block mb-2"
             type="date"
+            // defaultValue={edit && history.location.state[0].date}
             {...register("date", {
-              value: new Date()
-                .toLocaleDateString()
-                .split("/")
-                .reverse()
-                .join("-"),
+              value: edit
+                ? new Date(history.location.state[0].date)
+                    .toLocaleDateString()
+                    .split("/")
+                    .reverse()
+                    .join("-")
+                : new Date()
+                    .toLocaleDateString()
+                    .split("/")
+                    .reverse()
+                    .join("-"),
               // valueAsDate: true,
             })}
           />
@@ -38,6 +55,7 @@ const Form = ({ type, handleSubmit, onSubmit, history, register, errors }) => {
           <input
             className="block mb-2"
             type="number"
+            defaultValue={edit && history.location.state[0].amount_paid}
             {...register("amount_paid", {
               required: "This field is required",
               min: 1,

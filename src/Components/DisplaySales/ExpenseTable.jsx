@@ -1,11 +1,13 @@
 // import React, { useState } from 'react'
 
+import SalesContext from "../../SalesContext";
 import Sale from "./Sale";
 
-const SalesTable = ({ sales, setSalesEntries, salesEntries }) => {
+const ExpenseTable = () => {
+  // const { salesEntries, setSalesEntries } = useContext(SalesContext);
   return (
     <>
-      {sales && (
+      {salesEntries.income && (
         <div className="w-full my-2 bg-green-200 border-collapse border-2 border-green-800">
           <div>
             <div>
@@ -38,4 +40,4 @@ const SalesTable = ({ sales, setSalesEntries, salesEntries }) => {
   );
 };
 
-export default SalesTable;
+export default ExpenseTable;

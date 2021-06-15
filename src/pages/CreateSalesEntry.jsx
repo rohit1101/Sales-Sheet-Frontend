@@ -21,20 +21,12 @@ const CreateSalesEntry = () => {
 
   const onSubmit = (data, e) => {
     console.log(data);
-    // const { card_id, amount_paid, description, date, sales } = data;
-    // addSalesEntry(
-    //   card_id,
-    //   salesRepId,
-    //   sales === "income" ? amount_paid : -amount_paid,
-    //   date,
-    //   description ? description : "NIL"
-    // )
-    //   .then((res) => {
-    //     setSalesEntries([...salesEntries, res]);
-    //   })
-    //   .catch((error) => console.log("From App.js METHOD = POST", error));
-    // reset();
-    // history.push("/");
+    const { card_id, amount_paid, date } = data;
+    addSalesEntry(card_id, salesRepId, amount_paid, date)
+      .then((res) => console.log(res))
+      .catch((error) => console.log("From App.js METHOD = POST", error));
+    reset();
+    history.push("/");
   };
 
   return (
@@ -42,7 +34,10 @@ const CreateSalesEntry = () => {
       <NavBar />
       <div className="text-center">
         <Form
-          type={history.location.pathname === "/income" ? "income" : "expense"}
+          type={
+            history.location.pathname.includes("income") ? "income" : "expense"
+          }
+          edit={history.location.state !== undefined ? true : false}
           handleSubmit={handleSubmit}
           onSubmit={onSubmit}
           register={register}

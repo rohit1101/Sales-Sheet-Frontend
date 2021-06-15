@@ -1,36 +1,43 @@
 import React, { useEffect, useState } from "react";
 import { useHistory } from "react-router-dom";
-
-import SalesTable from "./Components/DisplaySales/SalesTable";
+import IncomeTable from "./Components/DisplaySales/IncomeTable";
 import FilterByCardId from "./Components/FilterSales/FilterByCardId";
 import FilterByDate from "./Components/FilterSales/FilterByDate";
 import FilterByDateRange from "./Components/FilterSales/FilterByDateRange";
 import Layout from "./Layout";
-import { getSalesEntries, addSalesEntry, filterSales } from "./services/api";
+import { filterSales, getIncomeEntries } from "./services/api";
 
 function App() {
   const history = useHistory();
-  const [salesEntries, setSalesEntries] = useState([]);
   const [filterBy, setFilterBy] = useState("");
   const [filterData, setFilterData] = useState([]);
+  const [incomeEntries, setIncomeEntries] = useState([]);
   const [dateFilter, setDateFilter] = useState({
     startDate: "",
     endDate: "",
   });
+  const [tabState, setTabState] = useState({
+    income: true,
+    expense: false,
+  });
   const salesRepId = 1;
 
   useEffect(() => {
-    getSalesEntries()
-      .then((res) => setSalesEntries(res))
+    getIncomeEntries()
+      .then((res) => setIncomeEntries(res))
       .catch((error) => console.log("From App.js METHOD = GET: ", error));
+    // getExpenseEntries()
+    // .then((res) => setExpenseEntries(res))
+    // .catch((error) => console.log("From App.js METHOD = GET: ", error));
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  function getSalesEntriesHandler() {
-    // query filters
-    // getSalesEntries(cardId, (date = ""))
-    //   .then((res) => setSalesEntries(res))
-    //   .catch((error) => console.log("From App.js METHOD = GET: ", error));
-  }
+  // function getSalesEntriesHandler() {
+  // query filters
+  // getSalesEntries(cardId, (date = ""))
+  //   .then((res) => setSalesEntries(res))
+  //   .catch((error) => console.log("From App.js METHOD = GET: ", error));
+  // }
 
   function handleFilterRequest(filterValue) {
     if (typeof filterValue === "object") {
@@ -77,6 +84,11 @@ function App() {
           Add Expense
         </button>
       </div>
+
+      <IncomeTable
+        incomeEntries={incomeEntries}
+        setIncomeEntries={setIncomeEntries}
+      />
 
       {/* <button
           onClick={getSalesEntriesHandler}
@@ -149,11 +161,6 @@ function App() {
         {filterBy === "date_range" && Object.values(dateFilter).length === 2 ? (
           <FilterByDateRange filterData={filterData} />
         ) : null} */}
-      <SalesTable
-        sales={salesEntries}
-        salesEntries={salesEntries}
-        setSalesEntries={setSalesEntries}
-      />
     </Layout>
   );
 }

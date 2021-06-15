@@ -1,4 +1,4 @@
-export function getSalesEntries(cardId, date) {
+export function getIncomeEntries(cardId, date) {
   // let url = new URL(`http://107.22.18.203/sales`);
   let url = new URL(`http://127.0.0.1:3000/sales`);
 
