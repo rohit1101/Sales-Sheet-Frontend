@@ -1,5 +1,6 @@
 import React from "react";
 import { useForm } from "react-hook-form";
+import Input from "../Inputs/Input";
 
 const Form = ({
   type,
@@ -17,19 +18,24 @@ const Form = ({
           onSubmit={handleSubmit(onSubmit)}
           className="inline-block text-left"
         >
-          <label className="block">Card Number</label>
-          <input
-            defaultValue={edit && history.location.state[0].card_id}
-            type="number"
-            {...register("card_id", {
-              valueAsNumber: true,
-              required: "This field is required!",
-            })}
-            placeholder="Card Number"
+          <Input
+            register={register}
+            errors={errors}
+            history={history}
+            edit={false}
+            title="Card Number"
+            name="card_id"
           />
-          {errors.card_id && (
-            <p style={{ color: "red" }}>{errors.card_id.message}</p>
-          )}
+
+          <Input
+            register={register}
+            errors={errors}
+            history={history}
+            edit={false}
+            title="Date"
+            name="date"
+          />
+
           <label className="block">Date</label>
           <input
             className="block mb-2"
