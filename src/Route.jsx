@@ -10,11 +10,14 @@ const Routes = () => {
         <Route exact path="/">
           <App />
         </Route>
-        <Route exact path="/createsales">
+        <Route exact path="/income">
           <CreateSalesEntry />
         </Route>
         <Route path="/editsales/:id" exact>
           <EditSalesEntry />
+        </Route>
+        <Route path="/expense" exact>
+          <CreateSalesEntry />
         </Route>
       </Switch>
     </Router>

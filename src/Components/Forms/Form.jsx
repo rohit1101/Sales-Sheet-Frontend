@@ -1,0 +1,132 @@
+import React from "react";
+
+const Form = ({ type, handleSubmit, onSubmit, history, register, errors }) => {
+  return (
+    <>
+      {type === "income" ? (
+        <form
+          onSubmit={handleSubmit(onSubmit)}
+          className="inline-block text-left"
+        >
+          <label className="block">Card Number</label>
+          <input
+            type="number"
+            {...register("card_id", {
+              valueAsNumber: true,
+              required: "This field is required!",
+            })}
+            placeholder="Card Number"
+          />
+          {errors.card_id && (
+            <p style={{ color: "red" }}>{errors.card_id.message}</p>
+          )}
+          <label className="block">Date</label>
+          <input
+            className="block mb-2"
+            type="date"
+            {...register("date", {
+              value: new Date()
+                .toLocaleDateString()
+                .split("/")
+                .reverse()
+                .join("-"),
+              // valueAsDate: true,
+            })}
+          />
+
+          <label className="block">Amount</label>
+          <input
+            className="block mb-2"
+            type="number"
+            {...register("amount_paid", {
+              required: "This field is required",
+              min: 1,
+              valueAsNumber: true,
+              // validate: {
+              //   lessThanZero: () => watchAmount > 0,
+              // },
+            })}
+          />
+          {errors.amount_paid && <p>{errors.amount_paid.message}</p>}
+          {/* {errors.amount_paid && errors.amount_paid.type === "lessThanZero" && (
+            <p>Amount should be greater than zero</p>
+          )} */}
+
+          <input
+            type="submit"
+            className="block my-2 min-w-full bg-purple-300 text-purple-600 font-normal hover:bg-purple-200 duration-100 hover:text-purple-800 rounded-md px-2 py-1 shadow-2xl"
+          />
+          <input
+            type="button"
+            value="Cancel"
+            onClick={() => history.push("/")}
+            className="block my-2 min-w-full bg-purple-300 text-purple-600 font-normal hover:bg-purple-200 duration-100 hover:text-purple-800 rounded-md px-2 py-1 shadow-2xl"
+          />
+        </form>
+      ) : (
+        <form
+          onSubmit={handleSubmit(onSubmit)}
+          className="inline-block text-left"
+        >
+          <label className="block">Date</label>
+          <input
+            className="block mb-2"
+            type="date"
+            {...register("date", {
+              value: new Date()
+                .toLocaleDateString()
+                .split("/")
+                .reverse()
+                .join("-"),
+              // valueAsDate: true,
+            })}
+          />
+
+          <label className="block">Amount</label>
+          <input
+            className="block mb-2"
+            type="number"
+            {...register("amount_paid", {
+              required: "This field is required",
+              min: 1,
+              valueAsNumber: true,
+              // validate: {
+              //   lessThanZero: () => watchAmount > 0,
+              // },
+            })}
+          />
+          {errors.amount_paid && (
+            <p style={{ color: "red" }}>{errors.amount_paid.message}</p>
+          )}
+          {/* {errors.amount_paid && errors.amount_paid.type === "lessThanZero" && (
+            <p>Amount should be greater than zero</p>
+          )} */}
+
+          <label className="block">Description</label>
+          <input
+            className="block mb-2"
+            {...register("description", {
+              required: "This field is required",
+            })}
+          />
+          {errors.description && (
+            <p style={{ color: "red" }}>{errors.description.message}</p>
+          )}
+
+          <input
+            type="submit"
+            className="block my-2 min-w-full bg-purple-300 text-purple-600 font-normal hover:bg-purple-200 duration-100 hover:text-purple-800 rounded-md px-2 py-1 shadow-2xl"
+          />
+          <input
+            type="button"
+            value="Cancel"
+            onClick={() => history.push("/")}
+            className="block my-2 min-w-full bg-purple-300 text-purple-600 font-normal hover:bg-purple-200 duration-100 hover:text-purple-800 rounded-md px-2 py-1 shadow-2xl"
+          />
+        </form>
+      )}
+    </>
+  );
+};
+
+export default Form;
