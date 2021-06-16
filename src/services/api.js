@@ -105,3 +105,26 @@ export function filterSales(val) {
       .catch((e) => console.log("ERROR while filtering sales FE:", e));
   }
 }
+
+export function getExpenseEntries(cardId, date) {
+  // let url = new URL(`http://107.22.18.203/sales`);
+  let url = new URL(`http://127.0.0.1:3000/sales`);
+
+  let params = {
+    cardId,
+    date,
+  };
+
+  Object.keys(params).forEach((val) => {
+    if (params[val]) {
+      url.searchParams.append(val, params[val]);
+    }
+  });
+
+  return fetch(url)
+    .then((data) => data.json())
+    .then((res) => {
+      return res;
+    })
+    .catch((e) => console.log("Error:", e));
+}

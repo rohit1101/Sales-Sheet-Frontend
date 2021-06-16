@@ -1,12 +1,16 @@
 // import React, { useState } from 'react'
 
+import { useContext } from "react";
+import SalesContext from "../../SalesContext";
 import Sale from "./Sale";
 
-const IncomeTable = ({ setIncomeEntries, incomeEntries }) => {
+const IncomeTable = () => {
+  const { incomeEntries, setIncomeEntries } = useContext(SalesContext);
+
   return (
     <>
       {incomeEntries && (
-        <table className="w-full my-2 bg-green-200 border-collapse border-2 border-green-800">
+        <table className="w-full my-4 bg-green-200 border-collapse border-2 border-green-800">
           <thead>
             <tr>
               <th className="border border-green-600">Card ID</th>
@@ -22,8 +26,8 @@ const IncomeTable = ({ setIncomeEntries, incomeEntries }) => {
                 <Sale
                   sale={sale}
                   key={sale.id}
-                  setIncomeEntries={setIncomeEntries}
                   incomeEntries={incomeEntries}
+                  setIncomeEntries={setIncomeEntries}
                 />
               ))
             ) : (
