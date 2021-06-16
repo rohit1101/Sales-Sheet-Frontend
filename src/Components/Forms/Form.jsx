@@ -18,23 +18,18 @@ const Form = ({
           onSubmit={handleSubmit(onSubmit)}
           className="inline-block text-left"
         >
-          <Input
-            register={register}
-            errors={errors}
-            history={history}
-            edit={false}
-            title="Card Number"
-            name="card_id"
+          <label className="block">Card Number</label>
+          <input
+            defaultValue={edit && history.location.state[0].card_id}
+            type="number"
+            {...register("card_id", {
+              required: "This field is required!",
+              valueAsNumber: true,
+            })}
           />
-
-          <Input
-            register={register}
-            errors={errors}
-            history={history}
-            edit={false}
-            title="Date"
-            name="date"
-          />
+          {errors.card_id && (
+            <p style={{ color: "red" }}>{errors.card_id.message}</p>
+          )}
 
           <label className="block">Date</label>
           <input

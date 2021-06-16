@@ -5,6 +5,7 @@ import FilterByCardId from "./Components/FilterSales/FilterByCardId";
 import FilterByDate from "./Components/FilterSales/FilterByDate";
 import FilterByDateRange from "./Components/FilterSales/FilterByDateRange";
 import Layout from "./Layout";
+import Routes from "./Route";
 import { filterSales, getIncomeEntries } from "./services/api";
 
 function App() {
@@ -29,7 +30,6 @@ function App() {
     // getExpenseEntries()
     // .then((res) => setExpenseEntries(res))
     // .catch((error) => console.log("From App.js METHOD = GET: ", error));
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   // function getSalesEntriesHandler() {
