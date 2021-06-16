@@ -20,6 +20,7 @@ const Form = ({
         >
           <label className="block">Card Number</label>
           <input
+            className="shadow-xl  focus:outline-none focus:ring-2 focus:ring-purple-300"
             defaultValue={edit && history.location.state[0].card_id}
             type="number"
             {...register("card_id", {
@@ -33,7 +34,7 @@ const Form = ({
 
           <label className="block">Date</label>
           <input
-            className="block mb-2"
+            className="block mb-2 shadow-xl focus:outline-none focus:ring-2 focus:ring-purple-300"
             type="date"
             // defaultValue={edit && history.location.state[0].date}
             {...register("date", {
@@ -54,7 +55,7 @@ const Form = ({
 
           <label className="block">Amount</label>
           <input
-            className="block mb-2"
+            className="block mb-2 shadow-xl focus:outline-none focus:ring-2 focus:ring-purple-300"
             type="number"
             defaultValue={edit && history.location.state[0].amount_paid}
             {...register("amount_paid", {
@@ -89,7 +90,7 @@ const Form = ({
         >
           <label className="block">Date</label>
           <input
-            className="block mb-2"
+            className="block mb-2 shadow-xl"
             type="date"
             {...register("date", {
               value: new Date()
@@ -103,7 +104,7 @@ const Form = ({
 
           <label className="block">Amount</label>
           <input
-            className="block mb-2"
+            className="block mb-2 shadow-xl"
             type="number"
             {...register("amount_paid", {
               required: "This field is required",
@@ -123,7 +124,7 @@ const Form = ({
 
           <label className="block">Description</label>
           <input
-            className="block mb-2"
+            className="block mb-2 shadow-xl"
             {...register("description", {
               required: "This field is required",
             })}
