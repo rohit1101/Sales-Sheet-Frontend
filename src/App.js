@@ -1,36 +1,25 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { useHistory } from "react-router-dom";
 import IncomeTable from "./Components/DisplaySales/IncomeTable";
-import FilterByCardId from "./Components/FilterSales/FilterByCardId";
-import FilterByDate from "./Components/FilterSales/FilterByDate";
-import FilterByDateRange from "./Components/FilterSales/FilterByDateRange";
+// import FilterByCardId from "./Components/FilterSales/FilterByCardId";
+// import FilterByDate from "./Components/FilterSales/FilterByDate";
+// import FilterByDateRange from "./Components/FilterSales/FilterByDateRange";
 import Layout from "./Layout";
-import Routes from "./Route";
-import { filterSales, getIncomeEntries } from "./services/api";
+// import { filterSales } from "./services/api";
 
 function App() {
   const history = useHistory();
-  const [filterBy, setFilterBy] = useState("");
-  const [filterData, setFilterData] = useState([]);
-  const [incomeEntries, setIncomeEntries] = useState([]);
-  const [dateFilter, setDateFilter] = useState({
-    startDate: "",
-    endDate: "",
-  });
+  // const [filterBy, setFilterBy] = useState("");
+  // const [filterData, setFilterData] = useState([]);
+  // const [dateFilter, setDateFilter] = useState({
+  //   startDate: "",
+  //   endDate: "",
+  // });
   const [tabState, setTabState] = useState({
     income: true,
     expense: false,
   });
-  const salesRepId = 1;
-
-  useEffect(() => {
-    getIncomeEntries()
-      .then((res) => setIncomeEntries(res))
-      .catch((error) => console.log("From App.js METHOD = GET: ", error));
-    // getExpenseEntries()
-    // .then((res) => setExpenseEntries(res))
-    // .catch((error) => console.log("From App.js METHOD = GET: ", error));
-  }, []);
+  // const salesRepId = 1;
 
   // function getSalesEntriesHandler() {
   // query filters
@@ -39,28 +28,28 @@ function App() {
   //   .catch((error) => console.log("From App.js METHOD = GET: ", error));
   // }
 
-  function handleFilterRequest(filterValue) {
-    if (typeof filterValue === "object") {
-      filterSales(filterValue)
-        .then((res) => setFilterData(res))
-        .catch((e) => console.log("Error e", e));
-    } else {
-      filterSales(filterValue)
-        .then((res) => setFilterData(res))
-        .catch((e) => console.log("Error e", e));
-    }
-  }
+  // function handleFilterRequest(filterValue) {
+  //   if (typeof filterValue === "object") {
+  //     filterSales(filterValue)
+  //       .then((res) => setFilterData(res))
+  //       .catch((e) => console.log("Error e", e));
+  //   } else {
+  //     filterSales(filterValue)
+  //       .then((res) => setFilterData(res))
+  //       .catch((e) => console.log("Error e", e));
+  //   }
+  // }
 
-  function handleFilterChange(e) {
-    if (e.target.value === "date" || e.target.value === "card_id") {
-      setFilterBy(e.target.value);
-      handleFilterRequest(e.target.value);
-    } else if (e.target.value === "date_range") {
-      setFilterBy(e.target.value);
-    } else if (e.target.value === "Choose Filter") {
-      setFilterBy(e.target.value);
-    }
-  }
+  // function handleFilterChange(e) {
+  //   if (e.target.value === "date" || e.target.value === "card_id") {
+  //     setFilterBy(e.target.value);
+  //     handleFilterRequest(e.target.value);
+  //   } else if (e.target.value === "date_range") {
+  //     setFilterBy(e.target.value);
+  //   } else if (e.target.value === "Choose Filter") {
+  //     setFilterBy(e.target.value);
+  //   }
+  // }
 
   return (
     <Layout>
@@ -85,10 +74,7 @@ function App() {
         </button>
       </div>
 
-      <IncomeTable
-        incomeEntries={incomeEntries}
-        setIncomeEntries={setIncomeEntries}
-      />
+      <IncomeTable />
 
       {/* <button
           onClick={getSalesEntriesHandler}
