@@ -6,17 +6,17 @@ const IncomeTable = ({ setIncomeEntries, incomeEntries }) => {
   return (
     <>
       {incomeEntries && (
-        <div className="w-full my-2 bg-green-200 border-collapse border-2 border-green-800">
-          <div>
-            <div>
+        <table className="w-full my-2 bg-green-200 border-collapse border-2 border-green-800">
+          <thead>
+            <tr>
               <th className="border border-green-600">Card ID</th>
               <th className="border border-green-600">Date</th>
               <th className="border border-green-600">Amount</th>
               <th className="border border-green-600">Delete</th>
               <th className="border border-green-600">Edit</th>
-            </div>
-          </div>
-          <div>
+            </tr>
+          </thead>
+          <tbody>
             {incomeEntries.length ? (
               incomeEntries.map((sale) => (
                 <Sale
@@ -27,12 +27,12 @@ const IncomeTable = ({ setIncomeEntries, incomeEntries }) => {
                 />
               ))
             ) : (
-              <div>
-                <p className="text-center">No sales</p>
-              </div>
+              <tr>
+                <td>No sales</td>
+              </tr>
             )}
-          </div>
-        </div>
+          </tbody>
+        </table>
       )}
     </>
   );
