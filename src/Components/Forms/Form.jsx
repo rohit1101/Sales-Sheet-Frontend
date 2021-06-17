@@ -13,7 +13,13 @@ const Form = ({
     <>
       {type === "income" ? (
         <form
-          onSubmit={handleSubmit(onSubmit)}
+          onSubmit={() => {
+            if (!edit) {
+              handleSubmit(onSubmit);
+            } else {
+              console.log("call edit handler");
+            }
+          }}
           className="inline-block text-left"
         >
           <label className="block">Card Number</label>
@@ -83,7 +89,14 @@ const Form = ({
         </form>
       ) : (
         <form
-          onSubmit={handleSubmit(onSubmit)}
+          onSubmit={(e) => {
+            if (edit === false) {
+              handleSubmit(onSubmit);
+            }
+            if (edit === true) {
+              console.log("call edit handler");
+            }
+          }}
           className="inline-block text-left"
         >
           <label className="block">Date</label>
@@ -91,12 +104,17 @@ const Form = ({
             className="block mb-2 shadow-xl"
             type="date"
             {...register("date", {
-              value: new Date()
-                .toLocaleDateString()
-                .split("/")
-                .reverse()
-                .join("-"),
-              // valueAsDate: true,
+              value: edit
+                ? new Date(history.location.state[0].date)
+                    .toLocaleDateString()
+                    .split("/")
+                    .reverse()
+                    .join("-")
+                : new Date()
+                    .toLocaleDateString()
+                    .split("/")
+                    .reverse()
+                    .join("-"),
             })}
           />
 
@@ -104,6 +122,7 @@ const Form = ({
           <input
             className="block mb-2 shadow-xl"
             type="number"
+            defaultValue={edit && history.location.state[0].amount_paid}
             {...register("amount_paid", {
               required: "This field is required",
               min: 1,
@@ -123,6 +142,7 @@ const Form = ({
           <label className="block">Description</label>
           <input
             className="block mb-2 shadow-xl"
+            defaultValue={edit && history.location.state[0].description}
             {...register("description", {
               required: "This field is required",
             })}

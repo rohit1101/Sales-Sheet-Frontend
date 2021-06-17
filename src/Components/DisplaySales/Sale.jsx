@@ -12,6 +12,7 @@ const Sale = ({ sale }) => {
     expenseEntries,
     setExpenseEntries,
   } = useContext(SalesContext);
+
   function removeSalesEntryHandler(id) {
     // use the result from promise with snackbar component
     if (tabState.income) {

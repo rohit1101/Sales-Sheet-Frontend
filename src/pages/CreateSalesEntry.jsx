@@ -21,12 +21,10 @@ const CreateSalesEntry = () => {
   const salesRepId = 1;
 
   const onSubmit = (data, e) => {
-    console.log(history.location.pathname);
-
     if (history.location.pathname.includes("expense")) {
       const { amount_paid, date, description } = data;
       addExpenseEntry(salesRepId, amount_paid, date, description)
-        .then((res) => setExpenseEntries([<div className="expe"></div>, res]))
+        .then((res) => setExpenseEntries([...expenseEntries, res]))
         .catch((error) => console.log("From App.js METHOD = POST", error));
       reset();
       history.push("/");

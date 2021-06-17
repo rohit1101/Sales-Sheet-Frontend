@@ -1,6 +1,5 @@
 import React, { useContext } from "react";
 import { useHistory } from "react-router-dom";
-import Sale from "./Components/DisplaySales/Sale";
 import SalesTable from "./Components/DisplaySales/SalesTable";
 // import FilterByCardId from "./Components/FilterSales/FilterByCardId";
 // import FilterByDate from "./Components/FilterSales/FilterByDate";
@@ -19,13 +18,6 @@ function App() {
   //   endDate: "",
   // });
   // const salesRepId = 1;
-
-  // function getSalesEntriesHandler() {
-  // query filters
-  // getSalesEntries(cardId, (date = ""))
-  //   .then((res) => setSalesEntries(res))
-  //   .catch((error) => console.log("From App.js METHOD = GET: ", error));
-  // }
 
   // function handleFilterRequest(filterValue) {
   //   if (typeof filterValue === "object") {
