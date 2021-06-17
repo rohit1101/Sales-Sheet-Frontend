@@ -5,10 +5,11 @@ import Form from "../Components/Forms/Form";
 import Layout from "../Layout";
 import NavBar from "../NavBar";
 import SalesContext from "../SalesContext";
-import { addSalesEntry } from "../services/api";
+import { addExpenseEntry, addSalesEntry } from "../services/api";
 
 const CreateSalesEntry = () => {
-  const { incomeEntries, setIncomeEntries } = useContext(SalesContext);
+  const { incomeEntries, setIncomeEntries, expenseEntries, setExpenseEntries } =
+    useContext(SalesContext);
   const {
     register,
     handleSubmit,
@@ -20,13 +21,24 @@ const CreateSalesEntry = () => {
   const salesRepId = 1;
 
   const onSubmit = (data, e) => {
-    console.log(data);
-    const { card_id, amount_paid, date } = data;
-    addSalesEntry(card_id, salesRepId, amount_paid, date)
-      .then((res) => setIncomeEntries([...incomeEntries, res]))
-      .catch((error) => console.log("From App.js METHOD = POST", error));
-    reset();
-    history.push("/");
+    console.log(history.location.pathname);
+
+    if (history.location.pathname.includes("expense")) {
+      const { amount_paid, date, description } = data;
+      addExpenseEntry(salesRepId, amount_paid, date, description)
+        .then((res) => setExpenseEntries([<div className="expe"></div>, res]))
+        .catch((error) => console.log("From App.js METHOD = POST", error));
+      reset();
+      history.push("/");
+    }
+    if (history.location.pathname.includes("income")) {
+      const { card_id, amount_paid, date } = data;
+      addSalesEntry(card_id, salesRepId, amount_paid, date)
+        .then((res) => setIncomeEntries([...incomeEntries, res]))
+        .catch((error) => console.log("From App.js METHOD = POST", error));
+      reset();
+      history.push("/");
+    }
   };
 
   return (

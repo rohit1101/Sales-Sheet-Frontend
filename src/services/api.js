@@ -108,7 +108,7 @@ export function filterSales(val) {
 
 export function getExpenseEntries(cardId, date) {
   // let url = new URL(`http://107.22.18.203/sales`);
-  let url = new URL(`http://127.0.0.1:3000/sales`);
+  let url = new URL(`http://127.0.0.1:3000/expenses`);
 
   let params = {
     cardId,
@@ -126,5 +126,50 @@ export function getExpenseEntries(cardId, date) {
     .then((res) => {
       return res;
     })
+    .catch((e) => console.log("Error:", e));
+}
+
+export function addExpenseEntry(
+  sales_rep_id,
+  amount_paid,
+  date = "",
+  description
+) {
+  // let url = new URL(`http://107.22.18.203/sale`);
+  let url = new URL(`http://127.0.0.1:3000/expense`);
+
+  return fetch(url, {
+    headers: {
+      Accept: "application/json",
+      "Content-Type": "application/json",
+    },
+    method: "POST",
+    body: Boolean(date)
+      ? JSON.stringify({
+          sales_rep_id,
+          date,
+          amount_paid,
+          description,
+        })
+      : JSON.stringify({ sales_rep_id, amount_paid, description }),
+  })
+    .then((data) => data.json())
+    .then((res) => res)
+    .catch((e) => console.log("Error:", e));
+}
+
+export function deleteExpenseEntry(id) {
+  // let url = new URL(`http://107.22.18.203/sales/${id}`);
+  let url = new URL(`http://127.0.0.1:3000/expenses/${id}`);
+
+  return fetch(url, {
+    headers: {
+      Accept: "application/json",
+      "Content-Type": "application/json",
+    },
+    method: "DELETE",
+  })
+    .then((data) => data.text())
+    .then((res) => res)
     .catch((e) => console.log("Error:", e));
 }

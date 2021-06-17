@@ -1,25 +1,23 @@
-import React, { useState } from "react";
+import React, { useContext } from "react";
 import { useHistory } from "react-router-dom";
-import ExpenseTable from "./Components/DisplaySales/ExpenseTable";
-import IncomeTable from "./Components/DisplaySales/IncomeTable";
+import Sale from "./Components/DisplaySales/Sale";
+import SalesTable from "./Components/DisplaySales/SalesTable";
 // import FilterByCardId from "./Components/FilterSales/FilterByCardId";
 // import FilterByDate from "./Components/FilterSales/FilterByDate";
 // import FilterByDateRange from "./Components/FilterSales/FilterByDateRange";
 import Layout from "./Layout";
+import SalesContext from "./SalesContext";
 // import { filterSales } from "./services/api";
 
 function App() {
   const history = useHistory();
+  const { tabState, setTabState } = useContext(SalesContext);
   // const [filterBy, setFilterBy] = useState("");
   // const [filterData, setFilterData] = useState([]);
   // const [dateFilter, setDateFilter] = useState({
   //   startDate: "",
   //   endDate: "",
   // });
-  const [tabState, setTabState] = useState({
-    income: true,
-    expense: false,
-  });
   // const salesRepId = 1;
 
   // function getSalesEntriesHandler() {
@@ -126,7 +124,7 @@ function App() {
         </div>
       </div>
 
-      {tabState.income ? <IncomeTable /> : <ExpenseTable />}
+      <SalesTable />
 
       {/* <button
           onClick={getSalesEntriesHandler}

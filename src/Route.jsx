@@ -8,6 +8,10 @@ import { getExpenseEntries, getIncomeEntries } from "./services/api";
 const Routes = () => {
   const [incomeEntries, setIncomeEntries] = useState([]);
   const [expenseEntries, setExpenseEntries] = useState([]);
+  const [tabState, setTabState] = useState({
+    income: true,
+    expense: false,
+  });
   useEffect(() => {
     getIncomeEntries()
       .then((res) => setIncomeEntries(res))
@@ -24,6 +28,8 @@ const Routes = () => {
         setIncomeEntries,
         expenseEntries,
         setExpenseEntries,
+        tabState,
+        setTabState,
       }}
     >
       <Router>
