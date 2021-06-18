@@ -21,7 +21,7 @@ export function getIncomeEntries(cardId, date) {
     .catch((e) => console.log("Error:", e));
 }
 
-export function addSalesEntry(
+export function addIncomeEntry(
   card_id,
   sales_rep_id,
   amount_paid,
@@ -154,6 +154,23 @@ export function addExpenseEntry(
       : JSON.stringify({ sales_rep_id, amount_paid, description }),
   })
     .then((data) => data.json())
+    .then((res) => res)
+    .catch((e) => console.log("Error:", e));
+}
+
+export function updateExpenseEntry(id, body) {
+  // let url = new URL(`http://107.22.18.203/sales/${id}`);
+  let url = new URL(`http://127.0.0.1:3000/expenses/${id}`);
+
+  return fetch(url, {
+    headers: {
+      Accept: "application/json",
+      "Content-Type": "application/json",
+    },
+    method: "PUT",
+    body: JSON.stringify(body),
+  })
+    .then((data) => data.text())
     .then((res) => res)
     .catch((e) => console.log("Error:", e));
 }

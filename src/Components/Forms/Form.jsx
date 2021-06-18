@@ -13,13 +13,7 @@ const Form = ({
     <>
       {type === "income" ? (
         <form
-          onSubmit={() => {
-            if (!edit) {
-              handleSubmit(onSubmit);
-            } else {
-              console.log("call edit handler");
-            }
-          }}
+          onSubmit={handleSubmit(onSubmit)}
           className="inline-block text-left"
         >
           <label className="block">Card Number</label>
@@ -89,14 +83,7 @@ const Form = ({
         </form>
       ) : (
         <form
-          onSubmit={(e) => {
-            if (edit === false) {
-              handleSubmit(onSubmit);
-            }
-            if (edit === true) {
-              console.log("call edit handler");
-            }
-          }}
+          onSubmit={handleSubmit(onSubmit)}
           className="inline-block text-left"
         >
           <label className="block">Date</label>
@@ -142,7 +129,7 @@ const Form = ({
           <label className="block">Description</label>
           <input
             className="block mb-2 shadow-xl"
-            defaultValue={edit && history.location.state[0].description}
+            defaultValue={edit ? history.location.state[0].description : ""}
             {...register("description", {
               required: "This field is required",
             })}
