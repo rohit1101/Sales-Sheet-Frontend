@@ -8,6 +8,7 @@ const Form = ({
   register,
   errors,
   edit,
+  dirtyFields,
 }) => {
   return (
     <>
@@ -71,6 +72,7 @@ const Form = ({
           )} */}
 
           <input
+            disabled={Object.keys(dirtyFields).length > 0 ? false : true}
             type="submit"
             className="block my-2 min-w-full bg-purple-300 text-purple-600 font-normal hover:bg-purple-200 duration-100 hover:text-purple-800 rounded-md px-2 py-1 shadow-2xl"
           />
@@ -139,6 +141,7 @@ const Form = ({
           )}
 
           <input
+            disabled={Object.keys(dirtyFields).length > 0 ? false : true}
             type="submit"
             className="block my-2 min-w-full bg-purple-300 text-purple-600 font-normal hover:bg-purple-200 duration-100 hover:text-purple-800 rounded-md px-2 py-1 shadow-2xl"
           />

@@ -8,6 +8,7 @@ import SalesContext from "../SalesContext";
 import {
   addExpenseEntry,
   addIncomeEntry,
+  updateExpenseEntry,
   updateSalesEntry,
 } from "../services/api";
 
@@ -19,7 +20,7 @@ const CreateSalesEntry = () => {
     handleSubmit,
     // getValues,
     reset,
-    formState: { errors },
+    formState: { errors, dirtyFields },
   } = useForm();
 
   const history = useHistory();
@@ -28,8 +29,6 @@ const CreateSalesEntry = () => {
   const salesRepId = 1;
   // const initialValues = getValues(); // Values are undefined..
   const onSubmit = (data, e) => {
-    // const { date, amount_paid, description, sales } = data;
-
     if (history.location.pathname === `/income/${id}`) {
       const initialValues = incomeEntries.filter((income) => {
         return income.id.toString() === id.toString();
@@ -51,17 +50,17 @@ const CreateSalesEntry = () => {
         body[item] = data[item].toString();
       });
       console.log(body);
-      const newState = [...incomeEntries].map((income) => {
-        if (income.id.toString() === id.toString()) {
-          return {
-            ...income,
-            ...body,
-          };
-        }
-        return income;
-      });
-      console.log(newState);
-      setIncomeEntries(newState);
+      // const newState = [...incomeEntries].map((income) => {
+      //   if (income.id.toString() === id.toString()) {
+      //     return {
+      //       ...income,
+      //       ...body,
+      //     };
+      //   }
+      //   return income;
+      // });
+      // console.log(newState);
+      // setIncomeEntries(newState);
       // updateSalesEntry(id, body)
       //   .then((res) => console.log(res))
       //   .catch((error) => console.log("From App.js METHOD = PUT", error));
@@ -101,12 +100,12 @@ const CreateSalesEntry = () => {
       });
       console.log(newState);
       setExpenseEntries(newState);
-      // updateSalesEntry(id, body)
-      //   .then((res) => console.log(res))
-      //   .catch((error) => console.log("From App.js METHOD = PUT", error));
+      updateExpenseEntry(id, body)
+        .then((res) => console.log(res))
+        .catch((error) => console.log("From App.js METHOD = PUT", error));
 
-      // reset();
-      // history.push("/");
+      reset();
+      history.push("/");
     }
 
     if (history.location.pathname === "/expense") {
@@ -141,7 +140,7 @@ const CreateSalesEntry = () => {
           register={register}
           errors={errors}
           history={history}
-          // dirtyFields={dirtyFields}
+          dirtyFields={dirtyFields}
         />
       </div>
     </Layout>
