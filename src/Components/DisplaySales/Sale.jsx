@@ -34,8 +34,8 @@ const Sale = ({ sale }) => {
           <td className="border border-green-600">{sale && sale.card_id}</td>
           <td className="border border-green-600">
             {sale && sale.date
-              ? new Date(sale.date).toLocaleString()
-              : new Date().toLocaleString()}
+              ? new Date(sale.date).toLocaleDateString()
+              : new Date().toLocaleDateString()}
           </td>
           <td className="border border-green-600">
             {sale && sale.amount_paid}
@@ -85,8 +85,8 @@ const Sale = ({ sale }) => {
         <tr className="bg-yellow-200">
           <td className="border border-green-600">
             {sale && sale.date
-              ? new Date(sale.date).toLocaleString()
-              : new Date().toLocaleString()}
+              ? new Date(sale.date).toLocaleDateString()
+              : new Date().toLocaleDateString()}
           </td>
           <td className="border border-green-600">
             {sale && sale.amount_paid}

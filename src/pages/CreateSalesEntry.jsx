@@ -30,15 +30,17 @@ const CreateSalesEntry = () => {
   // const initialValues = getValues(); // Values are undefined..
   const onSubmit = (data, e) => {
     if (history.location.pathname === `/income/${id}`) {
-      const initialValues = incomeEntries.filter((income) => {
+      const initialValues = [...incomeEntries].filter((income) => {
         return income.id.toString() === id.toString();
       })[0];
-      initialValues.date = new Date(initialValues.date)
-        .toLocaleDateString()
-        .split("/")
-        .reverse()
-        .join("-");
-      console.log(initialValues, data);
+
+      // initialValues.date = new Date(initialValues.date)
+      //   .toLocaleDateString()
+      //   .split("/")
+      //   .reverse()
+      //   .join("-");
+
+      console.log("initial", initialValues, "edit form data", data);
       const name = ["amount_paid", "date", "card_id"];
 
       const identifier = name.filter((item) => {
@@ -50,23 +52,27 @@ const CreateSalesEntry = () => {
         body[item] = data[item].toString();
       });
       console.log(body);
-      // const newState = [...incomeEntries].map((income) => {
-      //   if (income.id.toString() === id.toString()) {
-      //     return {
-      //       ...income,
-      //       ...body,
-      //     };
-      //   }
-      //   return income;
-      // });
-      // console.log(newState);
-      // setIncomeEntries(newState);
-      // updateSalesEntry(id, body)
-      //   .then((res) => console.log(res))
-      //   .catch((error) => console.log("From App.js METHOD = PUT", error));
+      const newState = [...incomeEntries].map((income) => {
+        if (income.id.toString() === id.toString()) {
+          console.log({
+            ...income,
+            ...body,
+          });
+          return {
+            ...income,
+            ...body,
+          };
+        }
+        return income;
+      });
+      console.log(newState);
+      setIncomeEntries(newState);
+      updateSalesEntry(id, body)
+        .then((res) => console.log(res))
+        .catch((error) => console.log("From App.js METHOD = PUT", error));
 
-      // reset();
-      // history.push("/");
+      reset();
+      history.push("/");
     }
     if (history.location.pathname === `/expense/${id}`) {
       const initialValues = expenseEntries.filter((expense) => {
