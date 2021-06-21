@@ -34,11 +34,11 @@ const CreateSalesEntry = () => {
         return income.id.toString() === id.toString();
       })[0];
 
-      // initialValues.date = new Date(initialValues.date)
-      //   .toLocaleDateString()
-      //   .split("/")
-      //   .reverse()
-      //   .join("-");
+      initialValues.date = new Date(initialValues.date)
+        .toLocaleDateString()
+        .split("/")
+        .reverse()
+        .join("-");
 
       console.log("initial", initialValues, "edit form data", data);
       const name = ["amount_paid", "date", "card_id"];
