@@ -75,7 +75,7 @@ const CreateSalesEntry = () => {
       history.push("/");
     }
     if (history.location.pathname === `/expense/${id}`) {
-      const initialValues = expenseEntries.filter((expense) => {
+      const initialValues = [...expenseEntries].filter((expense) => {
         return expense.id.toString() === id.toString();
       })[0];
       initialValues.date = new Date(initialValues.date)
