@@ -3,7 +3,12 @@ import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import App from "./App";
 import CreateSalesEntry from "./pages/CreateSalesEntry";
 import SalesContext from "./SalesContext";
-import { getExpenseEntries, getIncomeEntries } from "./services/api";
+import {
+  getAllExpensesEntries,
+  getAllIncomeEntries,
+  getExpenseEntries,
+  getIncomeEntries,
+} from "./services/api";
 
 const Routes = () => {
   const [incomeEntries, setIncomeEntries] = useState([]);
@@ -13,10 +18,10 @@ const Routes = () => {
     expense: false,
   });
   useEffect(() => {
-    getIncomeEntries()
+    getAllIncomeEntries()
       .then((res) => setIncomeEntries(res))
       .catch((error) => console.log("From App.js METHOD = GET: ", error));
-    getExpenseEntries()
+    getAllExpensesEntries()
       .then((res) => setExpenseEntries(res))
       .catch((error) => console.log("From App.js METHOD = GET: ", error));
   }, []);

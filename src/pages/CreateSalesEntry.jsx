@@ -9,6 +9,7 @@ import {
   addExpenseEntry,
   addIncomeEntry,
   updateExpenseEntry,
+  updateIncomeEntry,
   updateSalesEntry,
 } from "../services/api";
 
@@ -67,7 +68,7 @@ const CreateSalesEntry = () => {
       });
       console.log(newState);
       setIncomeEntries(newState);
-      updateSalesEntry(id, body)
+      updateIncomeEntry(id, body)
         .then((res) => console.log(res))
         .catch((error) => console.log("From App.js METHOD = PUT", error));
 
