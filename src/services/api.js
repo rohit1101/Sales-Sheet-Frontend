@@ -3,7 +3,7 @@ export function getAllIncomeEntries(cardId, date) {
   let url = new URL(`http://127.0.0.1:3000/income`);
 
   let params = {
-    cardId,
+    card_id: cardId,
     date,
   };
 
