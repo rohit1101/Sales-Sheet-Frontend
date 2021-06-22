@@ -3,12 +3,7 @@ import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import App from "./App";
 import CreateSalesEntry from "./pages/CreateSalesEntry";
 import SalesContext from "./SalesContext";
-import {
-  getAllExpensesEntries,
-  getAllIncomeEntries,
-  getExpenseEntries,
-  getIncomeEntries,
-} from "./services/api";
+import { getAllExpensesEntries, getAllIncomeEntries } from "./services/api";
 
 const Routes = () => {
   const [incomeEntries, setIncomeEntries] = useState([]);

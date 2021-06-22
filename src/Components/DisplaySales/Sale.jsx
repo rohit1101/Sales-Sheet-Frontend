@@ -1,11 +1,7 @@
 import { useContext } from "react";
 import { useHistory } from "react-router-dom";
 import SalesContext from "../../SalesContext";
-import {
-  deleteExpenseEntry,
-  deleteIncomeEntry,
-  deleteSalesEntry,
-} from "../../services/api";
+import { deleteExpenseEntry, deleteIncomeEntry } from "../../services/api";
 
 const Sale = ({ sale }) => {
   const history = useHistory();

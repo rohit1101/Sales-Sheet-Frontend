@@ -10,7 +10,6 @@ import {
   addIncomeEntry,
   updateExpenseEntry,
   updateIncomeEntry,
-  updateSalesEntry,
 } from "../services/api";
 
 const CreateSalesEntry = () => {
