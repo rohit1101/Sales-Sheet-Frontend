@@ -1,4 +1,4 @@
-export function getIncomeEntries(cardId, date) {
+export function getAllIncomeEntries(cardId, date) {
   // let url = new URL(`http://107.22.18.203/sales`);
   let url = new URL(`http://127.0.0.1:3000/sales`);
 
@@ -55,7 +55,7 @@ export function addIncomeEntry(
     .catch((e) => console.log("Error:", e));
 }
 
-export function updateSalesEntry(id, body) {
+export function updateIncomeEntry(id, body) {
   // let url = new URL(`http://107.22.18.203/sales/${id}`);
   let url = new URL(`http://127.0.0.1:3000/sales/${id}`);
 
@@ -72,7 +72,7 @@ export function updateSalesEntry(id, body) {
     .catch((e) => console.log("Error:", e));
 }
 
-export function deleteSalesEntry(id) {
+export function deleteIncomeEntry(id) {
   // let url = new URL(`http://107.22.18.203/sales/${id}`);
   let url = new URL(`http://127.0.0.1:3000/sales/${id}`);
 
@@ -106,7 +106,7 @@ export function filterSales(val) {
   }
 }
 
-export function getExpenseEntries(cardId, date) {
+export function getAllExpensesEntries(cardId, date) {
   // let url = new URL(`http://107.22.18.203/sales`);
   let url = new URL(`http://127.0.0.1:3000/expenses`);
 

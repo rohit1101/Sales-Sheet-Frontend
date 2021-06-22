@@ -1,7 +1,11 @@
 import { useContext } from "react";
 import { useHistory } from "react-router-dom";
 import SalesContext from "../../SalesContext";
-import { deleteExpenseEntry, deleteSalesEntry } from "../../services/api";
+import {
+  deleteExpenseEntry,
+  deleteIncomeEntry,
+  deleteSalesEntry,
+} from "../../services/api";
 
 const Sale = ({ sale }) => {
   const history = useHistory();
@@ -16,7 +20,7 @@ const Sale = ({ sale }) => {
   function removeSalesEntryHandler(id) {
     // use the result from promise with snackbar component
     if (tabState.income) {
-      deleteSalesEntry(id).then((result) => console.log(result));
+      deleteIncomeEntry(id).then((result) => console.log(result));
       const newState = [...incomeEntries].filter((item) => item.id !== id);
       setIncomeEntries(newState);
     }
