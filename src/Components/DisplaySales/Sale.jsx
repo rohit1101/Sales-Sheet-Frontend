@@ -1,141 +1,138 @@
-import { useState } from "react";
-import { deleteSalesEntry, updateSalesEntry } from "../../services/api";
+import { useContext } from "react";
+import { useHistory } from "react-router-dom";
+import SalesContext from "../../SalesContext";
+import { deleteExpenseEntry, deleteIncomeEntry } from "../../services/api";
 
-const Sale = ({ sale, setSalesEntries, salesEntries }) => {
-  const [editState, setEditState] = useState(false);
-  const [editDataState, setEditDataState] = useState({
-    date: false,
-    amount_paid: false,
-  });
-  const [editData, setEditData] = useState({
-    date: new Date(sale.date)
-      .toLocaleDateString()
-      .split("/")
-      .reverse()
-      .join("-"),
-    amount_paid: sale.amount_paid,
-  });
-
-  function updateSalesEntryHandler(id) {
-    const newState = [...salesEntries].map((item) => {
-      if (item.id === id && editDataState.date && editDataState.amount_paid) {
-        item.date = editData.date;
-        item.amount_paid = editData.amount_paid;
-        updateSalesEntry(id, {
-          date: editData.date,
-          amount_paid: editData.amount_paid,
-        }).then((result) => console.log(result));
-        console.log("FE: inside both");
-      } else if (item.id === id && editDataState.amount_paid) {
-        item.amount_paid = editData.amount_paid;
-        updateSalesEntry(id, { amount_paid: editData.amount_paid }).then(
-          (result) => console.log(result)
-        );
-        console.log("FE: inside amount");
-      } else if (item.id === id && editDataState.date) {
-        item.date = editData.date;
-        updateSalesEntry(id, { date: editData.date }).then((result) =>
-          console.log(result)
-        );
-        console.log("FE: inside date");
-      }
-      return item;
-    });
-    console.log(newState);
-    setEditDataState({
-      amount_paid: false,
-      date: false,
-    });
-    setSalesEntries(newState);
-    setEditState(false);
-  }
+const Sale = ({ sale }) => {
+  const history = useHistory();
+  const {
+    tabState,
+    incomeEntries,
+    setIncomeEntries,
+    expenseEntries,
+    setExpenseEntries,
+  } = useContext(SalesContext);
 
   function removeSalesEntryHandler(id) {
     // use the result from promise with snackbar component
-    deleteSalesEntry(id).then((result) => console.log(result));
-    const newState = [...salesEntries].filter((item) => item.id !== id);
-    setSalesEntries(newState);
+    if (tabState.income) {
+      deleteIncomeEntry(id).then((result) => console.log(result));
+      const newState = [...incomeEntries].filter((item) => item.id !== id);
+      setIncomeEntries(newState);
+    }
+    if (tabState.expense) {
+      deleteExpenseEntry(id).then((result) => console.log(result));
+      const newState = [...expenseEntries].filter((item) => item.id !== id);
+      setExpenseEntries(newState);
+    }
   }
 
   return (
     <>
-      {editState ? (
-        <>
-          <label className="block">date</label>
-          <input
-            type="date"
-            value={editData.date}
-            onChange={(e) => {
-              setEditDataState({
-                ...editDataState,
-                date: true,
-              });
-              const newDate = e.target.value.split("/").reverse().join("-");
-              setEditData({
-                ...editData,
-                date: newDate,
-              });
-            }}
-          />
-          <label className="block">Amount</label>
-          <input
-            type="text"
-            value={editData.amount_paid}
-            onChange={(e) => {
-              setEditDataState({
-                ...editDataState,
-                amount_paid: true,
-              });
-              const newAmount = e.target.value;
-              setEditData({
-                ...editData,
-                amount_paid: newAmount,
-              });
-            }}
-          />
-          <button
-            onClick={() => {
-              setEditState(false);
-              setEditDataState({
-                amount_paid: false,
-                date: false,
-              });
-            }}
-            className="block my-2 min-w-full bg-purple-300 text-purple-600 font-normal hover:bg-purple-200 duration-100 hover:text-purple-800 rounded-md px-2 py-1 shadow-2xl"
+      {tabState.income ? (
+        <tr className="bg-yellow-200">
+          <td className="border border-green-600">{sale && sale.card_id}</td>
+          <td className="border border-green-600">
+            {sale && sale.date
+              ? new Date(sale.date).toLocaleDateString()
+              : new Date().toLocaleDateString()}
+          </td>
+          <td className="border border-green-600">
+            {sale && sale.amount_paid}
+          </td>
+          <td
+            className="border border-green-600"
+            onClick={() => removeSalesEntryHandler(sale.id)}
           >
-            Cancel
-          </button>
-          <button
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              className="cursor-pointer block h-6 w-6 mx-auto stroke-current text-red-500"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"
+              />
+            </svg>
+          </td>
+          <td
+            className="cursor-pointer border border-green-600"
             onClick={() => {
-              updateSalesEntryHandler(sale.id);
+              history.push(`/income/${sale.id}`, [sale]);
             }}
-            className={
-              editDataState.date || editDataState.amount_paid
-                ? "block my-2 min-w-full bg-purple-300 text-purple-600 font-normal hover:bg-purple-200 duration-100 hover:text-purple-800 rounded-md px-2 py-1 shadow-2xl"
-                : "opacity-40 block my-2 min-w-full bg-purple-300 text-purple-600 font-normal rounded-md px-2 py-1 shadow-2xl"
-            }
           >
-            Save Changes
-          </button>
-        </>
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              className="cursor-pointer block h-6 w-6 mx-auto stroke-current text-purple-500"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"
+              />
+            </svg>
+          </td>
+        </tr>
       ) : (
         <tr className="bg-yellow-200">
-          <td className="border border-green-600">{sale.card_id}</td>
-          <td className="border border-green-600">{sale.sales_rep_id}</td>
           <td className="border border-green-600">
-            {sale.date
-              ? new Date(sale.date).toLocaleString()
-              : new Date().toLocaleString()}
+            {sale && sale.date
+              ? new Date(sale.date).toLocaleDateString()
+              : new Date().toLocaleDateString()}
           </td>
-          <td className="border border-green-600">{sale.amount_paid}</td>
+          <td className="border border-green-600">
+            {sale && sale.amount_paid}
+          </td>
+          <td className="border border-green-600">
+            {sale && sale.description}
+          </td>
           <td
+            className="border border-green-600"
             onClick={() => removeSalesEntryHandler(sale.id)}
-            style={{ cursor: "pointer" }}
           >
-            &#x2715;
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              className="cursor-pointer block h-6 w-6 mx-auto stroke-current text-red-500"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"
+              />
+            </svg>
           </td>
-          <td onClick={() => setEditState(true)} style={{ cursor: "pointer" }}>
-            &#x270D;
+          <td
+            className="cursor-pointer border border-green-600"
+            onClick={() => {
+              history.push(`/expense/${sale.id}`, [sale]);
+            }}
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              className="cursor-pointer block h-6 w-6 mx-auto stroke-current text-purple-500"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"
+              />
+            </svg>
           </td>
         </tr>
       )}
