@@ -8,9 +8,7 @@ const Form = ({
   register,
   errors,
   edit,
-  dirtyFields,
   setValue,
-  getValues,
 }) => {
   useEffect(() => {
     !edit
