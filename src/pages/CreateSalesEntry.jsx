@@ -104,23 +104,27 @@ const CreateSalesEntry = () => {
         body[item] = data[item].toString();
       });
       console.log(body);
-      const newState = [...expenseEntries].map((expense) => {
-        if (expense.id.toString() === id.toString()) {
-          return {
-            ...expense,
-            ...body,
-          };
-        }
-        return expense;
-      });
-      console.log(newState);
-      setExpenseEntries(newState);
-      updateExpenseEntry(id, body)
-        .then((res) => console.log(res))
-        .catch((error) => console.log("From App.js METHOD = PUT", error));
+      if (Boolean(Object.keys(body).length)) {
+        const newState = [...expenseEntries].map((expense) => {
+          if (expense.id.toString() === id.toString()) {
+            return {
+              ...expense,
+              ...body,
+            };
+          }
+          return expense;
+        });
+        console.log(newState);
+        setExpenseEntries(newState);
+        updateExpenseEntry(id, body)
+          .then((res) => console.log(res))
+          .catch((error) => console.log("From App.js METHOD = PUT", error));
 
-      reset();
-      history.push("/");
+        reset();
+        history.push("/");
+      } else {
+        alert("Edit atleast one the fields");
+      }
     }
 
     if (history.location.pathname === "/expense") {

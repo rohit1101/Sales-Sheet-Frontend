@@ -10,6 +10,7 @@ const Form = ({
   edit,
   dirtyFields,
   setValue,
+  getValues,
 }) => {
   useEffect(() => {
     !edit
@@ -147,15 +148,15 @@ const Form = ({
             className="block mb-2 shadow-xl"
             defaultValue={edit ? history.location.state[0].description : ""}
             {...register("description", {
-              required: "This field is required",
+              validate: (value) => value.trim().length > 0,
             })}
           />
           {errors.description && (
-            <p style={{ color: "red" }}>{errors.description.message}</p>
+            <p style={{ color: "red" }}>This field is required</p>
           )}
 
           <input
-            disabled={edit ? true : false}
+            // disabled={edit ? true : false}
             type="submit"
             className="block my-2 min-w-full bg-purple-300 text-purple-600 font-normal hover:bg-purple-200 duration-100 hover:text-purple-800 rounded-md px-2 py-1 shadow-2xl"
           />
