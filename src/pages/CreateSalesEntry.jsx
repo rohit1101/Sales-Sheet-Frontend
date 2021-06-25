@@ -22,7 +22,9 @@ const CreateSalesEntry = () => {
     setValue,
     reset,
     formState: { errors, dirtyFields },
-  } = useForm();
+  } = useForm({
+    mode: "all",
+  });
 
   const history = useHistory();
   const { id } = useParams();
@@ -31,6 +33,7 @@ const CreateSalesEntry = () => {
   // const initialValues = getValues(); // Values are undefined..
   const onSubmit = (data, e) => {
     if (history.location.pathname === `/income/${id}`) {
+      console.log(dirtyFields);
       const initialValues = [...incomeEntries].filter((income) => {
         return income.id.toString() === id.toString();
       })[0];
@@ -53,27 +56,32 @@ const CreateSalesEntry = () => {
         body[item] = data[item].toString();
       });
       console.log(body);
-      const newState = [...incomeEntries].map((income) => {
-        if (income.id.toString() === id.toString()) {
-          console.log({
-            ...income,
-            ...body,
-          });
-          return {
-            ...income,
-            ...body,
-          };
-        }
-        return income;
-      });
-      console.log(newState);
-      setIncomeEntries(newState);
-      updateIncomeEntry(id, body)
-        .then((res) => console.log(res))
-        .catch((error) => console.log("From App.js METHOD = PUT", error));
 
-      reset();
-      history.push("/");
+      if (Boolean(Object.keys(body).length)) {
+        const newState = [...incomeEntries].map((income) => {
+          if (income.id.toString() === id.toString()) {
+            console.log({
+              ...income,
+              ...body,
+            });
+            return {
+              ...income,
+              ...body,
+            };
+          }
+          return income;
+        });
+        console.log(newState);
+        setIncomeEntries(newState);
+        updateIncomeEntry(id, body)
+          .then((res) => console.log(res))
+          .catch((error) => console.log("From App.js METHOD = PUT", error));
+
+        reset();
+        history.push("/");
+      } else {
+        alert("Edit atleast one the fields");
+      }
     }
     if (history.location.pathname === `/expense/${id}`) {
       const initialValues = [...expenseEntries].filter((expense) => {
