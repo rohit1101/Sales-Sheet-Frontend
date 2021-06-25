@@ -19,6 +19,7 @@ const CreateSalesEntry = () => {
     register,
     handleSubmit,
     // getValues,
+    setValue,
     reset,
     formState: { errors, dirtyFields },
   } = useForm();
@@ -116,6 +117,7 @@ const CreateSalesEntry = () => {
 
     if (history.location.pathname === "/expense") {
       const { amount_paid, date, description } = data;
+
       addExpenseEntry(salesRepId, amount_paid, date, description)
         .then((res) => setExpenseEntries([...expenseEntries, res]))
         .catch((error) => console.log("From App.js METHOD = POST", error));
@@ -124,6 +126,7 @@ const CreateSalesEntry = () => {
     }
     if (history.location.pathname === "/income") {
       const { card_id, amount_paid, date } = data;
+
       addIncomeEntry(card_id, salesRepId, amount_paid, date)
         .then((res) => setIncomeEntries([...incomeEntries, res]))
         .catch((error) => console.log("From App.js METHOD = POST", error));
@@ -147,6 +150,7 @@ const CreateSalesEntry = () => {
           errors={errors}
           history={history}
           dirtyFields={dirtyFields}
+          setValue={setValue}
         />
       </div>
     </Layout>

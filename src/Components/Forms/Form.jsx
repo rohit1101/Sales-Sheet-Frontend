@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 
 const Form = ({
   type,
@@ -9,7 +9,24 @@ const Form = ({
   errors,
   edit,
   dirtyFields,
+  setValue,
 }) => {
+  useEffect(() => {
+    !edit
+      ? setValue(
+          "date",
+          new Date().toLocaleDateString().split("/").reverse().join("-")
+        )
+      : setValue(
+          "date",
+          new Date(history.location.state[0].date)
+            .toLocaleDateString()
+            .split("/")
+            .reverse()
+            .join("-")
+        );
+  }, []);
+
   return (
     <>
       {type === "income" ? (
@@ -32,24 +49,11 @@ const Form = ({
           )}
 
           <label className="block">Date</label>
+
           <input
             className="block mb-2 shadow-xl focus:outline-none focus:ring-2 focus:ring-purple-300"
             type="date"
-            // defaultValue={edit && history.location.state[0].date}
-            {...register("date", {
-              value: edit
-                ? new Date(history.location.state[0].date)
-                    .toLocaleDateString()
-                    .split("/")
-                    .reverse()
-                    .join("-")
-                : new Date()
-                    .toLocaleDateString()
-                    .split("/")
-                    .reverse()
-                    .join("-"),
-              // valueAsDate: true,
-            })}
+            {...register("date")}
           />
 
           <label className="block">Amount</label>
@@ -66,7 +70,9 @@ const Form = ({
               // },
             })}
           />
-          {errors.amount_paid && <p>{errors.amount_paid.message}</p>}
+          {errors.amount_paid && (
+            <p style={{ color: "red" }}>{errors.amount_paid.message}</p>
+          )}
           {/* {errors.amount_paid && errors.amount_paid.type === "lessThanZero" && (
             <p>Amount should be greater than zero</p>
           )} */}
@@ -89,23 +95,23 @@ const Form = ({
           className="inline-block text-left"
         >
           <label className="block">Date</label>
-          <input
-            className="block mb-2 shadow-xl"
-            type="date"
-            {...register("date", {
-              value: edit
-                ? new Date(history.location.state[0].date)
-                    .toLocaleDateString()
-                    .split("/")
-                    .reverse()
-                    .join("-")
-                : new Date()
+          {edit ? (
+            <input
+              className="block mb-2 shadow-xl focus:outline-none focus:ring-2 focus:ring-purple-300"
+              type="date"
+              {...register("date", {
+                value:
+                  edit &&
+                  new Date(history.location.state[0].date)
                     .toLocaleDateString()
                     .split("/")
                     .reverse()
                     .join("-"),
-            })}
-          />
+              })}
+            />
+          ) : (
+            <input type="date" {...register("date")} />
+          )}
 
           <label className="block">Amount</label>
           <input

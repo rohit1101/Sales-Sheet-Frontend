@@ -53,7 +53,7 @@ const Sale = ({ sale }) => {
               history.push(`/income/${sale.id}`, [sale]);
             }}
           >
-            <Icons />
+            <Icons type="edit" />
           </td>
         </tr>
       ) : (
@@ -81,7 +81,7 @@ const Sale = ({ sale }) => {
               history.push(`/expense/${sale.id}`, [sale]);
             }}
           >
-            <Icons />
+            <Icons type="edit" />
           </td>
         </tr>
       )}
