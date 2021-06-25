@@ -18,10 +18,9 @@ const CreateSalesEntry = () => {
   const {
     register,
     handleSubmit,
-    // getValues,
     setValue,
     reset,
-    formState: { errors, dirtyFields },
+    formState: { errors },
   } = useForm({
     mode: "all",
   });
@@ -33,7 +32,6 @@ const CreateSalesEntry = () => {
   // const initialValues = getValues(); // Values are undefined..
   const onSubmit = (data, e) => {
     if (history.location.pathname === `/income/${id}`) {
-      console.log(dirtyFields);
       const initialValues = [...incomeEntries].filter((income) => {
         return income.id.toString() === id.toString();
       })[0];
@@ -161,7 +159,6 @@ const CreateSalesEntry = () => {
           register={register}
           errors={errors}
           history={history}
-          dirtyFields={dirtyFields}
           setValue={setValue}
         />
       </div>
