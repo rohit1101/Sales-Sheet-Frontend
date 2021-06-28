@@ -110,7 +110,7 @@ export function filterSales(val) {
 
 export function getAllExpensesEntries(cardId, date) {
   // let url = new URL(`http://107.22.18.203/sales`);
-  let url = new URL(`${baseURL}/expenses`);
+  let url = new URL(`${baseURL}/expense`);
 
   let params = {
     cardId,
