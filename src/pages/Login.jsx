@@ -1,5 +1,12 @@
 const Login = () => {
-  return <h1>Login</h1>;
+  return (
+    <form action="">
+      <label>Username</label>
+      <input />
+      <label>Password</label>
+      <input />
+    </form>
+  );
 };
 
 export default Login;
