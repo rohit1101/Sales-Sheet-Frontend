@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 
 const Form = ({
   type,
@@ -8,8 +8,24 @@ const Form = ({
   register,
   errors,
   edit,
-  dirtyFields,
+  setValue,
 }) => {
+  useEffect(() => {
+    !edit
+      ? setValue(
+          "date",
+          new Date().toLocaleDateString().split("/").reverse().join("-")
+        )
+      : setValue(
+          "date",
+          new Date(history.location.state[0].date)
+            .toLocaleDateString()
+            .split("/")
+            .reverse()
+            .join("-")
+        );
+  }, []);
+
   return (
     <>
       {type === "income" ? (
@@ -32,24 +48,11 @@ const Form = ({
           )}
 
           <label className="block">Date</label>
+
           <input
             className="block mb-2 shadow-xl focus:outline-none focus:ring-2 focus:ring-purple-300"
             type="date"
-            // defaultValue={edit && history.location.state[0].date}
-            {...register("date", {
-              value: edit
-                ? new Date(history.location.state[0].date)
-                    .toLocaleDateString()
-                    .split("/")
-                    .reverse()
-                    .join("-")
-                : new Date()
-                    .toLocaleDateString()
-                    .split("/")
-                    .reverse()
-                    .join("-"),
-              // valueAsDate: true,
-            })}
+            {...register("date")}
           />
 
           <label className="block">Amount</label>
@@ -66,16 +69,26 @@ const Form = ({
               // },
             })}
           />
-          {errors.amount_paid && <p>{errors.amount_paid.message}</p>}
+          {errors.amount_paid && (
+            <p style={{ color: "red" }}>{errors.amount_paid.message}</p>
+          )}
           {/* {errors.amount_paid && errors.amount_paid.type === "lessThanZero" && (
             <p>Amount should be greater than zero</p>
           )} */}
 
-          <input
-            disabled={Object.keys(dirtyFields).length > 0 ? false : true}
-            type="submit"
-            className="block my-2 min-w-full bg-purple-300 text-purple-600 font-normal hover:bg-purple-200 duration-100 hover:text-purple-800 rounded-md px-2 py-1 shadow-2xl"
-          />
+          {edit ? (
+            <input
+              // disabled={Object.keys(dirtyFields).length > 0 ? false : true}
+              type="submit"
+              className="block my-2 min-w-full bg-purple-300 text-purple-600 font-normal hover:bg-purple-200 duration-100 hover:text-purple-800 rounded-md px-2 py-1 shadow-2xl"
+            />
+          ) : (
+            <input
+              type="submit"
+              className="block my-2 min-w-full bg-purple-300 text-purple-600 font-normal hover:bg-purple-200 duration-100 hover:text-purple-800 rounded-md px-2 py-1 shadow-2xl"
+            />
+          )}
+
           <input
             type="button"
             value="Cancel"
@@ -89,23 +102,23 @@ const Form = ({
           className="inline-block text-left"
         >
           <label className="block">Date</label>
-          <input
-            className="block mb-2 shadow-xl"
-            type="date"
-            {...register("date", {
-              value: edit
-                ? new Date(history.location.state[0].date)
-                    .toLocaleDateString()
-                    .split("/")
-                    .reverse()
-                    .join("-")
-                : new Date()
+          {edit ? (
+            <input
+              className="block mb-2 shadow-xl focus:outline-none focus:ring-2 focus:ring-purple-300"
+              type="date"
+              {...register("date", {
+                value:
+                  edit &&
+                  new Date(history.location.state[0].date)
                     .toLocaleDateString()
                     .split("/")
                     .reverse()
                     .join("-"),
-            })}
-          />
+              })}
+            />
+          ) : (
+            <input type="date" {...register("date")} />
+          )}
 
           <label className="block">Amount</label>
           <input
@@ -133,15 +146,15 @@ const Form = ({
             className="block mb-2 shadow-xl"
             defaultValue={edit ? history.location.state[0].description : ""}
             {...register("description", {
-              required: "This field is required",
+              validate: (value) => value.trim().length > 0,
             })}
           />
           {errors.description && (
-            <p style={{ color: "red" }}>{errors.description.message}</p>
+            <p style={{ color: "red" }}>This field is required</p>
           )}
 
           <input
-            disabled={Object.keys(dirtyFields).length > 0 ? false : true}
+            // disabled={edit ? true : false}
             type="submit"
             className="block my-2 min-w-full bg-purple-300 text-purple-600 font-normal hover:bg-purple-200 duration-100 hover:text-purple-800 rounded-md px-2 py-1 shadow-2xl"
           />

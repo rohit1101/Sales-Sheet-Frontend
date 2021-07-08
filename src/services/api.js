@@ -1,6 +1,8 @@
+import { baseURL } from "../constants";
+
 export function getAllIncomeEntries(cardId, date) {
   // let url = new URL(`http://107.22.18.203/sales`);
-  let url = new URL(`http://127.0.0.1:3000/income`);
+  let url = new URL(`${baseURL}/income`);
 
   let params = {
     card_id: cardId,
@@ -29,7 +31,7 @@ export function addIncomeEntry(
   description
 ) {
   // let url = new URL(`http://107.22.18.203/sale`);
-  let url = new URL(`http://127.0.0.1:3000/income`);
+  let url = new URL(`${baseURL}/income`);
 
   return fetch(url, {
     headers: {
@@ -57,7 +59,7 @@ export function addIncomeEntry(
 
 export function updateIncomeEntry(id, body) {
   // let url = new URL(`http://107.22.18.203/sales/${id}`);
-  let url = new URL(`http://127.0.0.1:3000/income/${id}`);
+  let url = new URL(`${baseURL}/income/${id}`);
 
   return fetch(url, {
     headers: {
@@ -74,7 +76,7 @@ export function updateIncomeEntry(id, body) {
 
 export function deleteIncomeEntry(id) {
   // let url = new URL(`http://107.22.18.203/sales/${id}`);
-  let url = new URL(`http://127.0.0.1:3000/income/${id}`);
+  let url = new URL(`${baseURL}/income/${id}`);
 
   return fetch(url, {
     headers: {
@@ -91,14 +93,14 @@ export function deleteIncomeEntry(id) {
 export function filterSales(val) {
   if (typeof val === "object") {
     let url = new URL(
-      `http://127.0.0.1:3000/filter?start=${val.startDate}&end=${val.endDate}`
+      `${baseURL}/filter?start=${val.startDate}&end=${val.endDate}`
     );
     return fetch(url)
       .then((result) => result.json())
       .then((res) => res)
       .catch((e) => console.log("ERROR while filtering sales FE:", e));
   } else {
-    let url = new URL(`http://127.0.0.1:3000/filter?by=${val}`);
+    let url = new URL(`${baseURL}/filter?by=${val}`);
     return fetch(url)
       .then((result) => result.json())
       .then((res) => res)
@@ -108,7 +110,7 @@ export function filterSales(val) {
 
 export function getAllExpensesEntries(cardId, date) {
   // let url = new URL(`http://107.22.18.203/sales`);
-  let url = new URL(`http://127.0.0.1:3000/expenses`);
+  let url = new URL(`${baseURL}/expense`);
 
   let params = {
     cardId,
@@ -136,7 +138,7 @@ export function addExpenseEntry(
   description
 ) {
   // let url = new URL(`http://107.22.18.203/sale`);
-  let url = new URL(`http://127.0.0.1:3000/expense`);
+  let url = new URL(`${baseURL}/expense`);
 
   return fetch(url, {
     headers: {
@@ -160,7 +162,7 @@ export function addExpenseEntry(
 
 export function updateExpenseEntry(id, body) {
   // let url = new URL(`http://107.22.18.203/sales/${id}`);
-  let url = new URL(`http://127.0.0.1:3000/expenses/${id}`);
+  let url = new URL(`${baseURL}/expenses/${id}`);
 
   return fetch(url, {
     headers: {
@@ -177,7 +179,7 @@ export function updateExpenseEntry(id, body) {
 
 export function deleteExpenseEntry(id) {
   // let url = new URL(`http://107.22.18.203/sales/${id}`);
-  let url = new URL(`http://127.0.0.1:3000/expenses/${id}`);
+  let url = new URL(`${baseURL}/expenses/${id}`);
 
   return fetch(url, {
     headers: {

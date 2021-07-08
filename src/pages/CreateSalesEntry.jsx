@@ -18,10 +18,12 @@ const CreateSalesEntry = () => {
   const {
     register,
     handleSubmit,
-    // getValues,
+    setValue,
     reset,
-    formState: { errors, dirtyFields },
-  } = useForm();
+    formState: { errors },
+  } = useForm({
+    mode: "all",
+  });
 
   const history = useHistory();
   const { id } = useParams();
@@ -52,27 +54,32 @@ const CreateSalesEntry = () => {
         body[item] = data[item].toString();
       });
       console.log(body);
-      const newState = [...incomeEntries].map((income) => {
-        if (income.id.toString() === id.toString()) {
-          console.log({
-            ...income,
-            ...body,
-          });
-          return {
-            ...income,
-            ...body,
-          };
-        }
-        return income;
-      });
-      console.log(newState);
-      setIncomeEntries(newState);
-      updateIncomeEntry(id, body)
-        .then((res) => console.log(res))
-        .catch((error) => console.log("From App.js METHOD = PUT", error));
 
-      reset();
-      history.push("/");
+      if (Boolean(Object.keys(body).length)) {
+        const newState = [...incomeEntries].map((income) => {
+          if (income.id.toString() === id.toString()) {
+            console.log({
+              ...income,
+              ...body,
+            });
+            return {
+              ...income,
+              ...body,
+            };
+          }
+          return income;
+        });
+        console.log(newState);
+        setIncomeEntries(newState);
+        updateIncomeEntry(id, body)
+          .then((res) => console.log(res))
+          .catch((error) => console.log("From App.js METHOD = PUT", error));
+
+        reset();
+        history.push("/");
+      } else {
+        alert("Edit atleast one the fields");
+      }
     }
     if (history.location.pathname === `/expense/${id}`) {
       const initialValues = [...expenseEntries].filter((expense) => {
@@ -95,27 +102,32 @@ const CreateSalesEntry = () => {
         body[item] = data[item].toString();
       });
       console.log(body);
-      const newState = [...expenseEntries].map((expense) => {
-        if (expense.id.toString() === id.toString()) {
-          return {
-            ...expense,
-            ...body,
-          };
-        }
-        return expense;
-      });
-      console.log(newState);
-      setExpenseEntries(newState);
-      updateExpenseEntry(id, body)
-        .then((res) => console.log(res))
-        .catch((error) => console.log("From App.js METHOD = PUT", error));
+      if (Boolean(Object.keys(body).length)) {
+        const newState = [...expenseEntries].map((expense) => {
+          if (expense.id.toString() === id.toString()) {
+            return {
+              ...expense,
+              ...body,
+            };
+          }
+          return expense;
+        });
+        console.log(newState);
+        setExpenseEntries(newState);
+        updateExpenseEntry(id, body)
+          .then((res) => console.log(res))
+          .catch((error) => console.log("From App.js METHOD = PUT", error));
 
-      reset();
-      history.push("/");
+        reset();
+        history.push("/");
+      } else {
+        alert("Edit atleast one the fields");
+      }
     }
 
     if (history.location.pathname === "/expense") {
       const { amount_paid, date, description } = data;
+
       addExpenseEntry(salesRepId, amount_paid, date, description)
         .then((res) => setExpenseEntries([...expenseEntries, res]))
         .catch((error) => console.log("From App.js METHOD = POST", error));
@@ -124,6 +136,7 @@ const CreateSalesEntry = () => {
     }
     if (history.location.pathname === "/income") {
       const { card_id, amount_paid, date } = data;
+
       addIncomeEntry(card_id, salesRepId, amount_paid, date)
         .then((res) => setIncomeEntries([...incomeEntries, res]))
         .catch((error) => console.log("From App.js METHOD = POST", error));
@@ -146,7 +159,7 @@ const CreateSalesEntry = () => {
           register={register}
           errors={errors}
           history={history}
-          dirtyFields={dirtyFields}
+          setValue={setValue}
         />
       </div>
     </Layout>
