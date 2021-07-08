@@ -5,7 +5,7 @@ const SignUp = () => {
       <input />
       <label>Password</label>
       <input />
-      <input type="submit" />
+      <input type="submit" value='Sign Up'/>
     </form>
   );
 };

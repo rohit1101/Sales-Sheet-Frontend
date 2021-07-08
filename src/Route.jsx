@@ -3,7 +3,7 @@ import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import App from "./App";
 import CreateSalesEntry from "./pages/CreateSalesEntry";
 import Login from "./pages/Login";
-import SignUp from "./pages/Register";
+import SignUp from "./pages/SignUp";
 import SalesContext from "./SalesContext";
 import { getAllExpensesEntries, getAllIncomeEntries } from "./services/api";
 

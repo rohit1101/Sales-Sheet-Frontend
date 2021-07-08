@@ -4,7 +4,7 @@ const Login = () => {
       <label>Username</label>
       <input />
       <label>Password</label>
-      <input />
+      <input type="submit" value="Login" />
     </form>
   );
 };
