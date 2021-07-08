@@ -4,6 +4,7 @@ import App from "./App";
 import CreateSalesEntry from "./pages/CreateSalesEntry";
 import Login from "./pages/Login";
 import SignUp from "./pages/SignUp";
+import PrivateRoute from "./PrivateRoute";
 import SalesContext from "./SalesContext";
 import { getAllExpensesEntries, getAllIncomeEntries } from "./services/api";
 
@@ -42,21 +43,22 @@ const Routes = () => {
           <Route exact path="/signup">
             <SignUp />
           </Route>
-          <Route exact path="/">
+
+          <PrivateRoute exact path="/">
             <App />
-          </Route>
-          <Route exact path="/income">
+          </PrivateRoute>
+          <PrivateRoute exact path="/income">
             <CreateSalesEntry />
-          </Route>
-          <Route path="/income/:id" exact>
+          </PrivateRoute>
+          <PrivateRoute path="/income/:id" exact>
             <CreateSalesEntry />
-          </Route>
-          <Route path="/expense" exact>
+          </PrivateRoute>
+          <PrivateRoute path="/expense" exact>
             <CreateSalesEntry />
-          </Route>
-          <Route path="/expense/:id" exact>
+          </PrivateRoute>
+          <PrivateRoute path="/expense/:id" exact>
             <CreateSalesEntry />
-          </Route>
+          </PrivateRoute>
         </Switch>
       </Router>
     </SalesContext.Provider>
