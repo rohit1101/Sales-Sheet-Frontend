@@ -16,7 +16,7 @@ export async function login({ username, password }) {
       }),
     });
 
-    await res.json();
+    return await res.json();
   } catch (error) {
     console.log("Error:", error);
   }
@@ -59,7 +59,11 @@ export function getAllIncomeEntries(cardId, date) {
     }
   });
 
-  return fetch(url)
+  return fetch(url, {
+    headers: {
+      Authorization: `Bearer ${JSON.parse(localStorage.getItem("jwt"))}`,
+    },
+  })
     .then((data) => data.json())
     .then((res) => {
       return res;
@@ -81,6 +85,7 @@ export function addIncomeEntry(
     headers: {
       Accept: "application/json",
       "Content-Type": "application/json",
+      Authorization: `Bearer ${JSON.parse(localStorage.getItem("jwt"))}`,
     },
     method: "POST",
     body: Boolean(date)
@@ -109,6 +114,7 @@ export function updateIncomeEntry(id, body) {
     headers: {
       Accept: "application/json",
       "Content-Type": "application/json",
+      Authorization: `Bearer ${JSON.parse(localStorage.getItem("jwt"))}`,
     },
     method: "PUT",
     body: JSON.stringify(body),
@@ -126,6 +132,7 @@ export function deleteIncomeEntry(id) {
     headers: {
       Accept: "application/json",
       "Content-Type": "application/json",
+      Authorization: `Bearer ${JSON.parse(localStorage.getItem("jwt"))}`,
     },
     method: "DELETE",
   })
@@ -139,7 +146,11 @@ export function filterSales(val) {
     let url = new URL(
       `${baseURL}/filter?start=${val.startDate}&end=${val.endDate}`
     );
-    return fetch(url)
+    return fetch(url, {
+      headers: {
+        Authorization: `Bearer ${JSON.parse(localStorage.getItem("jwt"))}`,
+      },
+    })
       .then((result) => result.json())
       .then((res) => res)
       .catch((e) => console.log("ERROR while filtering sales FE:", e));
@@ -167,7 +178,11 @@ export function getAllExpensesEntries(cardId, date) {
     }
   });
 
-  return fetch(url)
+  return fetch(url, {
+    headers: {
+      Authorization: `Bearer ${JSON.parse(localStorage.getItem("jwt"))}`,
+    },
+  })
     .then((data) => data.json())
     .then((res) => {
       return res;
@@ -188,6 +203,7 @@ export function addExpenseEntry(
     headers: {
       Accept: "application/json",
       "Content-Type": "application/json",
+      Authorization: `Bearer ${JSON.parse(localStorage.getItem("jwt"))}`,
     },
     method: "POST",
     body: Boolean(date)
@@ -212,6 +228,7 @@ export function updateExpenseEntry(id, body) {
     headers: {
       Accept: "application/json",
       "Content-Type": "application/json",
+      Authorization: `Bearer ${JSON.parse(localStorage.getItem("jwt"))}`,
     },
     method: "PUT",
     body: JSON.stringify(body),
@@ -229,6 +246,7 @@ export function deleteExpenseEntry(id) {
     headers: {
       Accept: "application/json",
       "Content-Type": "application/json",
+      Authorization: `Bearer ${JSON.parse(localStorage.getItem("jwt"))}`,
     },
     method: "DELETE",
   })

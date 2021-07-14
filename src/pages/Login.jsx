@@ -1,4 +1,4 @@
-import { useContext } from "react";
+import { useContext, useState } from "react";
 import { useForm } from "react-hook-form";
 import { useHistory, useLocation } from "react-router-dom";
 import AuthContext from "../AuthContext";
@@ -18,7 +18,7 @@ const Login = () => {
   const {
     register,
     handleSubmit,
-    setValue,
+
     reset,
     formState: { errors },
   } = useForm();
@@ -30,7 +30,10 @@ const Login = () => {
     };
 
     login(newData)
-      .then((res) => console.log(res))
+      .then((res) => {
+        console.log(res);
+        localStorage.setItem("jwt", JSON.stringify(res.token));
+      })
       .catch((e) => console.log(e));
     reset();
   };
