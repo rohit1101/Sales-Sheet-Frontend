@@ -29,7 +29,15 @@ const CreateSalesEntry = () => {
   const { id } = useParams();
 
   const salesRepId = 1;
-  // const initialValues = getValues(); // Values are undefined..
+
+  const generateBody = (identifier, data) => {
+    const body = {};
+    identifier.forEach((item) => {
+      body[item] = data[item].toString();
+    });
+    return body;
+  };
+
   const onSubmit = (data, e) => {
     if (history.location.pathname === `/income/${id}`) {
       const initialValues = [...incomeEntries].filter((income) => {
@@ -49,10 +57,11 @@ const CreateSalesEntry = () => {
         return initialValues[item].toString() !== data[item].toString() && item;
       });
       console.log(identifier);
-      const body = {};
-      identifier.forEach((item) => {
-        body[item] = data[item].toString();
-      });
+
+      const body = generateBody(identifier, data);
+      // identifier.forEach((item) => {
+      //   body[item] = data[item].toString();
+      // });
       console.log(body);
 
       if (Boolean(Object.keys(body).length)) {

@@ -1,5 +1,49 @@
 import { baseURL } from "../constants";
 
+export async function login({ username, password }) {
+  let url = new URL(`${baseURL}/login`);
+
+  try {
+    const res = await fetch(url, {
+      method: "POST",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        username,
+        password,
+      }),
+    });
+
+    await res.json();
+  } catch (error) {
+    console.log("Error:", error);
+  }
+}
+
+export async function register({ username, password }) {
+  let url = new URL(`${baseURL}/register`);
+
+  try {
+    const res = await fetch(url, {
+      method: "POST",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        username,
+        password,
+      }),
+    });
+
+    await res.json();
+  } catch (error) {
+    console.log("Error:", error);
+  }
+}
+
 export function getAllIncomeEntries(cardId, date) {
   // let url = new URL(`http://107.22.18.203/sales`);
   let url = new URL(`${baseURL}/income`);
