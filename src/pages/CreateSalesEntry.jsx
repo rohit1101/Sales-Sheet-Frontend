@@ -4,7 +4,7 @@ import { useHistory, useParams } from "react-router-dom";
 import Form from "../Components/Forms/Form";
 import Layout from "../Layout";
 import NavBar from "../NavBar";
-import SalesContext from "../SalesContext";
+
 import {
   addExpenseEntry,
   addIncomeEntry,
@@ -13,8 +13,6 @@ import {
 } from "../services/api";
 
 const CreateSalesEntry = () => {
-  const { incomeEntries, setIncomeEntries, expenseEntries, setExpenseEntries } =
-    useContext(SalesContext);
   const {
     register,
     handleSubmit,
@@ -24,8 +22,10 @@ const CreateSalesEntry = () => {
   } = useForm({
     mode: "all",
   });
-
   const history = useHistory();
+
+  const { incomeEntries, setIncomeEntries, expenseEntries, setExpenseEntries } =
+    history.location && JSON.parse(history.location.state);
   const { id } = useParams();
 
   const salesRepId = 1;

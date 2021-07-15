@@ -50,7 +50,16 @@ const Sale = ({
           <td
             className="cursor-pointer border border-green-600"
             onClick={() => {
-              history.push(`/income/${sale.id}`, [sale]);
+              history.push({
+                pathname: `/income/${sale.id}`,
+                state: JSON.stringify({
+                  sale,
+                  incomeEntries,
+                  setIncomeEntries: setExpenseEntries,
+                  expenseEntries,
+                  setExpenseEntries: setExpenseEntries,
+                }),
+              });
             }}
           >
             <Icons type="edit" />
@@ -78,7 +87,16 @@ const Sale = ({
           <td
             className="cursor-pointer border border-green-600"
             onClick={() => {
-              history.push(`/expense/${sale.id}`, [sale]);
+              history.push({
+                pathname: `/expense/${sale.id}`,
+                state: JSON.stringify({
+                  sale,
+                  incomeEntries,
+                  setIncomeEntries: setIncomeEntries,
+                  expenseEntries,
+                  setExpenseEntries: setExpenseEntries,
+                }),
+              });
             }}
           >
             <Icons type="edit" />
