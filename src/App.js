@@ -1,16 +1,31 @@
-import React, { useContext } from "react";
+import React, { useEffect, useState } from "react";
 import { useHistory } from "react-router-dom";
 import SalesTable from "./Components/DisplaySales/SalesTable";
 // import FilterByCardId from "./Components/FilterSales/FilterByCardId";
 // import FilterByDate from "./Components/FilterSales/FilterByDate";
 // import FilterByDateRange from "./Components/FilterSales/FilterByDateRange";
 import Layout from "./Layout";
-import SalesContext from "./SalesContext";
+import { getAllExpensesEntries, getAllIncomeEntries } from "./services/api";
 // import { filterSales } from "./services/api";
 
 function App() {
   const history = useHistory();
-  const { tabState, setTabState } = useContext(SalesContext);
+  const [incomeEntries, setIncomeEntries] = useState([]);
+  const [expenseEntries, setExpenseEntries] = useState([]);
+  const [tabState, setTabState] = useState({
+    income: true,
+    expense: false,
+  });
+
+  useEffect(() => {
+    getAllIncomeEntries()
+      .then((res) => setIncomeEntries(res))
+      .catch((error) => console.log("From App.js METHOD = GET: ", error));
+    getAllExpensesEntries()
+      .then((res) => setExpenseEntries(res))
+      .catch((error) => console.log("From App.js METHOD = GET: ", error));
+  }, []);
+
   // const [filterBy, setFilterBy] = useState("");
   // const [filterData, setFilterData] = useState([]);
   // const [dateFilter, setDateFilter] = useState({
@@ -116,7 +131,13 @@ function App() {
         </div>
       </div>
 
-      <SalesTable />
+      <SalesTable
+        incomeEntries={incomeEntries}
+        expenseEntries={expenseEntries}
+        tabState={tabState}
+        setExpenseEntries={setExpenseEntries}
+        setIncomeEntries={setIncomeEntries}
+      />
 
       {/* <button
           onClick={getSalesEntriesHandler}

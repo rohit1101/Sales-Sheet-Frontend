@@ -4,15 +4,15 @@ import SalesContext from "../../SalesContext";
 import { deleteExpenseEntry, deleteIncomeEntry } from "../../services/api";
 import Icons from "../Icons";
 
-const Sale = ({ sale }) => {
+const Sale = ({
+  sale,
+  tabState,
+  incomeEntries,
+  setIncomeEntries,
+  expenseEntries,
+  setExpenseEntries,
+}) => {
   const history = useHistory();
-  const {
-    tabState,
-    incomeEntries,
-    setIncomeEntries,
-    expenseEntries,
-    setExpenseEntries,
-  } = useContext(SalesContext);
 
   function removeSalesEntryHandler(id) {
     // use the result from promise with snackbar component
