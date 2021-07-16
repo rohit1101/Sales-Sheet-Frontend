@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { useHistory, useParams } from "react-router-dom";
 import Form from "../Components/Forms/Form";
@@ -12,6 +13,10 @@ import {
 } from "../services/api";
 
 const CreateSalesEntry = () => {
+  const [incomeEntries, setIncomeEntries] = useState([]);
+  const [expenseEntries, setExpenseEntries] = useState([]);
+  const [sale, setSale] = useState({});
+  const { id } = useParams();
   const {
     register,
     handleSubmit,
@@ -22,10 +27,16 @@ const CreateSalesEntry = () => {
     mode: "all",
   });
   const history = useHistory();
+  console.log(history.location.state);
 
-  const { incomeEntries, expenseEntries, sale } =
-    history.location && JSON.parse(history.location.state);
-  const { id } = useParams();
+  if (history.location.state === "undefined") {
+    return;
+  } else {
+    const { income, expense, sale } = JSON.parse(history.location.state);
+    setIncomeEntries(income);
+    setExpenseEntries(expense);
+    setSale(sale);
+  }
 
   const salesRepId = 1;
 

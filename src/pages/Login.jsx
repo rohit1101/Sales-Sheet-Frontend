@@ -28,7 +28,6 @@ const Login = () => {
 
     login(newData)
       .then((res) => {
-        console.log(res);
         localStorage.setItem("jwt", JSON.stringify(res.token));
         history.push("/");
       })

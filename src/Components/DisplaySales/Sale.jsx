@@ -53,9 +53,7 @@ const Sale = ({
                 state: JSON.stringify({
                   sale,
                   incomeEntries,
-                  // setIncomeEntries: setExpenseEntries,
                   expenseEntries,
-                  // setExpenseEntries: setExpenseEntries,
                 }),
               });
             }}
@@ -90,9 +88,7 @@ const Sale = ({
                 state: JSON.stringify({
                   sale,
                   incomeEntries,
-                  // setIncomeEntries: setIncomeEntries,
                   expenseEntries,
-                  // setExpenseEntries: setExpenseEntries,
                 }),
               });
             }}
