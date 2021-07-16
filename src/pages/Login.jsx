@@ -1,4 +1,5 @@
 import { useForm } from "react-hook-form";
+import { useHistory } from "react-router-dom";
 import Layout from "../Layout";
 import { login } from "../services/api";
 
@@ -15,11 +16,10 @@ const Login = () => {
   const {
     register,
     handleSubmit,
-
     reset,
     formState: { errors },
   } = useForm();
-
+  const history = useHistory();
   const onSubmit = (data) => {
     const newData = {
       username: data.username.length && data.username.trim(),
@@ -30,10 +30,15 @@ const Login = () => {
       .then((res) => {
         console.log(res);
         localStorage.setItem("jwt", JSON.stringify(res.token));
+        history.push("/");
       })
       .catch((e) => console.log(e));
     reset();
   };
+
+  if (Boolean(JSON.parse(localStorage.getItem("jwt")) || "")) {
+    history.push("/");
+  }
 
   return (
     <Layout>

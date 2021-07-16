@@ -63,6 +63,15 @@ function App() {
       <h1 className="font-sans text-2xl font-medium text-gray-500 text-center">
         Sales Summary
       </h1>
+      <button
+        onClick={() => {
+          history.push("/login");
+          localStorage.removeItem("jwt");
+        }}
+        className="bg-red-200 text-red-600 font-semibold hover:bg-purple-200 duration-100 hover:text-purple-800 rounded-md px-2 py-1 shadow-2xl"
+      >
+        Logout
+      </button>
       <div className="text-center my-5">
         <button
           className="bg-purple-300 text-purple-600 font-normal hover:bg-purple-200 duration-100 hover:text-purple-800 rounded-md px-2 py-1 shadow-2xl"

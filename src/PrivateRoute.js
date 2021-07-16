@@ -1,9 +1,9 @@
-import { useContext } from "react";
+import { useState } from "react";
 import { Redirect, Route } from "react-router-dom";
-import AuthContext from "./AuthContext";
 
 function PrivateRoute({ children, ...rest }) {
-  const auth = useContext(AuthContext);
+  const [auth] = useState(JSON.parse(localStorage.getItem("jwt")) || "");
+
   return (
     <Route
       {...rest}
