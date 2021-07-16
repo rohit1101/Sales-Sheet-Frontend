@@ -146,7 +146,7 @@ const Form = ({
           <label className="block">Description</label>
           <input
             className="block mb-2 shadow-xl"
-            defaultValue={edit && sale.description}
+            defaultValue={edit ? sale.description : ""}
             {...register("description", {
               validate: (value) => value.trim().length > 0,
             })}

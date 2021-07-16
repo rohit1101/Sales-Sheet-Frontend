@@ -49,39 +49,17 @@ const CreateSalesEntry = () => {
         .reverse()
         .join("-");
 
-      console.log("initial", initialValues, "edit form data", data);
       const name = ["amount_paid", "date", "card_id"];
 
       const identifier = name.filter((item) => {
         return initialValues[item].toString() !== data[item].toString() && item;
       });
-      console.log(identifier);
 
       const body = generateBody(identifier, data);
-      // identifier.forEach((item) => {
-      //   body[item] = data[item].toString();
-      // });
-      console.log(body);
 
       if (Boolean(Object.keys(body).length)) {
-        const newState = [...incomeEntries].map((income) => {
-          if (income.id.toString() === id.toString()) {
-            console.log({
-              ...income,
-              ...body,
-            });
-            return {
-              ...income,
-              ...body,
-            };
-          }
-          return income;
-        });
-        console.log(newState);
-        // setIncomeEntries(newState);
         updateIncomeEntry(id, body)
           .then((res) => {
-            console.log(res);
             history.push("/");
           })
           .catch((error) => console.log("From App.js METHOD = PUT", error));
@@ -101,33 +79,18 @@ const CreateSalesEntry = () => {
         .split("/")
         .reverse()
         .join("-");
-      console.log(initialValues, data);
+
       const name = ["amount_paid", "date", "description"];
 
       const identifier = name.filter((item) => {
         return initialValues[item].toString() !== data[item].toString() && item;
       });
-      console.log(identifier);
-      const body = {};
-      identifier.forEach((item) => {
-        body[item] = data[item].toString();
-      });
-      console.log(body);
+
+      const body = generateBody(identifier, data);
+
       if (Boolean(Object.keys(body).length)) {
-        const newState = [...expenseEntries].map((expense) => {
-          if (expense.id.toString() === id.toString()) {
-            return {
-              ...expense,
-              ...body,
-            };
-          }
-          return expense;
-        });
-        console.log(newState);
-        // setExpenseEntries(newState);
         updateExpenseEntry(id, body)
           .then((res) => {
-            console.log(res);
             history.push("/");
           })
           .catch((error) => console.log("From App.js METHOD = PUT", error));
@@ -157,8 +120,6 @@ const CreateSalesEntry = () => {
 
       addIncomeEntry(card_id, salesRepId, amount_paid, date)
         .then((res) => {
-          // setIncomeEntries([...incomeEntries, res])
-          console.log(res);
           history.push("/");
         })
         .catch((error) => console.log("From App.js METHOD = POST", error));
