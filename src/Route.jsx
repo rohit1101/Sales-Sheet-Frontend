@@ -3,7 +3,6 @@ import App from "./App";
 import CreateSalesEntry from "./pages/CreateSalesEntry";
 import Login from "./pages/Login";
 import SignUp from "./pages/SignUp";
-import PrivateRoute from "./PrivateRoute";
 
 const Routes = () => {
   return (
@@ -16,21 +15,21 @@ const Routes = () => {
           <SignUp />
         </Route>
 
-        <PrivateRoute exact path="/">
+        <Route exact path="/">
           <App />
-        </PrivateRoute>
-        <PrivateRoute exact path="/income">
+        </Route>
+        <Route exact path="/income">
           <CreateSalesEntry />
-        </PrivateRoute>
-        <PrivateRoute path="/income/:id" exact>
+        </Route>
+        <Route path="/income/:id" exact>
           <CreateSalesEntry />
-        </PrivateRoute>
-        <PrivateRoute path="/expense" exact>
+        </Route>
+        <Route path="/expense" exact>
           <CreateSalesEntry />
-        </PrivateRoute>
-        <PrivateRoute path="/expense/:id" exact>
+        </Route>
+        <Route path="/expense/:id" exact>
           <CreateSalesEntry />
-        </PrivateRoute>
+        </Route>
       </Switch>
     </Router>
   );

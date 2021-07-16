@@ -1,6 +1,4 @@
-import { useContext } from "react";
 import { useHistory } from "react-router-dom";
-import SalesContext from "../../SalesContext";
 import { deleteExpenseEntry, deleteIncomeEntry } from "../../services/api";
 import Icons from "../Icons";
 
@@ -55,9 +53,9 @@ const Sale = ({
                 state: JSON.stringify({
                   sale,
                   incomeEntries,
-                  setIncomeEntries: setExpenseEntries,
+                  // setIncomeEntries: setExpenseEntries,
                   expenseEntries,
-                  setExpenseEntries: setExpenseEntries,
+                  // setExpenseEntries: setExpenseEntries,
                 }),
               });
             }}
@@ -92,9 +90,9 @@ const Sale = ({
                 state: JSON.stringify({
                   sale,
                   incomeEntries,
-                  setIncomeEntries: setIncomeEntries,
+                  // setIncomeEntries: setIncomeEntries,
                   expenseEntries,
-                  setExpenseEntries: setExpenseEntries,
+                  // setExpenseEntries: setExpenseEntries,
                 }),
               });
             }}

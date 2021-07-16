@@ -1,7 +1,4 @@
-import { useContext, useState } from "react";
 import { useForm } from "react-hook-form";
-import { useHistory, useLocation } from "react-router-dom";
-import AuthContext from "../AuthContext";
 import Layout from "../Layout";
 import { login } from "../services/api";
 

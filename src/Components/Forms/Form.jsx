@@ -1,28 +1,30 @@
 import React, { useEffect } from "react";
+import { useHistory } from "react-router-dom";
 
 const Form = ({
   type,
   handleSubmit,
   onSubmit,
-  history,
+  sale,
   register,
   errors,
   edit,
   setValue,
 }) => {
+  const history = useHistory();
   useEffect(() => {
-    !edit
+    edit
       ? setValue(
           "date",
-          new Date().toLocaleDateString().split("/").reverse().join("-")
-        )
-      : setValue(
-          "date",
-          new Date(history.location.state[0].date)
+          new Date(sale.date)
             .toLocaleDateString()
             .split("/")
             .reverse()
             .join("-")
+        )
+      : setValue(
+          "date",
+          new Date().toLocaleDateString().split("/").reverse().join("-")
         );
   }, []);
 
@@ -36,7 +38,7 @@ const Form = ({
           <label className="block">Card Number</label>
           <input
             className="shadow-xl  focus:outline-none focus:ring-2 focus:ring-purple-300"
-            defaultValue={edit && history.location.state[0].card_id}
+            defaultValue={edit && sale.card_id}
             type="number"
             {...register("card_id", {
               required: "This field is required!",
@@ -59,7 +61,7 @@ const Form = ({
           <input
             className="block mb-2 shadow-xl focus:outline-none focus:ring-2 focus:ring-purple-300"
             type="number"
-            defaultValue={edit && history.location.state[0].amount_paid}
+            defaultValue={edit && sale.amount_paid}
             {...register("amount_paid", {
               required: "This field is required",
               min: 1,
@@ -109,7 +111,7 @@ const Form = ({
               {...register("date", {
                 value:
                   edit &&
-                  new Date(history.location.state[0].date)
+                  new Date(sale.date)
                     .toLocaleDateString()
                     .split("/")
                     .reverse()
@@ -124,7 +126,7 @@ const Form = ({
           <input
             className="block mb-2 shadow-xl"
             type="number"
-            defaultValue={edit && history.location.state[0].amount_paid}
+            defaultValue={edit && sale.amount_paid}
             {...register("amount_paid", {
               required: "This field is required",
               min: 1,
@@ -144,7 +146,7 @@ const Form = ({
           <label className="block">Description</label>
           <input
             className="block mb-2 shadow-xl"
-            defaultValue={edit ? history.location.state[0].description : ""}
+            defaultValue={edit && sale.description}
             {...register("description", {
               validate: (value) => value.trim().length > 0,
             })}

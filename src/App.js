@@ -57,6 +57,7 @@ function App() {
   //   }
   // }
 
+  console.log("re-render");
   return (
     <Layout>
       <h1 className="font-sans text-2xl font-medium text-gray-500 text-center">
