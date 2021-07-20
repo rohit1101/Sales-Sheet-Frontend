@@ -18,12 +18,14 @@ const Routes = () => {
   });
 
   useEffect(() => {
-    getAllIncomeEntries()
-      .then((res) => setIncomeEntries(res))
-      .catch((error) => console.log("From App.js METHOD = GET: ", error));
-    getAllExpensesEntries()
-      .then((res) => setExpenseEntries(res))
-      .catch((error) => console.log("From App.js METHOD = GET: ", error));
+    if (JSON.parse(localStorage.getItem("jwt"))) {
+      getAllIncomeEntries()
+        .then((res) => setIncomeEntries(res))
+        .catch((error) => console.log("From App.js METHOD = GET: ", error));
+      getAllExpensesEntries()
+        .then((res) => setExpenseEntries(res))
+        .catch((error) => console.log("From App.js METHOD = GET: ", error));
+    }
   }, []);
 
   return (
@@ -48,13 +50,13 @@ const Routes = () => {
           <PrivateRoute exact path="/">
             <App />
           </PrivateRoute>
-          <PrivateRoute exact path="/income">
+          <PrivateRoute path="/income/new" exact>
             <CreateSalesEntry />
           </PrivateRoute>
           <PrivateRoute path="/income/:id" exact>
             <CreateSalesEntry />
           </PrivateRoute>
-          <PrivateRoute path="/expense" exact>
+          <PrivateRoute path="/expense/new" exact>
             <CreateSalesEntry />
           </PrivateRoute>
           <PrivateRoute path="/expense/:id" exact>
