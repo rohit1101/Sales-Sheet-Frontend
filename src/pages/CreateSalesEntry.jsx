@@ -13,9 +13,9 @@ import {
 } from "../services/api";
 
 const CreateSalesEntry = () => {
-  const [incomeEntries, setIncomeEntries] = useState([]);
-  const [expenseEntries, setExpenseEntries] = useState([]);
-  const [sale, setSale] = useState({});
+  // const [incomeEntries, setIncomeEntries] = useState([]);
+  // const [expenseEntries, setExpenseEntries] = useState([]);
+  // const [sale, setSale] = useState({});
   const { id } = useParams();
   const {
     register,
@@ -28,15 +28,17 @@ const CreateSalesEntry = () => {
   });
   const history = useHistory();
   console.log(history.location.state);
-
-  if (history.location.state === "undefined") {
-    return;
-  } else {
-    const { income, expense, sale } = JSON.parse(history.location.state);
-    setIncomeEntries(income);
-    setExpenseEntries(expense);
-    setSale(sale);
-  }
+  const { incomeEntries, expenseEntries, sale } = JSON.parse(
+    history.location.state
+  );
+  // if (history.location.state === "undefined") {
+  //   return;
+  // } else {
+  //   const { income, expense, sale } = JSON.parse(history.location.state);
+  //   setIncomeEntries(income);
+  //   setExpenseEntries(expense);
+  //   setSale(sale);
+  // }
 
   const salesRepId = 1;
 
