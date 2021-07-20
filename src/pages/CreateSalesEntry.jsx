@@ -27,7 +27,7 @@ const CreateSalesEntry = () => {
     mode: "all",
   });
   const history = useHistory();
-  console.log(history.location.state);
+  console.log(JSON.parse(history.location.state));
   const { incomeEntries, expenseEntries, sale } = JSON.parse(
     history.location.state
   );

@@ -53,7 +53,6 @@ const Sale = ({
                 state: JSON.stringify({
                   sale,
                   incomeEntries,
-                  expenseEntries,
                 }),
               });
             }}
@@ -87,7 +86,6 @@ const Sale = ({
                 pathname: `/expense/${sale.id}`,
                 state: JSON.stringify({
                   sale,
-                  incomeEntries,
                   expenseEntries,
                 }),
               });

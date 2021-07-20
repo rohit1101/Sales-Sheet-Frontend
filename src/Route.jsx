@@ -1,3 +1,4 @@
+import { useEffect } from "react";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import App from "./App";
 import CreateSalesEntry from "./pages/CreateSalesEntry";
@@ -6,6 +7,12 @@ import SignUp from "./pages/SignUp";
 import PrivateRoute from "./PrivateRoute";
 
 const Routes = () => {
+  useEffect(() => {
+    if (JSON.parse(localStorage.getItem("jwt"))) {
+      console.log("logged in");
+    }
+  }, []);
+
   return (
     <Router>
       <Switch>
