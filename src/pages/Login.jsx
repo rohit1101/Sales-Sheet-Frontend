@@ -18,10 +18,11 @@ const Login = () => {
   const {
     register,
     handleSubmit,
-
     reset,
     formState: { errors },
   } = useForm();
+
+  const history = useHistory();
 
   const onSubmit = (data) => {
     const newData = {
@@ -31,8 +32,8 @@ const Login = () => {
 
     login(newData)
       .then((res) => {
-        console.log(res);
         localStorage.setItem("jwt", JSON.stringify(res.token));
+        history.push("/");
       })
       .catch((e) => console.log(e));
     reset();
