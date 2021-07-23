@@ -1,7 +1,8 @@
 import { useEffect } from "react";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import App from "./App";
-import CreateSalesEntry from "./pages/CreateSalesEntry";
+import AddSalesEntry from "./pages/AddSalesEntry";
+import EditSalesEntry from "./pages/EditSalesEntry";
 import Login from "./pages/Login";
 import SignUp from "./pages/SignUp";
 import PrivateRoute from "./PrivateRoute";
@@ -27,16 +28,16 @@ const Routes = () => {
           <App />
         </PrivateRoute>
         <PrivateRoute exact path="/income">
-          <CreateSalesEntry />
+          <AddSalesEntry type="income" />
         </PrivateRoute>
         <PrivateRoute path="/income/:id" exact>
-          <CreateSalesEntry />
+          <EditSalesEntry type="income" />
         </PrivateRoute>
         <PrivateRoute path="/expense" exact>
-          <CreateSalesEntry />
+          <AddSalesEntry type="expense" />
         </PrivateRoute>
         <PrivateRoute path="/expense/:id" exact>
-          <CreateSalesEntry />
+          <EditSalesEntry type="expense" />
         </PrivateRoute>
       </Switch>
     </Router>
