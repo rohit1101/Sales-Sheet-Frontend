@@ -24,22 +24,15 @@ const CreateSalesEntry = () => {
   const { id } = useParams();
 
   useEffect(() => {
-    if (history.location.pathname === "/income") {
-      getAllIncomeEntries()
-        .then((res) => setIncomeEntries(res))
-        .catch((error) => console.log("From App.js METHOD = GET: ", error));
-    }
-    if (history.location.pathname === "/expense") {
-      getAllExpensesEntries()
-        .then((res) => setExpenseEntries(res))
-        .catch((error) => console.log("From METHOD = GET: ", error));
-    }
     if (history.location.pathname === `/income/${id}`) {
       getIncomeById(id)
         .then((res) => setSale(res))
         .catch((error) =>
           console.log("error while getting income by id", error)
         );
+      getAllIncomeEntries()
+        .then((res) => setIncomeEntries(res))
+        .catch((error) => console.log("From App.js METHOD = GET: ", error));
     }
     if (history.location.pathname === `/expense/${id}`) {
       getExpenseById(id)
@@ -47,12 +40,15 @@ const CreateSalesEntry = () => {
         .catch((error) =>
           console.log("error while getting income by id", error)
         );
+      getAllExpensesEntries()
+        .then((res) => setExpenseEntries(res))
+        .catch((error) => console.log("From METHOD = GET: ", error));
     }
-    return () => {
-      setIncomeEntries([]);
-      setExpenseEntries([]);
-      setSale({});
-    };
+    // return () => {
+    //   setIncomeEntries([]);
+    //   setExpenseEntries([]);
+    //   setSale({});
+    // };
   }, [history.location.pathname, id]);
 
   const {
@@ -70,31 +66,36 @@ const CreateSalesEntry = () => {
   const generateBody = (identifier, data) => {
     const body = {};
     identifier.forEach((item) => {
-      body[item] = data[item].toString();
+      body[item] = data[item];
     });
     return body;
   };
 
   const onSubmit = (data, e) => {
+    console.log(data);
     if (history.location.pathname === `/income/${id}`) {
       const initialValues = [...incomeEntries].filter((income) => {
         return income.id.toString() === id.toString();
       })[0];
-
+      console.log(initialValues);
       initialValues.date = new Date(initialValues.date)
         .toLocaleDateString()
         .split("/")
         .reverse()
         .join("-");
-
+      console.log(initialValues);
       const name = ["amount_paid", "date", "card_id"];
 
       const identifier = name.filter((item) => {
         return initialValues[item].toString() !== data[item].toString() && item;
       });
-
-      const body = generateBody(identifier, data);
-
+      console.log(identifier);
+      // const body = generateBody(identifier, data);
+      const body = {};
+      identifier.forEach((item) => {
+        body[item] = data[item];
+      });
+      console.log(body);
       if (Boolean(Object.keys(body).length)) {
         updateIncomeEntry(id, body)
           .then((res) => {
@@ -124,8 +125,11 @@ const CreateSalesEntry = () => {
         return initialValues[item].toString() !== data[item].toString() && item;
       });
 
-      const body = generateBody(identifier, data);
-
+      // const body = generateBody(identifier, data);
+      const body = {};
+      identifier.forEach((item) => {
+        body[item] = data[item];
+      });
       if (Boolean(Object.keys(body).length)) {
         updateExpenseEntry(id, body)
           .then((res) => {
@@ -163,7 +167,7 @@ const CreateSalesEntry = () => {
       // history.push("/");
     }
   };
-
+  console.log("re-render in createsales");
   return (
     <Layout>
       <NavBar />
