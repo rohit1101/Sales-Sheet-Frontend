@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { useHistory, useParams } from "react-router-dom";
 import Form from "../Components/Forms/Form";
@@ -8,15 +8,35 @@ import NavBar from "../NavBar";
 import {
   addExpenseEntry,
   addIncomeEntry,
+  getAllExpensesEntries,
+  getAllIncomeEntries,
   updateExpenseEntry,
   updateIncomeEntry,
 } from "../services/api";
 
 const CreateSalesEntry = () => {
-  // const [incomeEntries, setIncomeEntries] = useState([]);
-  // const [expenseEntries, setExpenseEntries] = useState([]);
-  // const [sale, setSale] = useState({});
+  const [incomeEntries, setIncomeEntries] = useState([]);
+  const [expenseEntries, setExpenseEntries] = useState([]);
+  const [sale, setSale] = useState({});
+  const history = useHistory();
   const { id } = useParams();
+  useEffect(() => {
+    if (history.location.pathname.includes("income")) {
+      getAllIncomeEntries()
+        .then((res) => setIncomeEntries(res))
+        .catch((error) => console.log("From App.js METHOD = GET: ", error));
+    }
+    if (history.location.pathname.includes("expense")) {
+      getAllExpensesEntries()
+        .then((res) => setExpenseEntries(res))
+        .catch((error) => console.log("From App.js METHOD = GET: ", error));
+    }
+    if (history.location.pathname === `/income/${id}`) {
+    }
+    if (history.location.pathname === `/expense/${id}`) {
+    }
+  }, []);
+
   const {
     register,
     handleSubmit,
@@ -26,19 +46,6 @@ const CreateSalesEntry = () => {
   } = useForm({
     mode: "all",
   });
-  const history = useHistory();
-  console.log(JSON.parse(history.location.state));
-  const { incomeEntries, expenseEntries, sale } = JSON.parse(
-    history.location.state
-  );
-  // if (history.location.state === "undefined") {
-  //   return;
-  // } else {
-  //   const { income, expense, sale } = JSON.parse(history.location.state);
-  //   setIncomeEntries(income);
-  //   setExpenseEntries(expense);
-  //   setSale(sale);
-  // }
 
   const salesRepId = 1;
 
@@ -120,7 +127,6 @@ const CreateSalesEntry = () => {
 
       addExpenseEntry(salesRepId, amount_paid, date, description)
         .then((res) => {
-          // setExpenseEntries([...expenseEntries, res])
           console.log(res);
           history.push("/");
         })

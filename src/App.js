@@ -75,15 +75,7 @@ function App() {
       <div className="text-center my-5">
         <button
           className="bg-purple-300 text-purple-600 font-normal hover:bg-purple-200 duration-100 hover:text-purple-800 rounded-md px-2 py-1 shadow-2xl"
-          onClick={() =>
-            history.push({
-              pathname: "/income",
-              state: JSON.stringify({
-                incomeEntries,
-                expenseEntries,
-              }),
-            })
-          }
+          onClick={() => history.push("/income")}
         >
           Add Income
         </button>
@@ -92,15 +84,7 @@ function App() {
       <div className="text-center my-5">
         <button
           className="bg-purple-300 text-purple-600 font-normal hover:bg-purple-200 duration-100 hover:text-purple-800 rounded-md px-2 py-1 shadow-2xl"
-          onClick={() =>
-            history.push({
-              pathname: `/expense`,
-              state: JSON.stringify({
-                incomeEntries,
-                expenseEntries,
-              }),
-            })
-          }
+          onClick={() => history.push("/expense")}
         >
           Add Expense
         </button>
