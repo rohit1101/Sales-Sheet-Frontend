@@ -10,6 +10,8 @@ import {
   addIncomeEntry,
   getAllExpensesEntries,
   getAllIncomeEntries,
+  getExpenseById,
+  getIncomeById,
   updateExpenseEntry,
   updateIncomeEntry,
 } from "../services/api";
@@ -20,22 +22,38 @@ const CreateSalesEntry = () => {
   const [sale, setSale] = useState({});
   const history = useHistory();
   const { id } = useParams();
+
   useEffect(() => {
-    if (history.location.pathname.includes("income")) {
+    if (history.location.pathname === "/income") {
       getAllIncomeEntries()
         .then((res) => setIncomeEntries(res))
         .catch((error) => console.log("From App.js METHOD = GET: ", error));
     }
-    if (history.location.pathname.includes("expense")) {
+    if (history.location.pathname === "/expense") {
       getAllExpensesEntries()
         .then((res) => setExpenseEntries(res))
-        .catch((error) => console.log("From App.js METHOD = GET: ", error));
+        .catch((error) => console.log("From METHOD = GET: ", error));
     }
     if (history.location.pathname === `/income/${id}`) {
+      getIncomeById(id)
+        .then((res) => setSale(res))
+        .catch((error) =>
+          console.log("error while getting income by id", error)
+        );
     }
     if (history.location.pathname === `/expense/${id}`) {
+      getExpenseById(id)
+        .then((res) => setSale(res))
+        .catch((error) =>
+          console.log("error while getting income by id", error)
+        );
     }
-  }, []);
+    return () => {
+      setIncomeEntries([]);
+      setExpenseEntries([]);
+      setSale({});
+    };
+  }, [history.location.pathname, id]);
 
   const {
     register,
@@ -127,7 +145,6 @@ const CreateSalesEntry = () => {
 
       addExpenseEntry(salesRepId, amount_paid, date, description)
         .then((res) => {
-          console.log(res);
           history.push("/");
         })
         .catch((error) => console.log("From App.js METHOD = POST", error));
@@ -155,7 +172,7 @@ const CreateSalesEntry = () => {
           type={
             history.location.pathname.includes("income") ? "income" : "expense"
           }
-          edit={sale !== undefined ? true : false}
+          edit={Object.keys(sale).length > 0 ? true : false}
           handleSubmit={handleSubmit}
           onSubmit={onSubmit}
           register={register}

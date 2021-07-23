@@ -38,7 +38,7 @@ const Form = ({
           <label className="block">Card Number</label>
           <input
             className="shadow-xl  focus:outline-none focus:ring-2 focus:ring-purple-300"
-            defaultValue={edit && sale.card_id}
+            defaultValue={edit ? sale.card_id : ""}
             type="number"
             {...register("card_id", {
               required: "This field is required!",
@@ -61,7 +61,7 @@ const Form = ({
           <input
             className="block mb-2 shadow-xl focus:outline-none focus:ring-2 focus:ring-purple-300"
             type="number"
-            defaultValue={edit && sale.amount_paid}
+            defaultValue={edit ? sale.amount_paid : ""}
             {...register("amount_paid", {
               required: "This field is required",
               min: 1,
@@ -126,7 +126,7 @@ const Form = ({
           <input
             className="block mb-2 shadow-xl"
             type="number"
-            defaultValue={edit && sale.amount_paid}
+            defaultValue={edit ? sale.amount_paid : ""}
             {...register("amount_paid", {
               required: "This field is required",
               min: 1,

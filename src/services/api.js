@@ -44,6 +44,32 @@ export async function register({ username, password }) {
   }
 }
 
+export function getIncomeById(id) {
+  // let url = new URL(`http://107.22.18.203/sales`);
+  let url = new URL(`${baseURL}/incomes/income/${id}`);
+
+  return fetch(url, {
+    headers: {
+      Authorization: `Bearer ${JSON.parse(localStorage.getItem("jwt"))}`,
+    },
+  })
+    .then((data) => data.json())
+    .catch((e) => console.log("Error:", e));
+}
+
+export function getExpenseById(id) {
+  // let url = new URL(`http://107.22.18.203/sales`);
+  let url = new URL(`${baseURL}/expenses/expense/${id}`);
+
+  return fetch(url, {
+    headers: {
+      Authorization: `Bearer ${JSON.parse(localStorage.getItem("jwt"))}`,
+    },
+  })
+    .then((data) => data.json())
+    .catch((e) => console.log("Error:", e));
+}
+
 export function getAllIncomeEntries(cardId, date) {
   // let url = new URL(`http://107.22.18.203/sales`);
   let url = new URL(`${baseURL}/income`);
@@ -65,9 +91,6 @@ export function getAllIncomeEntries(cardId, date) {
     },
   })
     .then((data) => data.json())
-    .then((res) => {
-      return res;
-    })
     .catch((e) => console.log("Error:", e));
 }
 
@@ -99,10 +122,6 @@ export function addIncomeEntry(
       : JSON.stringify({ card_id, sales_rep_id, amount_paid, description }),
   })
     .then((data) => data.json())
-    .then((res) => {
-      // console.log(res);
-      return res;
-    })
     .catch((e) => console.log("Error:", e));
 }
 
@@ -120,7 +139,6 @@ export function updateIncomeEntry(id, body) {
     body: JSON.stringify(body),
   })
     .then((data) => data.text())
-    .then((res) => res)
     .catch((e) => console.log("Error:", e));
 }
 
@@ -137,7 +155,6 @@ export function deleteIncomeEntry(id) {
     method: "DELETE",
   })
     .then((data) => data.text())
-    .then((res) => res)
     .catch((e) => console.log("Error:", e));
 }
 
@@ -184,9 +201,6 @@ export function getAllExpensesEntries(cardId, date) {
     },
   })
     .then((data) => data.json())
-    .then((res) => {
-      return res;
-    })
     .catch((e) => console.log("Error:", e));
 }
 
@@ -216,7 +230,6 @@ export function addExpenseEntry(
       : JSON.stringify({ sales_rep_id, amount_paid, description }),
   })
     .then((data) => data.json())
-    .then((res) => res)
     .catch((e) => console.log("Error:", e));
 }
 
@@ -234,7 +247,6 @@ export function updateExpenseEntry(id, body) {
     body: JSON.stringify(body),
   })
     .then((data) => data.text())
-    .then((res) => res)
     .catch((e) => console.log("Error:", e));
 }
 
@@ -251,6 +263,5 @@ export function deleteExpenseEntry(id) {
     method: "DELETE",
   })
     .then((data) => data.text())
-    .then((res) => res)
     .catch((e) => console.log("Error:", e));
 }
