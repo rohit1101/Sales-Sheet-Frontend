@@ -14,64 +14,87 @@ import {
 const EditSalesEntry = ({ type }) => {
   const [incomeEntries, setIncomeEntries] = useState([]);
   const [expenseEntries, setExpenseEntries] = useState([]);
-  const [sale, setSale] = useState({});
 
-  useEffect(() => {
-    if (type === "income") {
-      getAllIncomeEntries()
-        .then((res) => setIncomeEntries(res))
-        .catch((error) => console.log("From App.js METHOD = GET: ", error));
-      getIncomeById(id)
-        .then((res) => setSale(res))
-        .catch((error) =>
-          console.log("Error while getting income by id", error)
-        );
-    }
-    if (type === "expense") {
-      getAllExpensesEntries()
-        .then((res) => setExpenseEntries(res))
-        .catch((error) => console.log("From App.js METHOD = GET: ", error));
-      getExpenseById(id)
-        .then((res) => setSale(res))
-        .catch((error) =>
-          console.log("Error while getting expense by id", error)
-        );
-    }
-  }, []);
-
-  const history = useHistory();
-  const { id } = useParams();
   const {
     register,
     handleSubmit,
     reset,
     formState: { errors },
-  } = useForm({
-    mode: "all",
-  });
+  } = useForm();
+
+  useEffect(() => {
+    if (type === "income") {
+      getIncomeById(id)
+        .then((res) => {
+          reset({
+            amount_paid: +res.amount_paid,
+            card_id: +res.card_id,
+            id: +res.id,
+            date: new Date(res.date)
+              .toLocaleDateString()
+              .split("/")
+              .reverse()
+              .join("-"),
+          });
+        })
+        .catch((error) =>
+          console.log("Error while getting income by id", error)
+        );
+      getAllIncomeEntries()
+        .then((res) => setIncomeEntries(res))
+        .catch((error) =>
+          console.log("From EditSalesEntry METHOD = GET: ", error)
+        );
+    }
+    if (type === "expense") {
+      getExpenseById(id)
+        .then((res) => {
+          reset({
+            amount_paid: +res.amount_paid,
+            description: res.description,
+            id: +res.id,
+            date: new Date(res.date)
+              .toLocaleDateString()
+              .split("/")
+              .reverse()
+              .join("-"),
+          });
+        })
+        .catch((error) =>
+          console.log("Error while getting expense by id", error)
+        );
+      getAllExpensesEntries()
+        .then((res) => setExpenseEntries(res))
+        .catch((error) =>
+          console.log("From EditSalesEntry METHOD = GET: ", error)
+        );
+    }
+  }, [reset]);
+
+  const history = useHistory();
+  const { id } = useParams();
 
   const salesRepId = 1;
 
   const onSubmit = (data) => {
     console.log(data);
-    if (type === `/income/${id}`) {
+    if (type === `income`) {
       const initialValues = [...incomeEntries].filter((income) => {
         return income.id.toString() === id.toString();
       })[0];
-      console.log(initialValues);
+
       initialValues.date = new Date(initialValues.date)
         .toLocaleDateString()
         .split("/")
         .reverse()
         .join("-");
-      console.log(initialValues);
+
       const name = ["amount_paid", "date", "card_id"];
 
       const identifier = name.filter((item) => {
         return initialValues[item].toString() !== data[item].toString() && item;
       });
-      console.log(identifier);
-      // const body = generateBody(identifier, data);
+
       const body = {};
       identifier.forEach((item) => {
         body[item] = data[item].toString();
@@ -85,15 +108,15 @@ const EditSalesEntry = ({ type }) => {
           .catch((error) => console.log("From App.js METHOD = PUT", error));
 
         reset();
-        // history.push("/");
       } else {
         alert("sale atleast one the fields");
       }
     }
-    if (history.location.pathname === `/expense/${id}`) {
+    if (type === `expense`) {
       const initialValues = [...expenseEntries].filter((expense) => {
         return expense.id.toString() === id.toString();
       })[0];
+
       initialValues.date = new Date(initialValues.date)
         .toLocaleDateString()
         .split("/")
@@ -106,11 +129,11 @@ const EditSalesEntry = ({ type }) => {
         return initialValues[item].toString() !== data[item].toString() && item;
       });
 
-      // const body = generateBody(identifier, data);
       const body = {};
       identifier.forEach((item) => {
-        body[item] = data[item];
+        body[item] = data[item].toString();
       });
+
       if (Boolean(Object.keys(body).length)) {
         updateExpenseEntry(id, body)
           .then((res) => {
@@ -119,12 +142,12 @@ const EditSalesEntry = ({ type }) => {
           .catch((error) => console.log("From App.js METHOD = PUT", error));
 
         reset();
-        // history.push("/");
       } else {
         alert("Edit atleast one the fields");
       }
     }
   };
+  console.log("re-render in Edit Sales Entry");
   return (
     <Layout>
       <form
@@ -140,7 +163,6 @@ const EditSalesEntry = ({ type }) => {
               {...register("card_id", {
                 required: "This field is required!",
                 valueAsNumber: true,
-                value: sale.card_id,
                 validate: {
                   positiveNumber: (value) => parseFloat(value) > 0,
                 },
@@ -156,17 +178,15 @@ const EditSalesEntry = ({ type }) => {
           </>
         )}
         <label className="block">Date</label>
+
         <input
           className="block mb-2 shadow-xl focus:outline-none focus:ring-2 focus:ring-purple-300"
           type="date"
-          defaultValue={new Date()
-            .toLocaleDateString()
-            .split("/")
-            .reverse()
-            .join("-")}
           {...register("date")}
         />
+
         <label className="block">Amount</label>
+
         <input
           className="block mb-2 shadow-xl focus:outline-none focus:ring-2 focus:ring-purple-300"
           type="number"
