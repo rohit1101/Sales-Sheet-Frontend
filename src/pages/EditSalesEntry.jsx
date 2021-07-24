@@ -77,7 +77,6 @@ const EditSalesEntry = ({ type }) => {
   const salesRepId = 1;
 
   const onSubmit = (data) => {
-    console.log(data);
     if (type === `income`) {
       const initialValues = [...incomeEntries].filter((income) => {
         return income.id.toString() === id.toString();
@@ -99,7 +98,7 @@ const EditSalesEntry = ({ type }) => {
       identifier.forEach((item) => {
         body[item] = data[item].toString();
       });
-      console.log(body);
+
       if (Boolean(Object.keys(body).length)) {
         updateIncomeEntry(id, body)
           .then((res) => {
@@ -147,7 +146,7 @@ const EditSalesEntry = ({ type }) => {
       }
     }
   };
-  console.log("re-render in Edit Sales Entry");
+
   return (
     <Layout>
       <form
