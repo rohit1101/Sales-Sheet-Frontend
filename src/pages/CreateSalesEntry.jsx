@@ -1,20 +1,56 @@
-import React, { useContext } from "react";
+import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { useHistory, useParams } from "react-router-dom";
 import Form from "../Components/Forms/Form";
 import Layout from "../Layout";
 import NavBar from "../NavBar";
-import SalesContext from "../SalesContext";
+
 import {
   addExpenseEntry,
   addIncomeEntry,
+  getAllExpensesEntries,
+  getAllIncomeEntries,
+  getExpenseById,
+  getIncomeById,
   updateExpenseEntry,
   updateIncomeEntry,
 } from "../services/api";
 
 const CreateSalesEntry = () => {
-  const { incomeEntries, setIncomeEntries, expenseEntries, setExpenseEntries } =
-    useContext(SalesContext);
+  const [incomeEntries, setIncomeEntries] = useState([]);
+  const [expenseEntries, setExpenseEntries] = useState([]);
+  const [sale, setSale] = useState({});
+  const history = useHistory();
+  const { id } = useParams();
+
+  useEffect(() => {
+    if (history.location.pathname === `/income/${id}`) {
+      getIncomeById(id)
+        .then((res) => setSale(res))
+        .catch((error) =>
+          console.log("error while getting income by id", error)
+        );
+      getAllIncomeEntries()
+        .then((res) => setIncomeEntries(res))
+        .catch((error) => console.log("From App.js METHOD = GET: ", error));
+    }
+    if (history.location.pathname === `/expense/${id}`) {
+      getExpenseById(id)
+        .then((res) => setSale(res))
+        .catch((error) =>
+          console.log("error while getting income by id", error)
+        );
+      getAllExpensesEntries()
+        .then((res) => setExpenseEntries(res))
+        .catch((error) => console.log("From METHOD = GET: ", error));
+    }
+    // return () => {
+    //   setIncomeEntries([]);
+    //   setExpenseEntries([]);
+    //   setSale({});
+    // };
+  }, [history.location.pathname, id]);
+
   const {
     register,
     handleSubmit,
@@ -25,58 +61,50 @@ const CreateSalesEntry = () => {
     mode: "all",
   });
 
-  const history = useHistory();
-  const { id } = useParams();
-
   const salesRepId = 1;
-  // const initialValues = getValues(); // Values are undefined..
+
+  const generateBody = (identifier, data) => {
+    const body = {};
+    identifier.forEach((item) => {
+      body[item] = data[item];
+    });
+    return body;
+  };
+
   const onSubmit = (data, e) => {
+    console.log(data);
     if (history.location.pathname === `/income/${id}`) {
       const initialValues = [...incomeEntries].filter((income) => {
         return income.id.toString() === id.toString();
       })[0];
-
+      console.log(initialValues);
       initialValues.date = new Date(initialValues.date)
         .toLocaleDateString()
         .split("/")
         .reverse()
         .join("-");
-
-      console.log("initial", initialValues, "edit form data", data);
+      console.log(initialValues);
       const name = ["amount_paid", "date", "card_id"];
 
       const identifier = name.filter((item) => {
         return initialValues[item].toString() !== data[item].toString() && item;
       });
       console.log(identifier);
+      // const body = generateBody(identifier, data);
       const body = {};
       identifier.forEach((item) => {
-        body[item] = data[item].toString();
+        body[item] = data[item];
       });
       console.log(body);
-
       if (Boolean(Object.keys(body).length)) {
-        const newState = [...incomeEntries].map((income) => {
-          if (income.id.toString() === id.toString()) {
-            console.log({
-              ...income,
-              ...body,
-            });
-            return {
-              ...income,
-              ...body,
-            };
-          }
-          return income;
-        });
-        console.log(newState);
-        setIncomeEntries(newState);
         updateIncomeEntry(id, body)
-          .then((res) => console.log(res))
+          .then((res) => {
+            history.push("/");
+          })
           .catch((error) => console.log("From App.js METHOD = PUT", error));
 
         reset();
-        history.push("/");
+        // history.push("/");
       } else {
         alert("Edit atleast one the fields");
       }
@@ -90,36 +118,27 @@ const CreateSalesEntry = () => {
         .split("/")
         .reverse()
         .join("-");
-      console.log(initialValues, data);
+
       const name = ["amount_paid", "date", "description"];
 
       const identifier = name.filter((item) => {
         return initialValues[item].toString() !== data[item].toString() && item;
       });
-      console.log(identifier);
+
+      // const body = generateBody(identifier, data);
       const body = {};
       identifier.forEach((item) => {
-        body[item] = data[item].toString();
+        body[item] = data[item];
       });
-      console.log(body);
       if (Boolean(Object.keys(body).length)) {
-        const newState = [...expenseEntries].map((expense) => {
-          if (expense.id.toString() === id.toString()) {
-            return {
-              ...expense,
-              ...body,
-            };
-          }
-          return expense;
-        });
-        console.log(newState);
-        setExpenseEntries(newState);
         updateExpenseEntry(id, body)
-          .then((res) => console.log(res))
+          .then((res) => {
+            history.push("/");
+          })
           .catch((error) => console.log("From App.js METHOD = PUT", error));
 
         reset();
-        history.push("/");
+        // history.push("/");
       } else {
         alert("Edit atleast one the fields");
       }
@@ -129,22 +148,26 @@ const CreateSalesEntry = () => {
       const { amount_paid, date, description } = data;
 
       addExpenseEntry(salesRepId, amount_paid, date, description)
-        .then((res) => setExpenseEntries([...expenseEntries, res]))
+        .then((res) => {
+          history.push("/");
+        })
         .catch((error) => console.log("From App.js METHOD = POST", error));
       reset();
-      history.push("/");
+      // history.push("/");
     }
     if (history.location.pathname === "/income") {
       const { card_id, amount_paid, date } = data;
 
       addIncomeEntry(card_id, salesRepId, amount_paid, date)
-        .then((res) => setIncomeEntries([...incomeEntries, res]))
+        .then((res) => {
+          history.push("/");
+        })
         .catch((error) => console.log("From App.js METHOD = POST", error));
       reset();
-      history.push("/");
+      // history.push("/");
     }
   };
-
+  console.log("re-render in createsales");
   return (
     <Layout>
       <NavBar />
@@ -153,12 +176,12 @@ const CreateSalesEntry = () => {
           type={
             history.location.pathname.includes("income") ? "income" : "expense"
           }
-          edit={history.location.state !== undefined ? true : false}
+          edit={Object.keys(sale).length > 0 ? true : false}
           handleSubmit={handleSubmit}
           onSubmit={onSubmit}
           register={register}
           errors={errors}
-          history={history}
+          sale={sale}
           setValue={setValue}
         />
       </div>

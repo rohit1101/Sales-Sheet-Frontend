@@ -1,12 +1,12 @@
-// import React, { useState } from 'react'
-
-import { useContext } from "react";
-import SalesContext from "../../SalesContext";
 import Sale from "./Sale";
 
-const SalesTable = () => {
-  const { incomeEntries, expenseEntries, tabState } = useContext(SalesContext);
-
+const SalesTable = ({
+  incomeEntries,
+  expenseEntries,
+  tabState,
+  setIncomeEntries,
+  setExpenseEntries,
+}) => {
   return (
     <>
       {tabState.income ? (
@@ -22,7 +22,17 @@ const SalesTable = () => {
           </thead>
           <tbody>
             {incomeEntries.length ? (
-              incomeEntries.map((sale) => <Sale sale={sale} key={sale.id} />)
+              incomeEntries.map((sale) => (
+                <Sale
+                  sale={sale}
+                  key={sale.id}
+                  tabState={tabState}
+                  incomeEntries={incomeEntries}
+                  setIncomeEntries={setIncomeEntries}
+                  expenseEntries={expenseEntries}
+                  setExpenseEntries={setExpenseEntries}
+                />
+              ))
             ) : (
               <tr>
                 <td>No sales</td>
@@ -43,7 +53,17 @@ const SalesTable = () => {
           </thead>
           <tbody>
             {expenseEntries.length ? (
-              expenseEntries.map((sale) => <Sale key={sale.id} sale={sale} />)
+              expenseEntries.map((sale) => (
+                <Sale
+                  key={sale.id}
+                  sale={sale}
+                  tabState={tabState}
+                  incomeEntries={incomeEntries}
+                  setIncomeEntries={setIncomeEntries}
+                  expenseEntries={expenseEntries}
+                  setExpenseEntries={setExpenseEntries}
+                />
+              ))
             ) : (
               <tr>
                 <td className="text-blue-200">No sales</td>

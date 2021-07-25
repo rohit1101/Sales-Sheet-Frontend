@@ -1,5 +1,75 @@
 import { baseURL } from "../constants";
 
+export async function login({ username, password }) {
+  let url = new URL(`${baseURL}/login`);
+
+  try {
+    const res = await fetch(url, {
+      method: "POST",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        username,
+        password,
+      }),
+    });
+
+    return await res.json();
+  } catch (error) {
+    console.log("Error:", error);
+  }
+}
+
+export async function register({ username, password }) {
+  let url = new URL(`${baseURL}/register`);
+
+  try {
+    const res = await fetch(url, {
+      method: "POST",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        username,
+        password,
+      }),
+    });
+
+    await res.json();
+  } catch (error) {
+    console.log("Error:", error);
+  }
+}
+
+export function getIncomeById(id) {
+  // let url = new URL(`http://107.22.18.203/sales`);
+  let url = new URL(`${baseURL}/incomes/income/${id}`);
+
+  return fetch(url, {
+    headers: {
+      Authorization: `Bearer ${JSON.parse(localStorage.getItem("jwt"))}`,
+    },
+  })
+    .then((data) => data.json())
+    .catch((e) => console.log("Error:", e));
+}
+
+export function getExpenseById(id) {
+  // let url = new URL(`http://107.22.18.203/sales`);
+  let url = new URL(`${baseURL}/expenses/expense/${id}`);
+
+  return fetch(url, {
+    headers: {
+      Authorization: `Bearer ${JSON.parse(localStorage.getItem("jwt"))}`,
+    },
+  })
+    .then((data) => data.json())
+    .catch((e) => console.log("Error:", e));
+}
+
 export function getAllIncomeEntries(cardId, date) {
   // let url = new URL(`http://107.22.18.203/sales`);
   let url = new URL(`${baseURL}/income`);
@@ -15,11 +85,12 @@ export function getAllIncomeEntries(cardId, date) {
     }
   });
 
-  return fetch(url)
+  return fetch(url, {
+    headers: {
+      Authorization: `Bearer ${JSON.parse(localStorage.getItem("jwt"))}`,
+    },
+  })
     .then((data) => data.json())
-    .then((res) => {
-      return res;
-    })
     .catch((e) => console.log("Error:", e));
 }
 
@@ -37,6 +108,7 @@ export function addIncomeEntry(
     headers: {
       Accept: "application/json",
       "Content-Type": "application/json",
+      Authorization: `Bearer ${JSON.parse(localStorage.getItem("jwt"))}`,
     },
     method: "POST",
     body: Boolean(date)
@@ -50,10 +122,6 @@ export function addIncomeEntry(
       : JSON.stringify({ card_id, sales_rep_id, amount_paid, description }),
   })
     .then((data) => data.json())
-    .then((res) => {
-      // console.log(res);
-      return res;
-    })
     .catch((e) => console.log("Error:", e));
 }
 
@@ -65,12 +133,12 @@ export function updateIncomeEntry(id, body) {
     headers: {
       Accept: "application/json",
       "Content-Type": "application/json",
+      Authorization: `Bearer ${JSON.parse(localStorage.getItem("jwt"))}`,
     },
     method: "PUT",
     body: JSON.stringify(body),
   })
     .then((data) => data.text())
-    .then((res) => res)
     .catch((e) => console.log("Error:", e));
 }
 
@@ -82,11 +150,11 @@ export function deleteIncomeEntry(id) {
     headers: {
       Accept: "application/json",
       "Content-Type": "application/json",
+      Authorization: `Bearer ${JSON.parse(localStorage.getItem("jwt"))}`,
     },
     method: "DELETE",
   })
     .then((data) => data.text())
-    .then((res) => res)
     .catch((e) => console.log("Error:", e));
 }
 
@@ -95,7 +163,11 @@ export function filterSales(val) {
     let url = new URL(
       `${baseURL}/filter?start=${val.startDate}&end=${val.endDate}`
     );
-    return fetch(url)
+    return fetch(url, {
+      headers: {
+        Authorization: `Bearer ${JSON.parse(localStorage.getItem("jwt"))}`,
+      },
+    })
       .then((result) => result.json())
       .then((res) => res)
       .catch((e) => console.log("ERROR while filtering sales FE:", e));
@@ -123,11 +195,12 @@ export function getAllExpensesEntries(cardId, date) {
     }
   });
 
-  return fetch(url)
+  return fetch(url, {
+    headers: {
+      Authorization: `Bearer ${JSON.parse(localStorage.getItem("jwt"))}`,
+    },
+  })
     .then((data) => data.json())
-    .then((res) => {
-      return res;
-    })
     .catch((e) => console.log("Error:", e));
 }
 
@@ -144,6 +217,7 @@ export function addExpenseEntry(
     headers: {
       Accept: "application/json",
       "Content-Type": "application/json",
+      Authorization: `Bearer ${JSON.parse(localStorage.getItem("jwt"))}`,
     },
     method: "POST",
     body: Boolean(date)
@@ -156,7 +230,6 @@ export function addExpenseEntry(
       : JSON.stringify({ sales_rep_id, amount_paid, description }),
   })
     .then((data) => data.json())
-    .then((res) => res)
     .catch((e) => console.log("Error:", e));
 }
 
@@ -168,12 +241,12 @@ export function updateExpenseEntry(id, body) {
     headers: {
       Accept: "application/json",
       "Content-Type": "application/json",
+      Authorization: `Bearer ${JSON.parse(localStorage.getItem("jwt"))}`,
     },
     method: "PUT",
     body: JSON.stringify(body),
   })
     .then((data) => data.text())
-    .then((res) => res)
     .catch((e) => console.log("Error:", e));
 }
 
@@ -185,10 +258,10 @@ export function deleteExpenseEntry(id) {
     headers: {
       Accept: "application/json",
       "Content-Type": "application/json",
+      Authorization: `Bearer ${JSON.parse(localStorage.getItem("jwt"))}`,
     },
     method: "DELETE",
   })
     .then((data) => data.text())
-    .then((res) => res)
     .catch((e) => console.log("Error:", e));
 }

@@ -1,18 +1,16 @@
-import { useContext } from "react";
 import { useHistory } from "react-router-dom";
-import SalesContext from "../../SalesContext";
 import { deleteExpenseEntry, deleteIncomeEntry } from "../../services/api";
 import Icons from "../Icons";
 
-const Sale = ({ sale }) => {
+const Sale = ({
+  sale,
+  tabState,
+  incomeEntries,
+  setIncomeEntries,
+  expenseEntries,
+  setExpenseEntries,
+}) => {
   const history = useHistory();
-  const {
-    tabState,
-    incomeEntries,
-    setIncomeEntries,
-    expenseEntries,
-    setExpenseEntries,
-  } = useContext(SalesContext);
 
   function removeSalesEntryHandler(id) {
     // use the result from promise with snackbar component
@@ -50,7 +48,7 @@ const Sale = ({ sale }) => {
           <td
             className="cursor-pointer border border-green-600"
             onClick={() => {
-              history.push(`/income/${sale.id}`, [sale]);
+              history.push(`/income/${sale.id}`);
             }}
           >
             <Icons type="edit" />
@@ -78,7 +76,7 @@ const Sale = ({ sale }) => {
           <td
             className="cursor-pointer border border-green-600"
             onClick={() => {
-              history.push(`/expense/${sale.id}`, [sale]);
+              history.push(`/expense/${sale.id}`);
             }}
           >
             <Icons type="edit" />
