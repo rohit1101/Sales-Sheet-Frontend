@@ -74,8 +74,6 @@ const EditSalesEntry = ({ type }) => {
   const history = useHistory();
   const { id } = useParams();
 
-  const salesRepId = 1;
-
   const onSubmit = (data) => {
     if (type === `income`) {
       const initialValues = [...incomeEntries].filter((income) => {
