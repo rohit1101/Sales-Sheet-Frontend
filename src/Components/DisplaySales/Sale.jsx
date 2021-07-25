@@ -49,14 +49,26 @@ const Sale = ({
         >
           <Icons type="delete" />
         </td>
-        <td
-          className="cursor-pointer border border-green-600"
-          onClick={() => {
-            history.push(`/income/${sale.id}`);
-          }}
-        >
-          <Icons type="edit" />
-        </td>
+
+        {tabState.income ? (
+          <td
+            className="cursor-pointer border border-green-600"
+            onClick={() => {
+              history.push(`/income/${sale.id}`);
+            }}
+          >
+            <Icons type="edit" />
+          </td>
+        ) : (
+          <td
+            className="cursor-pointer border border-green-600"
+            onClick={() => {
+              history.push(`/expense/${sale.id}`);
+            }}
+          >
+            <Icons type="edit" />
+          </td>
+        )}
       </tr>
     </>
   );
