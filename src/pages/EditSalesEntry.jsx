@@ -134,7 +134,7 @@ const EditSalesEntry = ({ type }) => {
       });
 
       if (Boolean(Object.keys(body).length)) {
-        updateExpenseEntry(id, { ...body, salesRepId })
+        updateExpenseEntry(id, body)
           .then((res) => {
             history.push("/");
           })
