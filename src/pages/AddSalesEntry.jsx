@@ -18,10 +18,17 @@ const AddSalesEntry = ({ type }) => {
   });
 
   const salesRepId = 1;
+
   const history = useHistory();
   const saleDate = watch("saleDate");
   const onSubmit = (data) => {
     console.log(data, saleDate);
+    const formattedDate = new Intl.DateTimeFormat({
+      year: "numeric",
+      month: "numeric",
+      day: "numeric",
+    }).format(data.saleDate);
+    console.log(formattedDate);
     reset();
     // if (history.location.pathname === "/expense") {
     //   const { amount_paid, date, description } = data;
