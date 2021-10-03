@@ -1,7 +1,8 @@
-import { useForm } from "react-hook-form";
+import { useForm, Controller, SubmitHandler } from "react-hook-form";
 import { useHistory } from "react-router-dom";
 import Layout from "../Layout";
 import { addExpenseEntry, addIncomeEntry } from "../services/api";
+import DatePicker from "react-datepicker";
 
 const AddSalesEntry = ({ type }) => {
   const {
