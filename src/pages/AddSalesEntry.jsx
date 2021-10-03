@@ -4,6 +4,7 @@ import Layout from "../Layout";
 import { addExpenseEntry, addIncomeEntry } from "../services/api";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
+import { format } from "date-fns";
 
 const AddSalesEntry = ({ type }) => {
   const {
@@ -22,32 +23,30 @@ const AddSalesEntry = ({ type }) => {
   const history = useHistory();
   const saleDate = watch("saleDate");
   const onSubmit = (data) => {
-    console.log(data, saleDate);
-    const formattedDate = new Intl.DateTimeFormat({
-      year: "numeric",
-      month: "numeric",
-      day: "numeric",
-    }).format(data.saleDate);
-    console.log(formattedDate);
-    reset();
-    // if (history.location.pathname === "/expense") {
-    //   const { amount_paid, date, description } = data;
+    const formattedDate = format(data.saleDate, "yyyy-MM-dd");
+    const formData = {
+      ...data,
+      date: formattedDate,
+    };
 
-    //   addExpenseEntry(salesRepId, amount_paid, date, description)
-    //     .then((res) => history.push("/"))
-    //     .catch((error) => console.log("From App.js METHOD = POST", error));
+    if (history.location.pathname === "/expense") {
+      const { amount_paid, date, description } = formData;
 
-    //   reset();
-    // }
-    // if (history.location.pathname === "/income") {
-    //   const { card_id, amount_paid, date } = data;
+      addExpenseEntry(salesRepId, amount_paid, date, description)
+        .then((res) => history.push("/"))
+        .catch((error) => console.log("From App.js METHOD = POST", error));
 
-    //   addIncomeEntry(card_id, salesRepId, amount_paid, date)
-    //     .then((res) => history.push("/"))
-    //     .catch((error) => console.log("From App.js METHOD = POST", error));
+      reset();
+    }
+    if (history.location.pathname === "/income") {
+      const { card_id, amount_paid, date } = formData;
 
-    //   reset();
-    // }
+      addIncomeEntry(card_id, salesRepId, amount_paid, date)
+        .then((res) => history.push("/"))
+        .catch((error) => console.log("From App.js METHOD = POST", error));
+
+      reset();
+    }
   };
 
   return (
@@ -89,7 +88,6 @@ const AddSalesEntry = ({ type }) => {
             <DatePicker
               placeholderText="Enter sale date"
               onChange={(e) => field.onChange(e)}
-              // selected={field.value || new Date()}
               selected={
                 saleDate?.value ? new Date(saleDate.value) : field.value
               }

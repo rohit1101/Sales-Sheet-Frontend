@@ -1,3 +1,4 @@
+import { format, formatISO } from "date-fns";
 import { useHistory } from "react-router-dom";
 import { deleteExpenseEntry, deleteIncomeEntry } from "../../services/api";
 import Icons from "../Icons";
@@ -31,7 +32,7 @@ const Sale = ({
       <tr className="bg-yellow-200">
         <td className="border border-green-600">
           {sale && sale.date
-            ? new Date(sale.date).toLocaleDateString()
+            ? format(new Date(sale.date), "dd/MM/yyyy")
             : new Date().toLocaleDateString()}
         </td>
         {tabState.income ? (
