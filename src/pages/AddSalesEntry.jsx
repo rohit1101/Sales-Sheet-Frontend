@@ -3,12 +3,15 @@ import { useHistory } from "react-router-dom";
 import Layout from "../Layout";
 import { addExpenseEntry, addIncomeEntry } from "../services/api";
 import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
 
 const AddSalesEntry = ({ type }) => {
   const {
     register,
     handleSubmit,
     reset,
+    watch,
+    control,
     formState: { errors },
   } = useForm({
     mode: "all",
@@ -16,26 +19,28 @@ const AddSalesEntry = ({ type }) => {
 
   const salesRepId = 1;
   const history = useHistory();
-
+  const saleDate = watch("saleDate");
   const onSubmit = (data) => {
-    if (history.location.pathname === "/expense") {
-      const { amount_paid, date, description } = data;
+    console.log(data, saleDate);
+    reset();
+    // if (history.location.pathname === "/expense") {
+    //   const { amount_paid, date, description } = data;
 
-      addExpenseEntry(salesRepId, amount_paid, date, description)
-        .then((res) => history.push("/"))
-        .catch((error) => console.log("From App.js METHOD = POST", error));
+    //   addExpenseEntry(salesRepId, amount_paid, date, description)
+    //     .then((res) => history.push("/"))
+    //     .catch((error) => console.log("From App.js METHOD = POST", error));
 
-      reset();
-    }
-    if (history.location.pathname === "/income") {
-      const { card_id, amount_paid, date } = data;
+    //   reset();
+    // }
+    // if (history.location.pathname === "/income") {
+    //   const { card_id, amount_paid, date } = data;
 
-      addIncomeEntry(card_id, salesRepId, amount_paid, date)
-        .then((res) => history.push("/"))
-        .catch((error) => console.log("From App.js METHOD = POST", error));
+    //   addIncomeEntry(card_id, salesRepId, amount_paid, date)
+    //     .then((res) => history.push("/"))
+    //     .catch((error) => console.log("From App.js METHOD = POST", error));
 
-      reset();
-    }
+    //   reset();
+    // }
   };
 
   return (
@@ -68,15 +73,22 @@ const AddSalesEntry = ({ type }) => {
           </>
         )}
         <label className="block">Date</label>
-        <input
-          className="block mb-2 shadow-xl focus:outline-none focus:ring-2 focus:ring-purple-300"
-          type="date"
-          defaultValue={new Date()
-            .toLocaleDateString()
-            .split("/")
-            .reverse()
-            .join("-")}
-          {...register("date")}
+        <Controller
+          name="saleDate"
+          control={control}
+          required
+          defaultValue={new Date()}
+          render={({ field }) => (
+            <DatePicker
+              placeholderText="Enter sale date"
+              onChange={(e) => field.onChange(e)}
+              // selected={field.value || new Date()}
+              selected={
+                saleDate?.value ? new Date(saleDate.value) : field.value
+              }
+              dateFormat="dd/MM/yyyy"
+            />
+          )}
         />
         <label className="block">Amount</label>
         <input
