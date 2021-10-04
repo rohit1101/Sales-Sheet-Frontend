@@ -27,7 +27,7 @@ const EditSalesEntry = ({ type }) => {
     formState: { errors },
   } = useForm();
 
-  const expenseDate = watch("expenseDate");
+  const date = watch("date");
 
   useEffect(() => {
     if (type === "income") {
@@ -37,7 +37,7 @@ const EditSalesEntry = ({ type }) => {
             amount_paid: +res.amount_paid,
             card_id: +res.card_id,
             id: +res.id,
-            expenseDate: new Date(res.date),
+            date: new Date(res.date),
           });
         })
         .catch((error) =>
@@ -56,7 +56,7 @@ const EditSalesEntry = ({ type }) => {
             amount_paid: +res.amount_paid,
             description: res.description,
             id: +res.id,
-            expenseDate: new Date(res.date),
+            date: new Date(res.date),
           });
         })
         .catch((error) =>
@@ -75,26 +75,10 @@ const EditSalesEntry = ({ type }) => {
 
   const onSubmit = (data) => {
     if (type === `income`) {
-      const initialValues = [...incomeEntries].filter((income) => {
-        return income.id.toString() === id.toString();
-      })[0];
-      console.log(initialValues);
-      initialValues.date = new Date(initialValues.date)
-        .toLocaleDateString()
-        .split("/")
-        .reverse()
-        .join("-");
-
-      const name = ["amount_paid", "expenseDate", "card_id"];
-
-      const identifier = name.filter((item) => {
-        return initialValues[item].toString() !== data[item].toString() && item;
-      });
-
-      const body = {};
-      identifier.forEach((item) => {
-        body[item] = data[item].toString();
-      });
+      const body = {
+        ...data,
+        date: format(data.date, "yyyy-MM-dd"),
+      };
 
       if (Boolean(Object.keys(body).length)) {
         updateIncomeEntry(id, body)
@@ -105,30 +89,14 @@ const EditSalesEntry = ({ type }) => {
 
         reset();
       } else {
-        alert("sale atleast one the fields");
+        alert("edit atleast one of the fields");
       }
     }
     if (type === `expense`) {
-      const initialValues = [...expenseEntries].filter((expense) => {
-        return expense.id.toString() === id.toString();
-      })[0];
-
-      initialValues.date = new Date(initialValues.date)
-        .toLocaleDateString()
-        .split("/")
-        .reverse()
-        .join("-");
-
-      const name = ["amount_paid", "date", "description"];
-
-      const identifier = name.filter((item) => {
-        return initialValues[item].toString() !== data[item].toString() && item;
-      });
-
-      const body = {};
-      identifier.forEach((item) => {
-        body[item] = data[item].toString();
-      });
+      const body = {
+        ...data,
+        date: format(data.date, "yyyy-MM-dd"),
+      };
 
       if (Boolean(Object.keys(body).length)) {
         updateExpenseEntry(id, body)
@@ -176,15 +144,15 @@ const EditSalesEntry = ({ type }) => {
         <label className="block">Date</label>
 
         <Controller
-          name="expenseDate"
+          name="date"
           control={control}
           required
-          //   defaultValue={new Date(expenseDate)}
+          //   defaultValue={new Date(date)}
           render={({ field }) => (
             <DatePicker
               placeholderText="Enter sale date"
               onChange={(e) => field.onChange(e)}
-              selected={expenseDate ? expenseDate : field.value}
+              selected={date ? date : field.value}
               dateFormat="dd/MM/yyyy"
             />
           )}
