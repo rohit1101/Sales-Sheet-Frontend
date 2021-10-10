@@ -1,24 +1,36 @@
-import { useForm } from "react-hook-form";
+import { useForm, Controller, SubmitHandler } from "react-hook-form";
 import { useHistory } from "react-router-dom";
 import Layout from "../Layout";
 import { addExpenseEntry, addIncomeEntry } from "../services/api";
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
+import { format } from "date-fns";
 
 const AddSalesEntry = ({ type }) => {
   const {
     register,
     handleSubmit,
     reset,
+    watch,
+    control,
     formState: { errors },
   } = useForm({
     mode: "all",
   });
 
   const salesRepId = 1;
-  const history = useHistory();
 
+  const history = useHistory();
+  const saleDate = watch("saleDate");
   const onSubmit = (data) => {
+    const formattedDate = format(data.saleDate, "yyyy-MM-dd");
+    const formData = {
+      ...data,
+      date: formattedDate,
+    };
+
     if (history.location.pathname === "/expense") {
-      const { amount_paid, date, description } = data;
+      const { amount_paid, date, description } = formData;
 
       addExpenseEntry(salesRepId, amount_paid, date, description)
         .then((res) => history.push("/"))
@@ -27,7 +39,7 @@ const AddSalesEntry = ({ type }) => {
       reset();
     }
     if (history.location.pathname === "/income") {
-      const { card_id, amount_paid, date } = data;
+      const { card_id, amount_paid, date } = formData;
 
       addIncomeEntry(card_id, salesRepId, amount_paid, date)
         .then((res) => history.push("/"))
@@ -67,15 +79,21 @@ const AddSalesEntry = ({ type }) => {
           </>
         )}
         <label className="block">Date</label>
-        <input
-          className="block mb-2 shadow-xl focus:outline-none focus:ring-2 focus:ring-purple-300"
-          type="date"
-          defaultValue={new Date()
-            .toLocaleDateString()
-            .split("/")
-            .reverse()
-            .join("-")}
-          {...register("date")}
+        <Controller
+          name="saleDate"
+          control={control}
+          required
+          defaultValue={new Date()}
+          render={({ field }) => (
+            <DatePicker
+              placeholderText="Enter sale date"
+              onChange={(e) => field.onChange(e)}
+              selected={
+                saleDate?.value ? new Date(saleDate.value) : field.value
+              }
+              dateFormat="dd/MM/yyyy"
+            />
+          )}
         />
         <label className="block">Amount</label>
         <input
