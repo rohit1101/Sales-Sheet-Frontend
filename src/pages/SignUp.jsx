@@ -1,8 +1,6 @@
-import Layout from "../Layout";
-
 const SignUp = () => {
   return (
-    <Layout>
+    <div>
       <h1 className="text-lg my-8">Sign Up</h1>
       <form className="inline-block text-left">
         <label className="block">Username</label>
@@ -12,7 +10,7 @@ const SignUp = () => {
         <div></div>
         <input type="submit" value="Sign Up" />
       </form>
-    </Layout>
+    </div>
   );
 };
 

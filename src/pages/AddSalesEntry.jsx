@@ -1,6 +1,5 @@
 import { useForm, Controller, SubmitHandler } from "react-hook-form";
 import { useHistory } from "react-router-dom";
-import Layout from "../Layout";
 import { addExpenseEntry, addIncomeEntry } from "../services/api";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
@@ -50,7 +49,7 @@ const AddSalesEntry = ({ type }) => {
   };
 
   return (
-    <Layout>
+    <div>
       <form
         onSubmit={handleSubmit(onSubmit)}
         className="inline-block text-left"
@@ -140,7 +139,7 @@ const AddSalesEntry = ({ type }) => {
           className="block my-2 min-w-full bg-purple-300 text-purple-600 font-normal hover:bg-purple-200 duration-100 hover:text-purple-800 rounded-md px-2 py-1 shadow-2xl"
         />
       </form>
-    </Layout>
+    </div>
   );
 };
 

@@ -1,18 +1,11 @@
 import { useForm } from "react-hook-form";
 import { useHistory } from "react-router-dom";
-import Layout from "../Layout";
+import styled from "styled-components";
 import { login } from "../services/api";
 
-const Login = () => {
-  // const location = useLocation();
-  // const history = useHistory();
-  // const { authLogin, loginData } = useContext(AuthContext);
-
-  // if (authLogin) {
-  //   const { from } = location.state || { from: { pathname: "/" } };
-  //   history.replace(from);
-  // }
-
+const Wrapper = styled.div``;
+// w-full max-w-screen-md mx-auto rounded-sm h-full text-center
+export const Login = () => {
   const {
     register,
     handleSubmit,
@@ -40,7 +33,7 @@ const Login = () => {
   }
 
   return (
-    <Layout>
+    <Wrapper>
       <h1 className="text-lg my-8">Login</h1>
       <form
         className="inline-block text-left"
@@ -70,8 +63,6 @@ const Login = () => {
         <div></div>
         <input type="submit" value="Login" />
       </form>
-    </Layout>
+    </Wrapper>
   );
 };
-
-export default Login;
