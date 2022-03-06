@@ -3,13 +3,13 @@ import { useHistory } from "react-router-dom";
 import styled from "styled-components/macro";
 import { login } from "../services/api";
 
-const FormHead = styled.div`
+export const FormHead = styled.div`
   font-size: 1.5rem;
   font-weight: 600;
   padding-bottom: 1rem;
 `;
 
-const Form = styled.form`
+export const Form = styled.form`
   /* width: max-content; */
   margin: auto;
   border: dotted 1px silver;
@@ -17,13 +17,13 @@ const Form = styled.form`
   padding: 24px;
 `;
 
-const Label = styled.label`
+export const Label = styled.label`
   display: block;
   margin-bottom: 16px;
   font-size: 1.2rem;
 `;
 
-const Input = styled.input`
+export const Input = styled.input`
   display: block;
   border: 1px solid black;
   border-bottom-width: 2px;
@@ -41,7 +41,7 @@ const Input = styled.input`
   }
 `;
 
-const SubmitButton = styled.button`
+export const SubmitButton = styled.button`
   width: 100%;
   color: hsl(0, 0%, 100%);
   padding: 6px 8px;
@@ -49,7 +49,7 @@ const SubmitButton = styled.button`
   font-weight: 600;
   background-color: hsl(0, 100%, 0%);
   border: none;
-
+  margin-bottom: 8px;
   &:focus {
     outline: 2px solid hsl(130, 50%, 70%);
     outline-offset: 2px;
@@ -62,7 +62,7 @@ const SubmitButton = styled.button`
   }
 `;
 
-const Wrapper = styled.div`
+export const Wrapper = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;

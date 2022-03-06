@@ -1,0 +1,18 @@
+input {
+  width: 100%;
+  display: block;
+  border: 1px solid black;
+  border-bottom-width: 2px;
+  padding: 6px 8px;
+  margin: 4px 0;
+}
+
+input:focus {
+  outline: 2px solid blue;
+  outline-offset: 2px;
+  border-color: transparent;
+}
+
+input::placeholder {
+  color: #a09e9e;
+}
