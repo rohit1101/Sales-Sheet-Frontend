@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useHistory } from "react-router-dom";
 import styled from "styled-components";
 import SalesTable from "./components/DisplaySales/SalesTable";
+import Table from "./components/Table/Table";
 
 import { getAllExpensesEntries, getAllIncomeEntries } from "./services/api";
 
@@ -15,15 +16,30 @@ const SideBar = styled.nav`
   max-width: 350px;
   background-color: hsl(245, 58%, 51%);
   color: hsl(0, 0%, 100%);
-  padding: 8px 16px;
+  padding: 16px;
+
+  a {
+    font-size: 24px;
+    display: inline-block;
+    padding: 16px 0;
+  }
 `;
 const UnorderedList = styled.ul`
   list-style: none;
   padding: 0px;
+
+  li {
+    padding: 8px 0;
+  }
 `;
 
 const Content = styled.div`
   flex: 2;
+  padding: 36px;
+
+  h3 {
+    text-transform: uppercase;
+  }
 `;
 
 function App() {
@@ -47,13 +63,18 @@ function App() {
   return (
     <Wrapper>
       <SideBar>
+        <a href="/">LOGO</a>
         <UnorderedList>
           <li>Home</li>
           <li>Income</li>
           <li>Expense</li>
         </UnorderedList>
       </SideBar>
-      <Content>Main content</Content>
+      <Content>
+        <h3>Dashboard</h3>
+        <h4>Transactions</h4>
+        <Table />
+      </Content>
     </Wrapper>
   );
 }
