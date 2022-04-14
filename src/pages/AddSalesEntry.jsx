@@ -58,7 +58,6 @@ const AddSalesEntry = ({ type }) => {
             <Label>
               Card Number:
               <Input
-                className="shadow-xl  focus:outline-none focus:ring-2 focus:ring-purple-300"
                 type="number"
                 {...register("card_id", {
                   required: "This field is required!",
@@ -77,7 +76,7 @@ const AddSalesEntry = ({ type }) => {
             </Label>
           </>
         )}
-        <Label className="block">
+        <Label>
           Date
           <Controller
             name="saleDate"
@@ -98,7 +97,7 @@ const AddSalesEntry = ({ type }) => {
           />
         </Label>
 
-        <Label className="block">
+        <Label>
           Amount
           <Input
             type="number"
@@ -121,9 +120,8 @@ const AddSalesEntry = ({ type }) => {
 
         {type === "expense" && (
           <>
-            <Label className="block">Description</Label>
+            <Label>Description</Label>
             <input
-              className="block mb-2 shadow-xl"
               {...register("description", {
                 validate: (value) => value.trim().length > 0,
               })}

@@ -4,7 +4,7 @@ const Icons = ({ type }) => {
       {type === "delete" ? (
         <svg
           xmlns="http://www.w3.org/2000/svg"
-          className="cursor-pointer block h-6 w-6 mx-auto stroke-current text-red-500"
+          // className="cursor-pointer block h-6 w-6 mx-auto stroke-current text-red-500"
           fill="none"
           viewBox="0 0 24 24"
           stroke="currentColor"
@@ -19,7 +19,7 @@ const Icons = ({ type }) => {
       ) : (
         <svg
           xmlns="http://www.w3.org/2000/svg"
-          className="cursor-pointer block h-6 w-6 mx-auto stroke-current text-purple-500"
+          // className="cursor-pointer block h-6 w-6 mx-auto stroke-current text-purple-500"
           fill="none"
           viewBox="0 0 24 24"
           stroke="currentColor"

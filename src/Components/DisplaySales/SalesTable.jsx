@@ -9,23 +9,23 @@ const SalesTable = ({
 }) => {
   return (
     <>
-      <table className="w-full my-4 bg-green-200 border-collapse border-2 border-green-800">
+      <table>
         <thead>
           {tabState.income ? (
             <tr>
-              <th className="border border-green-600">Date</th>
-              <th className="border border-green-600">Card ID</th>
-              <th className="border border-green-600">Amount</th>
-              <th className="border border-green-600">Delete</th>
-              <th className="border border-green-600">Edit</th>
+              <th>Date</th>
+              <th>Card ID</th>
+              <th>Amount</th>
+              <th>Delete</th>
+              <th>Edit</th>
             </tr>
           ) : (
             <tr>
-              <th className="border border-green-600">Date</th>
-              <th className="border border-green-600">Description</th>
-              <th className="border border-green-600">Amount</th>
-              <th className="border border-green-600">Delete</th>
-              <th className="border border-green-600">Edit</th>
+              <th>Date</th>
+              <th>Description</th>
+              <th>Amount</th>
+              <th>Delete</th>
+              <th>Edit</th>
             </tr>
           )}
         </thead>
