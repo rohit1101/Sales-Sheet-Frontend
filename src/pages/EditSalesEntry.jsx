@@ -12,6 +12,7 @@ import {
   updateExpenseEntry,
   updateIncomeEntry,
 } from "../services/api";
+import { Form, Input, Label, Wrapper } from "./Login";
 
 const EditSalesEntry = ({ type }) => {
   const [incomeEntries, setIncomeEntries] = useState([]);
@@ -112,12 +113,12 @@ const EditSalesEntry = ({ type }) => {
   };
 
   return (
-    <div>
-      <form onSubmit={handleSubmit(onSubmit)}>
+    <Wrapper>
+      <Form onSubmit={handleSubmit(onSubmit)}>
         {type === "income" && (
           <>
-            <label>Card Number</label>
-            <input
+            <Label>Card Number</Label>
+            <Input
               type="number"
               {...register("card_id", {
                 required: "This field is required!",
@@ -136,7 +137,7 @@ const EditSalesEntry = ({ type }) => {
             )}
           </>
         )}
-        <label>Date</label>
+        <Label>Date</Label>
 
         <Controller
           name="date"
@@ -153,9 +154,9 @@ const EditSalesEntry = ({ type }) => {
           )}
         />
 
-        <label>Amount</label>
+        <Label>Amount</Label>
 
-        <input
+        <Input
           type="number"
           {...register("amount_paid", {
             required: "This field is required",
@@ -175,8 +176,8 @@ const EditSalesEntry = ({ type }) => {
 
         {type === "expense" && (
           <>
-            <label>Description</label>
-            <input
+            <Label>Description</Label>
+            <Input
               {...register("description", {
                 validate: (value) => value.trim().length > 0,
               })}
@@ -186,10 +187,10 @@ const EditSalesEntry = ({ type }) => {
             )}
           </>
         )}
-        <input type="submit" />
-        <input type="button" value="Cancel" onClick={() => history.push("/")} />
-      </form>
-    </div>
+        <Input type="submit" />
+        <Input type="button" value="Cancel" onClick={() => history.push("/")} />
+      </Form>
+    </Wrapper>
   );
 };
 

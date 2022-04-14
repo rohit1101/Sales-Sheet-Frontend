@@ -1,7 +1,6 @@
 import { useEffect } from "react";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import App from "./App";
-import { GlobalStyles } from "./globalStyles";
 import AddSalesEntry from "./pages/AddSalesEntry";
 import EditSalesEntry from "./pages/EditSalesEntry";
 import { Login } from "./pages/Login";
@@ -41,7 +40,6 @@ const Routes = () => {
           <EditSalesEntry type="expense" />
         </PrivateRoute>
       </Switch>
-      <GlobalStyles />
     </Router>
   );
 };
