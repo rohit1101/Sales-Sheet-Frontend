@@ -4,7 +4,6 @@ import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import { Controller, useForm } from "react-hook-form";
 import { useHistory, useParams } from "react-router-dom";
-import Layout from "../Layout";
 import {
   getAllExpensesEntries,
   getAllIncomeEntries,
@@ -113,16 +112,12 @@ const EditSalesEntry = ({ type }) => {
   };
 
   return (
-    <Layout>
-      <form
-        onSubmit={handleSubmit(onSubmit)}
-        className="inline-block text-left"
-      >
+    <div>
+      <form onSubmit={handleSubmit(onSubmit)}>
         {type === "income" && (
           <>
-            <label className="block">Card Number</label>
+            <label>Card Number</label>
             <input
-              className="shadow-xl  focus:outline-none focus:ring-2 focus:ring-purple-300"
               type="number"
               {...register("card_id", {
                 required: "This field is required!",
@@ -141,7 +136,7 @@ const EditSalesEntry = ({ type }) => {
             )}
           </>
         )}
-        <label className="block">Date</label>
+        <label>Date</label>
 
         <Controller
           name="date"
@@ -158,10 +153,9 @@ const EditSalesEntry = ({ type }) => {
           )}
         />
 
-        <label className="block">Amount</label>
+        <label>Amount</label>
 
         <input
-          className="block mb-2 shadow-xl focus:outline-none focus:ring-2 focus:ring-purple-300"
           type="number"
           {...register("amount_paid", {
             required: "This field is required",
@@ -181,9 +175,8 @@ const EditSalesEntry = ({ type }) => {
 
         {type === "expense" && (
           <>
-            <label className="block">Description</label>
+            <label>Description</label>
             <input
-              className="block mb-2 shadow-xl"
               {...register("description", {
                 validate: (value) => value.trim().length > 0,
               })}
@@ -193,18 +186,10 @@ const EditSalesEntry = ({ type }) => {
             )}
           </>
         )}
-        <input
-          type="submit"
-          className="block my-2 min-w-full bg-purple-300 text-purple-600 font-normal hover:bg-purple-200 duration-100 hover:text-purple-800 rounded-md px-2 py-1 shadow-2xl"
-        />
-        <input
-          type="button"
-          value="Cancel"
-          onClick={() => history.push("/")}
-          className="block my-2 min-w-full bg-purple-300 text-purple-600 font-normal hover:bg-purple-200 duration-100 hover:text-purple-800 rounded-md px-2 py-1 shadow-2xl"
-        />
+        <input type="submit" />
+        <input type="button" value="Cancel" onClick={() => history.push("/")} />
       </form>
-    </Layout>
+    </div>
   );
 };
 

@@ -3,8 +3,8 @@ import React from "react";
 const FilterByCardId = ({ filterData }) => {
   return (
     <>
-      <table className="table-auto w-full text-center bg-gray-100">
-        <thead className="bg-gray-300">
+      <table>
+        <thead>
           <tr>
             <th>Card Number</th>
             <th>Total Sales (in Rs.)</th>

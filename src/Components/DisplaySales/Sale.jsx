@@ -29,31 +29,25 @@ const Sale = ({
 
   return (
     <>
-      <tr className="bg-yellow-200">
-        <td className="border border-green-600">
+      <tr>
+        <td>
           {sale && sale.date
             ? format(new Date(sale.date), "dd/MM/yyyy")
             : new Date().toLocaleDateString()}
         </td>
         {tabState.income ? (
-          <td className="border border-green-600">{sale && sale.card_id}</td>
+          <td>{sale && sale.card_id}</td>
         ) : (
-          <td className="border border-green-600">
-            {sale && sale.description}
-          </td>
+          <td>{sale && sale.description}</td>
         )}
 
-        <td className="border border-green-600">{sale && sale.amount_paid}</td>
-        <td
-          className="border border-green-600"
-          onClick={() => removeSalesEntryHandler(sale.id)}
-        >
+        <td>{sale && sale.amount_paid}</td>
+        <td onClick={() => removeSalesEntryHandler(sale.id)}>
           <Icons type="delete" />
         </td>
 
         {tabState.income ? (
           <td
-            className="cursor-pointer border border-green-600"
             onClick={() => {
               history.push(`/income/${sale.id}`);
             }}
@@ -62,7 +56,6 @@ const Sale = ({
           </td>
         ) : (
           <td
-            className="cursor-pointer border border-green-600"
             onClick={() => {
               history.push(`/expense/${sale.id}`);
             }}
