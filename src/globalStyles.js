@@ -11,7 +11,9 @@ export const GlobalStyles = createGlobalStyle`
     font-size: 16px;
     height: 100%;
   }
-
+  #root {
+    height: 100%;
+  }
   body {
   height: 100%;
   line-height: 1.5;
