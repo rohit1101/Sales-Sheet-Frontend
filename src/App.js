@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useHistory } from "react-router-dom";
-import SalesTable from "./Components/DisplaySales/SalesTable";
+import SalesTable from "./components/DisplaySales/SalesTable";
 // import FilterByCardId from "./Components/FilterSales/FilterByCardId";
 // import FilterByDate from "./Components/FilterSales/FilterByDate";
 // import FilterByDateRange from "./Components/FilterSales/FilterByDateRange";
